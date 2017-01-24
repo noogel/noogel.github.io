@@ -307,7 +307,7 @@ baidushare:
 #google_analytics:
 
 # CNZZ count
-#cnzz_siteid:
+cnzz_siteid: 1261171488
 
 # Application Insights
 # See https://azure.microsoft.com/en-us/services/application-insights/
