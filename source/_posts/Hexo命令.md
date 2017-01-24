@@ -92,4 +92,4 @@ hexo clean
 
 ### 配置修改
 
-博客配置修改`_config.yml`，主题配置修改`themes/<themes>/_config/yml`
+博客配置修改`_config.yml`，主题配置修改`themes/<themes>/_config.yml`
