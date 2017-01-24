@@ -83,6 +83,9 @@ hexo d -g
 hexo clean
 ```
 
+组合命令：`alias hexod="hexo d -g && hexo clean"`
+
+
 ### 添加tags
 
 执行`hexo new page "tags"`，然后编辑`source/tags/index.md`
