@@ -11,7 +11,13 @@ tags: Xpath
 
 ## Firefox + Firepath、Chrome + XPath Helper
 
-Mark
+如下图 Firefox下，XPath需要通过Firebug + Firepath来方便的获取。
+![firefox xpath](/resource/img/firefox_xpath.png)
+
+Chrome下，通过XPath Helper插件实现，开启和关闭快捷键`Ctrl + Shift + X`,按住`Shift`键获取。
+![chrome xpath heloer](/resource/img/chrome_xpathhelper.png)
+
+以上两种方式还是Firefox下使用比较方便，更多用法自行发掘。
 
 ## 常用xpath例子
 
