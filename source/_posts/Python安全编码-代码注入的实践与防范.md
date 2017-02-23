@@ -105,36 +105,33 @@ Evaluate the source in the context of globals and locals. The source may be a st
 ```
 Safely evaluate an expression node or a string containing a Python expression.  The string or node provided may only consist of the following Python literal structures: strings, numbers, tuples, lists, dicts, booleans, and None.
 ```
- 
-#### eval禁用全局或本地变量：
-```
->>> global_a = "Hello Eval!"
->>> eval("global_a")
-'Hello Eval!'
->>> eval("global_a", {}, {})
-Traceback (most recent call last):
-  File "<stdin>", line 1, in <module>
-  File "<string>", line 1, in <module>
-NameError: name 'global_a' is not defined
->>>
-``` 
+
 
 #### 使用ast.literal_eval()代替eval()对比：
+
 ```
 ast.literal_eval("1+1")  # ValueError: malformed string
 ast.literal_eval("[1, 2, 3]")  # [1, 2, 3]
 ast.literal_eval("{1: 1, 2: 2, 3: 3}")  # {1: 1, 2: 2, 3: 3}
 ast.literal_eval("__import__('os').system('uname -a')")  # ValueError: malformed string
- 
 eval("__import__('os').system('uname -a')")  # Linux zhangxu-ThinkPad-T450 3.13.0-92-generic #139-Ubuntu SMP Tue Jun 28 20:42:26 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux
- 
 eval("__import__('os').system('uname -a')", {}, {})  # Linux zhangxu-ThinkPad-T450 3.13.0-92-generic #139-Ubuntu SMP Tue Jun 28 20:42:26 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux
-
 eval("__import__('os').system('uname -a')", {"__builtins__": {}}, {})  # NameError: name '__import__' is not defined
 ```
 
+#### eval禁用全局或本地变量：
+
+```
+>>> global_a = "Hello Eval!"
+>>> eval("global_a")
+>>> eval("global_a", {}, {})
+```
+
+
 #### 寻找eval的突破点
+
 `eval("[c for c in ().__class__.__bases__[0].__subclasses__()]", {'__builtins__':{}})`
+
 参考点：
 ```
 (
@@ -149,6 +146,7 @@ eval("__import__('os').system('uname -a')", {"__builtins__": {}}, {})  # NameErr
 ```
 
 #### 安全使用pickle
+
 ```
 >>> import hmac
 >>> import hashlib
