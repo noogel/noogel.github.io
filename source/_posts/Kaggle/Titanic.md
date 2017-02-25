@@ -2,6 +2,7 @@
 title: Kaggle Titanic问题
 date: 2017-01-11
 tags: [分类算法, 随机森林]
+id: 1
 ---
 
 # Kaggle Titanic问题

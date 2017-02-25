@@ -2,6 +2,7 @@
 title: Matplotlib学习
 date: 2017-02-05
 tags: Matplotlib
+id: 1
 ---
 
 ```python

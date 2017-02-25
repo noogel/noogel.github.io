@@ -2,6 +2,7 @@
 title: Tensorflow学习
 date: 2017-02-09
 tags: [Tensorflow, 深度学习]
+id: 1
 ---
 
 ```python

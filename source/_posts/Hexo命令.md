@@ -2,6 +2,7 @@
 title: Hexo用法汇总
 date: 2017-01-24
 tags: hexo
+id: 1
 ---
 
 ## 基本操作

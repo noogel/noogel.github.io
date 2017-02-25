@@ -2,6 +2,7 @@
 title: pip、easy_install相关
 date: 2015-09-19
 tags: [pip, easy_install]
+id: 1
 ---
 
 pip更新`python -m pip install -U pip`

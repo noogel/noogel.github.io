@@ -2,6 +2,7 @@
 title: Xpath总结
 date: 2017-01-31
 tags: Xpath
+id: 1
 ---
 
 1. Firefox + Firepath、Chrome + XPath Helper

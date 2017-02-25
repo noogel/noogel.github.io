@@ -2,6 +2,7 @@
 title: Python简单web服务
 date: 2015-03-18
 tags: [Python, web]
+id: 1
 ---
 
 利用Python自带的包可以建立简单的web服务器。在DOS里cd到准备做服务器根目录的路径下，输入命令：

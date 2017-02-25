@@ -2,6 +2,7 @@
 title: Asynchronous and non-Blocking I/O 翻译
 date: 2016-08-04
 tags: [Python, Tornado, 异步非阻塞]
+id: 1
 ---
 
 > http://www.tornadoweb.org/en/stable/guide/async.html
