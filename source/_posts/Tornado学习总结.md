@@ -2,6 +2,7 @@
 title: Tornado学习总结
 date: 2015-05-28
 tags: [Python, Tornado]
+id: 1
 ---
 
 ## 框架

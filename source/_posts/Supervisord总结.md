@@ -2,6 +2,7 @@
 title: Supervisord总结
 date: 2015-08-07
 tags: supervisord
+id: 1
 ---
 
 ## 常用命令

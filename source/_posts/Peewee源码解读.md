@@ -2,6 +2,7 @@
 title: Peewee源码解读
 date: 2017-02-05
 tags: [Peewee, Python, 源码]
+id: 2
 ---
 
 ## 通过select查询语句引入
