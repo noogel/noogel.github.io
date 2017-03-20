@@ -97,3 +97,6 @@ hexo clean
 
 ### hexo自动提交命令
 `alias hexodp="hexo d -g && git add --all && git commit -am 'auto commit' && git push origin sources"`
+
+### hexo常见问题解决办法
+> https://hexo.io/docs/troubleshooting.html
