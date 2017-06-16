@@ -148,4 +148,4 @@ sudo chsh -s $(which zsh)
 `sudo apt-get autoremove`
 
 
-> 未完待续
+> 未完待续，欢迎大家发送你的优化点到我的邮箱 noogel@163.com
