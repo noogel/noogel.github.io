@@ -45,14 +45,14 @@ hexo init noogel
 ### 扩展插件安装
 
 ```
-npm install hexo-server --save
-npm install hexo-admin --save
-npm install hexo-generator-archive --save
-npm install hexo-generator-feed --save
-npm install hexo-generator-search --save
-npm install hexo-generator-tag --save
-npm install hexo-deployer-git --save
-npm install hexo-generator-sitemap --save
+sudo npm install hexo-server --save --registry=https://registry.npm.taobao.org
+sudo npm install hexo-admin --save --registry=https://registry.npm.taobao.org
+sudo npm install hexo-generator-archive --save --registry=https://registry.npm.taobao.org
+sudo npm install hexo-generator-feed --save --registry=https://registry.npm.taobao.org
+sudo npm install hexo-generator-search --save --registry=https://registry.npm.taobao.org
+sudo npm install hexo-generator-tag --save --registry=https://registry.npm.taobao.org
+sudo npm install hexo-deployer-git --save --registry=https://registry.npm.taobao.org
+sudo npm install hexo-generator-sitemap --save --registry=https://registry.npm.taobao.org
 ```
 
 ### 服务启动，两种命令
