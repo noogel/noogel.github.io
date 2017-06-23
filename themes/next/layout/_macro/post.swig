@@ -270,6 +270,23 @@
       {% else %}
         {{ post.content }}
       {% endif  %}
+
+      <hr/>
+      <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+        <div>如果此文章能给您带来小小的提升，不妨小额赞赏我一下，以鼓励我写出更好的文章！</div>
+        <div id="QR" style="display: block;">
+            <div id="wechat" style="display: inline-block; margin: 10px 50px">
+              <img id="wechat_qr" src="/resource/file/wechat_mini.jpg" width="200" height="200" alt="Noogel's WeChat Pay">
+              <p>微信打赏</p>
+            </div>
+            <div id="alipay" style="display: inline-block; margin: 10px 50px">
+              <img id="alipay_qr" src="/resource/file/alipay_mini.jpg" width="200" height="200" alt="Noogel's Alipay">
+              <p>支付宝打赏</p>
+            </div>
+        </div>
+      </div>
+
+      <hr/>
     </div>
 
     <div>
