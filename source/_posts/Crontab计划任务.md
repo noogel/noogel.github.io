@@ -52,3 +52,7 @@ id: 1
 
 `0 4 1 jan * /usr/local/etc/rc.d/lighttpd restart`
 一月一号的4点重启apache
+
+## 遇到的坑
+
+`* 1 * * *` 这样写的话会每天1点的每分钟执行一次，需要写成 `0 1 * * *` 这样的形式
