@@ -55,6 +55,9 @@ sudo npm install hexo-deployer-git --save --registry=https://registry.npm.taobao
 sudo npm install hexo-generator-sitemap --save --registry=https://registry.npm.taobao.org
 ```
 
+之后新的机器部署环境可以直接 `sudo npm install --registry=https://registry.npm.taobao.org`
+会自动读取 package.json 文件进行安装
+
 ### 服务启动，两种命令
 
 ```
@@ -96,7 +99,33 @@ hexo clean
 博客配置修改`_config.yml`，主题配置修改`themes/<themes>/_config.yml`
 
 ### hexo自动提交命令
+
+这里设置了一个自动提交的命令，源码自动提交到 sources 分支
+
 `alias hexodp="hexo d -g && git add --all && git commit -am 'auto commit' && git push origin sources"`
+
+
+### hexo-admin 管理文章
+
+安装
+```
+npm install --save hexo-admin --registry=https://registry.npm.taobao.org
+```
+打开 http://localhost:4000/admin/
+
+然后可以在里面配置登录账号密码，并添加到 _config.yml 文件中
+
+```
+# hexo-admin authentification
+admin:
+  username: noogel
+  password_hash: $2a$10$CMR/GX.e6TuoGGOYOF7ks.R.WmSUC8RvelPPXIH5wV3S6hPLYPnx6
+  secret: a33x8sd83ndfus82jrfi8sj28djk438ds
+```
+
+预览界面如下：
+![hexo-admin](/resource/img/hexo-admin.png)
+
 
 ### hexo常见问题解决办法
 > https://hexo.io/docs/troubleshooting.html

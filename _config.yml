@@ -71,3 +71,9 @@ deploy:
   type: git
   repository: git@github.com:noogel/noogel.github.io.git
   branch: master
+
+# hexo-admin authentification
+admin:
+  username: noogel
+  password_hash: $2a$10$CMR/GX.e6TuoGGOYOF7ks.R.WmSUC8RvelPPXIH5wV3S6hPLYPnx6
+  secret: a33x8sd83ndfus82jrfi8sj28djk438ds
