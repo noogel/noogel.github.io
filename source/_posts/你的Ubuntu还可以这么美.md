@@ -110,6 +110,7 @@ sudo chsh -s $(which zsh)
 * Linux下的Dash： zeal
 * Linux下Albert： albert
 * 网易云音乐播放器
+* Robomongo
 
 ### 数据库及工具
 * mysql
