@@ -211,7 +211,7 @@
 
     <div class="post-body" itemprop="articleBody">
       <blockquote>
-      <p>版权声明：本文为博主原创文章，发表自 <a href="http://noogel.xyz">Noogel’s notes</a>。转载需向 <a href="mailto:noogel@163.com">我的邮箱</a> 申请。</p>
+      <p>版权声明： 本文为博主原创文章，发表自 <a href="http://noogel.xyz">Noogel’s notes</a>。转载需向 <a href="mailto:noogel@163.com">我的邮箱</a> 申请。</p>
       </blockquote>
       {# Gallery support #}
       {% if post.photos and post.photos.length %}
@@ -273,6 +273,7 @@
         {{ post.content }}
       {% endif  %}
 
+      {% if not is_index%}
       <hr/>
       <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
         <div>如果此文章能给您带来小小的提升，不妨小额赞赏我一下，以鼓励我写出更好的文章！</div>
@@ -287,8 +288,8 @@
             </div>
         </div>
       </div>
-
       <hr/>
+      {% endif %}
     </div>
 
     <div>
