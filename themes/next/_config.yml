@@ -278,8 +278,9 @@ mathjax:
 #hypercomments_id:
 
 # Gentie productKey
-gentie_productKey: 6fbf7867ee05482bbafbc40a4734c586
+# gentie_productKey: 6fbf7867ee05482bbafbc40a4734c586
 
+livere_uid: MTAyMC8zMDMzOS82ODky
 # Support for youyan comments system.
 # You can get your uid from http://www.uyan.cc
 #youyan_uid: your uid
