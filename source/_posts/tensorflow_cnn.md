@@ -1,7 +1,7 @@
 ---
 title: 卷积神经网络
 date: 2017-08-22
-tags: [tensorflow, cnn, 卷积神经网络]
+tags: [TensorFlow, cnn, 卷积神经网络]
 id: 1
 ---
 
