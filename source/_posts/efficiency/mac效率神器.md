@@ -8,7 +8,7 @@ id: 1
 
 这篇文章主要介绍Mac下常用的效率工具，也许正是你所需要的或者使用后对你的工作有很大的效率提升，废话不多说，看下面介绍的五款常用效率工具。
 
-* Alfred
+## Alfred
  
 ![Alfred](/resource/img/efficiency/a1.png)
 
@@ -56,7 +56,7 @@ Github 地址： https://github.com/noogel/Alfred-Workflow
 
 网友们还提供了更多的 自定义功能，可自行知乎。
 
-* Jietu
+## Jietu
 
 ![Jietu](/resource/img/efficiency/j1.png)
 
@@ -69,7 +69,7 @@ Github 地址： https://github.com/noogel/Alfred-Workflow
 ![Jietu](/resource/img/efficiency/j3.png)
 
  
-* Hammerspoon
+## Hammerspoon
 
 ![Hammerspoon](/resource/img/efficiency/h1.png)
 
@@ -80,7 +80,7 @@ Github 地址： https://github.com/noogel/Alfred-Workflow
 ![Hammerspoon](/resource/img/efficiency/h2.png)
 
  
-* Time Out
+## Time Out
 
 ![Time Out](/resource/img/efficiency/t1.png)
 
@@ -88,12 +88,12 @@ Github 地址： https://github.com/noogel/Alfred-Workflow
 
 ![Time Out](/resource/img/efficiency/t2.png)
 
-* Reeder
+## Reeder
 
 这是一款 Mac 上知名度很高的 RSS 阅读器，简洁的外观与便捷的操作方式可以省去了去个站点看文章。结合Mac 触控板的左右滑动操作还是很方便的。
-
-最后，来还有一些常用效率工具会在在后面的文章继续介绍，或许正是你所需要的，敬请期待！
 
 ![Reeder](/resource/img/efficiency/r1.png)
 
 ![Reeder](/resource/img/efficiency/r2.png)
+
+最后，来还有一些常用效率工具会在在后面的文章继续介绍，或许正是你所需要的，敬请期待！
