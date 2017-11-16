@@ -15,7 +15,7 @@ id: 1
 # coding: utf-8
 """
 File: demo.py
-Author: zhangxu01 <zhangxu01@zhihu.com>
+Author: noogel
 Date: 2017-08-28 22:59
 Description: demo
 """
