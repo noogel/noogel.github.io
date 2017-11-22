@@ -23,11 +23,12 @@ IPYTHON_START_CMD = [
 HEXO_START_CMD = ['hexo', 'server', '-g', '-p', str(HEXO_PORT)]
 HEXO_START_URL = "http://localhost:{}".format(HEXO_PORT)
 # BUILD CONSTANT
-NPM_BUILD_CMD = ("npm install --registry=https://registry.npm.taobao.org",
-                 "pip install notebook")
+NPM_BUILD_CMD = (
+    "npm install --registry=https://registry.npm.taobao.org",
+    "pip install notebook==5.2.1")
 
 
-def start():
+def work():
     pro1 = subprocess.Popen(IPYTHON_START_CMD)
     pro2 = subprocess.Popen(HEXO_START_CMD)
     try:
@@ -42,6 +43,6 @@ def start():
 if __name__ == "__main__":
     op = sys.argv[-1]
     op_map = {
-        "start": start,
+        "work": work,
     }
     op_map[op]()
