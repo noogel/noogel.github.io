@@ -28,7 +28,7 @@ NPM_BUILD_CMD = (
     "pip install notebook==5.2.1")
 
 
-def work():
+def blog():
     pro1 = subprocess.Popen(IPYTHON_START_CMD)
     pro2 = subprocess.Popen(HEXO_START_CMD)
     try:
@@ -43,6 +43,6 @@ def work():
 if __name__ == "__main__":
     op = sys.argv[-1]
     op_map = {
-        "work": work,
+        "blog": blog,
     }
     op_map[op]()
