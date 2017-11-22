@@ -10,21 +10,21 @@ id: 1
 
 ## Node 安装配置
 
-不要使用 apt-get 带的版本，太旧，自己去官网下载安装，方法如下
+不要使用 apt-get 带的版本，太旧，自己去官网下载安装，方法如下：
 
-下载并解压 node-v4.4.4-linux-x64.tar.xz
+下载并解压 node-v6.9.5-linux-x64.tar.xz
 
-`tar -xJf node-v4.4.4-linux-x64.tar.xz`
+`tar -xJf node-v6.9.5-linux-x64.tar.xz`
 
 移到通用的软件安装目录 /opt/
 
-`sudo mv node-v4.4.4-linux-x64 /opt/`
+`sudo mv node-v6.9.5-linux-x64 /opt/`
 
 安装 npm 和 node 命令到系统命令
 
-`sudo ln -s /opt/node-v4.4.4-linux-x64/bin/node /usr/local/bin/node`
+`sudo ln -s /opt/node-v6.9.5-linux-x64/bin/node /usr/local/bin/node`
 
-`sudo ln -s /opt/node-v4.4.4-linux-x64/bin/npm /usr/local/bin/npm`
+`sudo ln -s /opt/node-v6.9.5-linux-x64/bin/npm /usr/local/bin/npm`
 
 验证：
 
