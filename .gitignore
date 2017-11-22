@@ -5,3 +5,4 @@ db.json
 public/
 .DS_Store
 source/.DS_Store
+node_modules/
