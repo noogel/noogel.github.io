@@ -6,3 +6,5 @@ public/
 .DS_Store
 source/.DS_Store
 node_modules/
+temp/
+notebook/MNIST_data/
