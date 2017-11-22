@@ -71,3 +71,41 @@ c.NotebookApp.port=1234
 
 `sudo chmod -R 775 .`
 
+
+## Tensorflow GPU 运行环境安装
+
+显卡驱动
+
+```
+sudo add-apt-repository ppa:graphics-drivers/ppa
+sudo apt-get update
+sudo apt-get install nvidia-384
+```
+
+CUDA 驱动安装
+
+`sudo ./cuda_8.0.61_375.26_linux.run`
+
+其中第一个显卡驱动选项不要再安装了
+
+CUDNN 安装
+
+```
+tar -xzvf cudnn-8.0-linux-x64-v6.0.tgz
+cd cudnn-8.0-linux-x64-v6.0/
+sudo cp lib* /usr/local/cuda/lib64/
+sudo cp cudnn.h /usr/local/cuda/include/
+```
+
+添加环境变量
+
+```
+export PATH=/usr/local/cuda-8.0/bin:$PATH
+export PATH=/usr/local/cuda-8.0/lib64:$PATH
+export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64:$LD_LIBRARY_PATH
+```
+
+
+## 查看 NVIDIA 显卡状态
+
+`watch -n 1 -d nvidia-smi`
