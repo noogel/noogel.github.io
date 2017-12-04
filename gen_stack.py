@@ -30,19 +30,20 @@ for chapter in CHAPTERS:
         "deep": len(build_path.split("/")),
         "path": build_path,
         "page_path": "/{}".format(PATH_CONFIG.format(
-            year=page_date.year, month=page_date.month, day=page_date.day,
+            year=page_date.year, month=str(page_date.month).zfill(2), day=str(page_date.day).zfill(2),
             id=chapter["id"], _id=chapter["_id"]))
     }
     EXTRACT_CHAPTERS.append(node)
 
-for node in sorted(EXTRACT_CHAPTERS, key=lambda val: val["path"], reverse=True):
+for node in sorted(EXTRACT_CHAPTERS, key=lambda val: val["path"]):
     if node["path"] and node["path"] not in PATHS:
-        SORTED_CHAPTERS.append("{}* {}".format(" " * 4 * (node["deep"] - 1),
-                                               node["path"].split("/")[-1].encode("utf-8")))
+        SORTED_CHAPTERS.append("\n{}* {} {}".format(" " * 4 * (node["deep"] - 1),
+                                                 "#" * (node["deep"] + 1 if node["path"] and node["deep"] < 5 else 0),
+                                                 node["path"].split("/")[-1].encode("utf-8")))
         PATHS.add(node["path"])
     SORTED_CHAPTERS.append("{}* [{}]({})".format(" " * 4 * (node["deep"] if node["path"] else 0),
-                                                 node["title"].encode("utf-8"),
-                                                 node["page_path"]))
+                                                   node["title"].encode("utf-8"),
+                                                   node["page_path"]))
 
 HEAD = """
 ---
