@@ -38,15 +38,15 @@ for chapter in CHAPTERS:
 for node in sorted(EXTRACT_CHAPTERS, key=lambda val: val["path"]):
     if node["path"] and node["path"] not in PATHS:
         SORTED_CHAPTERS.append("\n{}* {} {}".format(" " * 4 * (node["deep"] - 1),
-                                                 "#" * (node["deep"] + 1 if node["path"] and node["deep"] < 5 else 0),
-                                                 node["path"].split("/")[-1].encode("utf-8")))
+                                                    "#" * (
+                                                    node["deep"] + 1 if node["path"] and node["deep"] < 5 else 0),
+                                                    node["path"].split("/")[-1].encode("utf-8")))
         PATHS.add(node["path"])
     SORTED_CHAPTERS.append("{}* [{}]({})".format(" " * 4 * (node["deep"] if node["path"] else 0),
-                                                   node["title"].encode("utf-8"),
-                                                   node["page_path"]))
+                                                 node["title"].encode("utf-8"),
+                                                 node["page_path"]))
 
-HEAD = """
----
+HEAD = """---
 date: 2017-01-24 12:09:47
 type: "stack"
 ---
