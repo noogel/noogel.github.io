@@ -15,6 +15,7 @@ timezone:
 url: http://noogel.xyz
 root: /
 permalink: :year/:month/:day/:id.html
+pypermalink: '{year}/{month}/{day}/{id}.html'
 permalink_defaults:
 
 # Directory

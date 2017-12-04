@@ -36,12 +36,6 @@
           {{ list_categories() }}
         </div>
       </div>
-    {% elif page.type === 'stack' %}
-      <div class="tag-cloud">
-        <div>
-          {{ d3cloudtag(site.tags) }}
-        </div>
-      </div>
     {% else %}
       {{ page.content }}
     {% endif %}
