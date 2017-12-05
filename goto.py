@@ -35,10 +35,6 @@ IPYTHON_START_CMD = [
 
 HEXO_START_CMD = ['hexo', 'server', '-g', '-p', str(HEXO_PORT)]
 HEXO_GEN_CMD = ['hexo', 'd', '-g']
-# HEXO_PUB_CMD = [HEXO_GEN_CMD +
-#                 ['git', 'add', '--all'] +
-#                 ['git', 'commit', '-am', 'auto', 'commit'] +
-#                 ['git', 'push', 'origin', 'sources']]
 HEXO_PUB_CMD = "hexo d -g && git add --all && git commit -am 'auto commit' && git push origin sources"
 HEXO_START_URL = "http://localhost:{}".format(HEXO_PORT)
 # BUILD CONSTANT
@@ -118,7 +114,7 @@ type: "stack"
 
 
 def push():
-    # gen_stack()
+    gen_stack()
     os.system(HEXO_PUB_CMD)
     logging.info("Publish file ok!")
 
