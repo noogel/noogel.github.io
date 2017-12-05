@@ -50,6 +50,7 @@ STACK_INDEX = "source/stack/index.md"
 
 def blog():
     """start blog"""
+    gen_stack()
     pro1 = subprocess.Popen(IPYTHON_START_CMD)
     pro2 = subprocess.Popen(HEXO_START_CMD)
     try:
