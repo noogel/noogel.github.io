@@ -19,7 +19,7 @@ import webbrowser
 
 logging.basicConfig(
     level=logging.INFO,
-    format='%(levelname)s  @%(message)s',
+    format='%(levelname)s  @ %(message)s',
 )
 
 # BASE CONSTANT
@@ -34,8 +34,8 @@ IPYTHON_START_CMD = [
     '--port={}'.format(NOTEBOOK_PORT)]
 
 HEXO_START_CMD = ['hexo', 'server', '-g', '-p', str(HEXO_PORT)]
-HEXO_GEN_CMD = ['hexo', 'd', '-g']
-HEXO_PUB_CMD = "hexo d -g && git add --all && git commit -am 'auto commit' && git push origin sources"
+HEXO_GEN_CMD = "hexo d -g"
+HEXO_PUB_CMD = HEXO_GEN_CMD + " && git add --all && git commit -am 'auto commit' && git push origin sources"
 HEXO_START_URL = "http://localhost:{}".format(HEXO_PORT)
 # BUILD CONSTANT
 NPM_BUILD_CMD = (
@@ -65,8 +65,7 @@ def blog():
 def gen_stack():
     """gen stack"""
     logging.info("Start generating db.json!")
-    pro1 = subprocess.Popen(HEXO_GEN_CMD)
-    pro1.wait()
+    os.system(HEXO_GEN_CMD)
     logging.info("Start build stack!")
     with open(BLOG_CONFIG) as conf:
         path_config = yaml.load(conf)["pypermalink"]
