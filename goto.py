@@ -19,7 +19,7 @@ import webbrowser
 
 logging.basicConfig(
     level=logging.INFO,
-    format='%(levelname)s  %(message)s',
+    format='%(levelname)s  @%(message)s',
 )
 
 # BASE CONSTANT
@@ -30,7 +30,7 @@ CHAPTER_SOURCE_PATH = "source/_posts"
 IMAGE_SOURCE_PATH = "source/resource/img"
 # START CONSTANT
 IPYTHON_START_CMD = [
-    'jupyter', 'notebook', '--no-browser', '--notebook-dir={}'.format(NOTEBOOK_WORK_PATH),
+    'jupyter', 'notebook', '--notebook-dir={}'.format(NOTEBOOK_WORK_PATH),
     '--port={}'.format(NOTEBOOK_PORT)]
 
 HEXO_START_CMD = ['hexo', 'server', '-g', '-p', str(HEXO_PORT)]
@@ -49,6 +49,7 @@ STACK_INDEX = "source/stack/index.md"
 
 
 def blog():
+    """start blog"""
     pro1 = subprocess.Popen(IPYTHON_START_CMD)
     pro2 = subprocess.Popen(HEXO_START_CMD)
     try:
