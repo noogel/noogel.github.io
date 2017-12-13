@@ -63,17 +63,13 @@ def blog():
         pro2.kill()
 
 
-def gen_stack():
-    """gen stack"""
-    logging.info("Start generating db.json!")
-    os.system(HEXO_GEN_CMD)
-    logging.info("Start build stack!")
+def _build_node_data():
     with open(BLOG_CONFIG) as conf:
         path_config = yaml.load(conf)["pypermalink"]
     with open(CHAPTERS_DB) as chapters:
         chapters = json.loads("".join(chapters.readlines()))["models"]["Post"]
 
-    extract_chapters, sorted_chapters, paths = [], [], set()
+    extract_chapters = []
     for chapter in chapters:
         split_source = chapter["source"].replace(CHAPTERS_SUB_PATH, "").rsplit("/", 1)
         build_path = split_source[0] if len(split_source) > 1 else ""
@@ -87,7 +83,16 @@ def gen_stack():
                 id=chapter["id"], _id=chapter["_id"]))
         }
         extract_chapters.append(node)
+    return extract_chapters
 
+
+def gen_stack():
+    """gen stack"""
+    logging.info("Start generating db.json!")
+    os.system(HEXO_GEN_CMD)
+    logging.info("Start build stack!")
+    sorted_chapters, paths = [], set()
+    extract_chapters = _build_node_data()
     for node in sorted(extract_chapters, key=lambda val: val["path"]):
         if node["path"] and node["path"] not in paths:
             sorted_chapters.append("\n{}* {} {}".format(" " * 4 * (node["deep"] - 1),
@@ -120,11 +125,35 @@ def push():
     logging.info("Publish file ok!")
 
 
+def check():
+    gen_stack()
+    extract_chapters, check_path = _build_node_data(), {}
+    for node in extract_chapters:
+        title = "{}/{}.md".format(node["path"].encode("utf-8"), node["title"].encode("utf-8"))
+        page_path = node["page_path"]
+        if page_path in check_path:
+            check_path[page_path].append(title)
+        else:
+            check_path[page_path] = [title]
+
+    flag = False
+    for key, val in check_path.items():
+        if len(val) > 1:
+            if not flag:
+                flag = True
+                logging.error("Replace path /(ㄒoㄒ)/~~")
+            logging.error("{} | {}".format(key, "、".join(val)))
+    if flag:
+        logging.error("You need to fixture (๑•̀ㅂ•́)و✧")
+    else:
+        logging.info("Check no problem 👏 👏 👏")
+
 if __name__ == "__main__":
     op = sys.argv[-1]
     op_map = {
         "blog": blog,
         "stack": gen_stack,
         "push": push,
+        "check": check,
     }
     op_map[op]()

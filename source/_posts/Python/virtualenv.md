@@ -1,7 +1,7 @@
 ---
-title: virtualenv虚拟环境
-date: 2016-07-05
-tags: virtualenv
+title: virtualenv
+date: 2017-12-12
+tags: [Python, virtualenv]
 id: 1
 ---
 
@@ -26,20 +26,13 @@ Installing setuptools, pip...done.
 root@kali:/recall/code#
 ```
 
+或者进入到项目目录：`virtualenv .`，如果需要指定 Python3 则 `virtualenv -p python .`
+
+
 ## 启动虚拟环境
 我们先进入到该目录下：`cd test_env/`
 ```
-root@kali:/recall/code# ls -l test_env/
-总用量 16
-drwxr-xr-x 2 root root 4096  4月 29 20:03 bin
-drwxr-xr-x 2 root root 4096  4月 29 19:58 include
-drwxr-xr-x 3 root root 4096  4月 29 19:58 lib
-drwxr-xr-x 2 root root 4096  4月 29 19:58 local
-root@kali:/recall/code#
-```
-然后启动
-```
-root@kali:/recall/code/test_env# source ./bin/activate
+source bin/activate
 ```
 启动成功后，会在前面多出 test_env 字样，如下所示
 ```
@@ -50,3 +43,7 @@ root@kali:/recall/code/test_env# source ./bin/activate
 ```
 deactivate
 ```
+
+
+
+
