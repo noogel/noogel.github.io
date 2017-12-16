@@ -120,12 +120,14 @@ type: "stack"
 
 
 def push():
-    gen_stack()
+    is_checked = gen_stack_and_check()
+    if not is_checked:
+        raise ValueError("You need to fixture chapters path!")
     os.system(HEXO_PUB_CMD)
     logging.info("Publish file ok!")
 
 
-def check():
+def gen_stack_and_check():
     gen_stack()
     extract_chapters, check_path = _build_node_data(), {}
     for node in extract_chapters:
@@ -143,10 +145,12 @@ def check():
                 flag = True
                 logging.error("Replace path /(ㄒoㄒ)/~~")
             logging.error("{} | {}".format(key, "、".join(val)))
-    if flag:
-        logging.error("You need to fixture (๑•̀ㅂ•́)و✧")
-    else:
+    is_checked = not flag
+    if is_checked:
         logging.info("Check no problem 👏 👏 👏")
+    else:
+        logging.error("You need to fixture (๑•̀ㅂ•́)و✧")
+    return is_checked
 
 if __name__ == "__main__":
     op = sys.argv[-1]
@@ -154,6 +158,6 @@ if __name__ == "__main__":
         "blog": blog,
         "stack": gen_stack,
         "push": push,
-        "check": check,
+        "check": gen_stack_and_check,
     }
     op_map[op]()
