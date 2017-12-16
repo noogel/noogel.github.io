@@ -27,9 +27,6 @@ type: "stack"
         * [Tornado学习总结](/2015/05/28/1.html)
         * [Asynchronous and non-Blocking I/O 翻译](/2016/08/04/1.html)
 
-        * #### MySQL
-            * [MySQL查询计划](/2010/01/01/6.html)
-
 * ## 其它
     * [主流PRC框架对比](/2017/07/25/1.html)
     * [正则表达式](/2016/01/09/1.html)
