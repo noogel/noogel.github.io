@@ -48,8 +48,43 @@ BLOG_CONFIG = "_config.yml"
 STACK_INDEX = "source/stack/index.md"
 
 
+def _build_node_data():
+    """
+    构建文章数据
+    :return:
+    """
+    with open(BLOG_CONFIG) as conf:
+        path_config = yaml.load(conf)["pypermalink"]
+    with open(CHAPTERS_DB) as chapters:
+        chapters = json.loads("".join(chapters.readlines()))["models"]["Post"]
+
+    extract_chapters = []
+    for chapter in chapters:
+        split_source = chapter["source"].replace(CHAPTERS_SUB_PATH, "").rsplit("/", 1)
+        build_path = split_source[0] if len(split_source) > 1 else ""
+        page_date = datetime.datetime.strptime(chapter["date"], "%Y-%m-%dT%H:%M:%S.%fZ") + datetime.timedelta(hours=8)
+        try:
+            node = {
+                "title": chapter["title"],
+                "deep": len(build_path.split("/")),
+                "path": build_path,
+                "source_path": chapter["source"],
+                "page_path": "/{}".format(path_config.format(
+                    year=page_date.year, month=str(page_date.month).zfill(2), day=str(page_date.day).zfill(2),
+                    id=chapter["id"], _id=chapter["_id"]))
+            }
+            extract_chapters.append(node)
+        except KeyError as ex:
+            logging.warn("{}: {}".format(chapter["source"].encode("utf-8"), ex))
+
+    return extract_chapters
+
+
 def blog():
-    """start blog"""
+    """
+    写博客
+    :return:
+    """
     gen_stack()
     pro1 = subprocess.Popen(IPYTHON_START_CMD)
     pro2 = subprocess.Popen(HEXO_START_CMD)
@@ -63,31 +98,11 @@ def blog():
         pro2.kill()
 
 
-def _build_node_data():
-    with open(BLOG_CONFIG) as conf:
-        path_config = yaml.load(conf)["pypermalink"]
-    with open(CHAPTERS_DB) as chapters:
-        chapters = json.loads("".join(chapters.readlines()))["models"]["Post"]
-
-    extract_chapters = []
-    for chapter in chapters:
-        split_source = chapter["source"].replace(CHAPTERS_SUB_PATH, "").rsplit("/", 1)
-        build_path = split_source[0] if len(split_source) > 1 else ""
-        page_date = datetime.datetime.strptime(chapter["date"], "%Y-%m-%dT%H:%M:%S.%fZ") + datetime.timedelta(hours=8)
-        node = {
-            "title": chapter["title"],
-            "deep": len(build_path.split("/")),
-            "path": build_path,
-            "page_path": "/{}".format(path_config.format(
-                year=page_date.year, month=str(page_date.month).zfill(2), day=str(page_date.day).zfill(2),
-                id=chapter["id"], _id=chapter["_id"]))
-        }
-        extract_chapters.append(node)
-    return extract_chapters
-
-
 def gen_stack():
-    """gen stack"""
+    """
+    生成图谱数据
+    :return:
+    """
     logging.info("Start generating db.json!")
     os.system(HEXO_GEN_CMD)
     logging.info("Start build stack!")
@@ -117,9 +132,14 @@ type: "stack"
         wf.write(head)
 
     logging.info("Rewrite stack/index.md ok!")
+    return extract_chapters
 
 
 def push():
+    """
+    自动发布博客
+    :return:
+    """
     is_checked = gen_stack_and_check()
     if not is_checked:
         raise ValueError("You need to fixture chapters path!")
@@ -128,8 +148,11 @@ def push():
 
 
 def gen_stack_and_check():
-    gen_stack()
-    extract_chapters, check_path = _build_node_data(), {}
+    """
+    生成图谱数据和检查数据是否完整
+    :return:
+    """
+    extract_chapters, check_path = gen_stack(), {}
     for node in extract_chapters:
         title = "{}/{}.md".format(node["path"].encode("utf-8"), node["title"].encode("utf-8"))
         page_path = node["page_path"]
