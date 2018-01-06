@@ -10,6 +10,7 @@ type: "stack"
     * [你的Ubuntu还可以这么美](/2017/06/17/1.html)
     * [Git使用一年总结](/2015/08/14/1.html)
     * [Crontab计划任务](/2015/06/12/1.html)
+    * [Ubuntu配置SMB服务](/2018/01/06/1.html)
 
 * ## Python
     * [Peewee源码解读](/2017/02/05/2.html)
