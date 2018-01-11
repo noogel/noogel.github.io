@@ -52,7 +52,13 @@ autostart=true    //supervisor启动的时候是否随着同时启动
 autorestart=true   //当程序跑出exit的时候，这个program会自动重启
 startsecs=3  //程序重启时候停留在runing状态的秒数
 ```
+
+环境变量配置：
+
+`environment=PATH="/usr/local/cuda-8.0/bin:/usr/local/cuda-8.0/lib64",LD_LIBRARY_PATH="/usr/local/cuda-8.0/lib64:$LD_LIBRARY_PATH"`
+
 > 更多配置说明请参考：http://supervisord.org/configuration.html
+
 
 运行命令：
 ```
