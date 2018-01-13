@@ -3,7 +3,7 @@
 # ---------------------------------------------------------------
 
 # Put your favicon.ico into `hexo-site/source/` directory.
-favicon: /resource/img/favicon2018.jpg
+favicon: /resource/img/favicon2018.png
 
 # Set default keywords (Use a comma to separate)
 keywords: "Hexo, NexT"
@@ -158,7 +158,7 @@ social_icons:
 # Sidebar Avatar
 # in theme directory(source/images): /images/avatar.jpg
 # in site  directory(source/uploads): /uploads/avatar.jpg
-avatar: /resource/img/favicon2018.jpg
+avatar: /resource/img/favicon2018.png
 
 
 # Table Of Contents in the Sidebar
