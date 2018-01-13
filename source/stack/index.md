@@ -11,6 +11,7 @@ type: "stack"
     * [Git使用一年总结](/2015/08/14/1.html)
     * [Crontab计划任务](/2015/06/12/1.html)
     * [Ubuntu配置SMB服务](/2018/01/06/1.html)
+    * [SHH打洞配置](/2018/01/07/2.html)
 
 * ## Python
     * [Peewee源码解读](/2017/02/05/2.html)
@@ -82,6 +83,7 @@ type: "stack"
 
     * ### 相关库
         * [Matplotlib学习](/2017/02/05/1.html)
+        * [Jupyter Notebook配置](/2018/01/07/1.html)
 
 * ## 架构
     * [WEB高并发架构学习](/2017/01/01/1.html)
@@ -105,5 +107,5 @@ type: "stack"
     * [常见排序算法Python版](/2015/03/08/1.html)
 
 * ## 设计模式
-    * [Python的mixin模式](/2010/01/02/4.html)
+    * [Python的mixin模式](/2018/01/12/1.html)
     * [Python装饰器模式](/2014/10/22/1.html)
