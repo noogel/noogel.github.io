@@ -54,3 +54,57 @@ myfunc()
 闭包学习：
 
 http://blog.csdn.net/marty_fu/article/details/7679297
+
+
+
+接收参数的装饰器
+
+```python
+import time
+
+def decorator(run_count):
+    def _decorator(fun):
+        def wrapper(*args, **kwargs):
+            start = time.time()
+            for i in xrange(run_count):
+                fun(*args, **kwargs)
+            runtime = time.time() - start
+            print runtime
+        return wrapper
+    return _decorator
+
+@decorator(2)
+def do_something(name):
+    time.sleep(0.1)
+    print "play game " + name
+
+do_something("san guo sha")
+```
+
+装饰器类
+
+```python
+import time
+
+class decorator(object):
+    def __init__(self, count):
+        self._count = count
+
+    def __call__(self, fun):
+        self.fun = fun
+        return self.call_fun
+
+    def call_fun(self, *args, **kwargs):
+        start = time.time()
+        for _ in range(self._count):
+            self.fun(*args, **kwargs)
+        runtime = time.time() - start
+        print runtime
+
+@decorator(2)
+def do_something():
+    time.sleep(0.1)
+    print "play game"
+
+do_something()
+```
