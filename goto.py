@@ -86,15 +86,15 @@ def blog():
     :return:
     """
     gen_stack()
-    pro1 = subprocess.Popen(IPYTHON_START_CMD)
+    # pro1 = subprocess.Popen(IPYTHON_START_CMD)
     pro2 = subprocess.Popen(HEXO_START_CMD)
     try:
         time.sleep(3)
         webbrowser.open_new_tab(HEXO_START_URL)
-        pro1.wait()
+        # pro1.wait()
         pro2.wait()
     except KeyboardInterrupt:
-        pro1.kill()
+        # pro1.kill()
         pro2.kill()
 
 
@@ -174,6 +174,7 @@ def gen_stack_and_check():
     else:
         logging.error("You need to fixture (๑•̀ㅂ•́)و✧")
     return is_checked
+
 
 if __name__ == "__main__":
     op = sys.argv[-1]
