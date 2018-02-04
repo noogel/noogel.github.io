@@ -3,7 +3,6 @@ date: 2017-01-24 12:09:47
 type: "stack"
 ---
 
-* [Python的MRO与多继承](/2018/01/17/1.html)
 
 * ## Linux
     * [Crontab计划任务](/2015/06/12/1.html)
@@ -26,6 +25,7 @@ type: "stack"
     * [virtualenv](/2017/12/12/1.html)
     * [pip、easy_install相关](/2015/09/19/1.html)
     * [结算开发中遇到的坑](/2017/03/02/1.html)
+    * [Python的MRO与多继承](/2018/01/17/1.html)
 
     * ### Tornado
         * [Asynchronous and non-Blocking I/O 翻译](/2016/08/04/1.html)
