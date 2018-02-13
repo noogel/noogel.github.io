@@ -1,6 +1,6 @@
 ---
 title: Python时间处理函数
-date: 2010-01-02
+date: 2018-02-06
 tags: Python
 id: 2
 ---
@@ -65,5 +65,11 @@ def get_month_calendar(year, month):
     return calendar.monthcalendar(year, month)
 ```
 
+### arrow 库
 
+pip 安装就好了，Python中最好用的时间处理库了。
+
+[官方文档](http://arrow.readthedocs.io/en/latest/)
+
+[crsmithdev_arrow_ Better dates & times for Python - github](https://github.com/crsmithdev/arrow/)
 
