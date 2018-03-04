@@ -1,6 +1,6 @@
 ---
 title: Git操作场景化实践
-date: 2018-02-10
+date: 2018-03-04
 tags: git
 id: 1
 ---
@@ -38,19 +38,6 @@ fork \ merge request
 
 
 
-
-
-
-
-
-![](/resource/img/15182392077656.jpg)
-
-![](/resource/img/15182392205290.jpg)
-
-![](/resource/img/15182392609263.jpg)
-
-
-
 ## blame
 
 `git blame __init__.py`
@@ -60,18 +47,35 @@ fork \ merge request
 
 ## grep
 
+`git grep -n tensorflow`
+
+[7.5 Git 工具 - 搜索](https://git-scm.com/book/zh/v2/Git-%E5%B7%A5%E5%85%B7-%E6%90%9C%E7%B4%A2)
+
+![](/resource/img/15201547049654.jpg)
+
 
 ## revert 
+
+`git revert C2`
+
+![](/resource/img/15201551398904.jpg)
 
 
 ## patch
 
+https://www.cnblogs.com/y041039/articles/2411600.html
+
+![](/resource/img/15201577453732.jpg)
+
 
 ## hooks
 
+https://git-scm.com/book/zh/v1/%E8%87%AA%E5%AE%9A%E4%B9%89-Git-Git%E6%8C%82%E9%92%A9
 
 ## stash
 
+https://git-scm.com/book/zh/v1/%E8%87%AA%E5%AE%9A%E4%B9%89-Git-Git%E6%8C%82%E9%92%A9
 
-## 
+
+
 
