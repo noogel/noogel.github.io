@@ -9,3 +9,6 @@ node_modules/
 temp/
 notebook/MNIST_data/
 notebook/.ipynb_checkpoints/
+bin/
+lib/
+local/
