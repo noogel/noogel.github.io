@@ -12,3 +12,4 @@ notebook/.ipynb_checkpoints/
 bin/
 lib/
 local/
+pip-selfcheck.json
