@@ -108,5 +108,11 @@ https://git-scm.com/book/zh/v1/%E8%87%AA%E5%AE%9A%E4%B9%89-Git-Git%E6%8C%82%E9%9
 https://git-scm.com/book/zh/v1/%E8%87%AA%E5%AE%9A%E4%B9%89-Git-Git%E6%8C%82%E9%92%A9
 
 
+## cherry-pick
 
+对已经提交的数据再次提交使用
+
+1. 找到一个 commit，记录 log 值
+2. 新建一个分支 `git checkout -b newbranch`
+3. 将一个commit 复制到新分支提交一个新 commit。`git cherry-pick 38361a55138140827b31b72f8bbfd88b3705d77a` 
 
