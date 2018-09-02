@@ -100,7 +100,7 @@ def blog():
 
 def gen_stack():
     """
-    生成图谱数据
+    生成指纹数据
     :return:
     """
     logging.info("Start generating db.json!")
@@ -149,7 +149,7 @@ def push():
 
 def gen_stack_and_check():
     """
-    生成图谱数据和检查数据是否完整
+    生成指纹数据和检查数据是否完整
     :return:
     """
     extract_chapters, check_path = gen_stack(), {}
