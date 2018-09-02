@@ -34,7 +34,7 @@ id: 1
 
 ## 个人博客
 
-[Noogel's notes](http://noogel.xyz)
+[知一的指纹](http://noogel.xyz)
 
 ## Github
 
