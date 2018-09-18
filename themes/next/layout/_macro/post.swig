@@ -211,7 +211,7 @@
 
     <div class="post-body" itemprop="articleBody">
       <blockquote>
-      <p>版权声明： 本文为博主原创文章，发表自 <a href="http://noogel.xyz">Noogel’s notes</a>。转载需向 <a href="mailto:noogel@163.com">我的邮箱</a> 申请。</p>
+      <p>版权声明： 本文为博主原创文章，发表自 <a href="http://noogel.xyz">{{ config.title }}</a>。转载需向 <a href="mailto:noogel@163.com">我的邮箱</a> 申请。</p>
       </blockquote>
       {# Gallery support #}
       {% if post.photos and post.photos.length %}
