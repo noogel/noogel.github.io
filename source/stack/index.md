@@ -94,6 +94,8 @@ type: "stack"
 
     * ### Java
         * [关于Java的最初了解](/2018/03/15/1.html)
+        * [Java 零散知识](/2019/06/30/1.html)
+        * [Spring 随手记](/2019/04/20/1.html)
 
     * ### Python
         * [Peewee源码解读](/2017/02/05/2.html)
