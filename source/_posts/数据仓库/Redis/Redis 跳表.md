@@ -7,7 +7,6 @@ id: 1
 
 跳表（Skip List）
 
-
 ## 怎样理解跳表
 
 ![](/resource/img/15639866952706.jpg)
