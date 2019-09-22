@@ -57,6 +57,7 @@ id: 1
 > https://zh.wikipedia.org/wiki/多項式時間
 
 常见的多项式时间有：
+
 * 常量时间：O(1)
 * 线性时间：O(n)
 * 平方时间：O(n^2)
