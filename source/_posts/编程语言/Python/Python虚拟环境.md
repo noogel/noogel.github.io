@@ -1,5 +1,5 @@
 ---
-title: virtualenv
+title: Python 虚拟环境 virtualenv
 date: 2017-12-12
 tags: [Python, virtualenv]
 id: 1

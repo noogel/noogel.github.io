@@ -1,5 +1,5 @@
 ---
-title: Tornado 异步非阻塞浅析（一）
+title: Tornado 异步非阻塞浅析
 date: 2017-11-17
 tags: [Tornado]
 id: 1
