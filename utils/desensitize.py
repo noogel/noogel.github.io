@@ -35,8 +35,8 @@ def resize_and_desensitization(img_path):
         return
     source_img = Image.open(img_path)
     source_size = source_img.size
-    if hasattr(source_img, "_getexif") and source_img._getexif():
-        target_size = geometric_resize(source_size, TARGET_WIDTH)
+    target_size = geometric_resize(source_size, TARGET_WIDTH)
+    if (hasattr(source_img, "_getexif") and source_img._getexif()) or target_size[0] != source_size[0]:
         target_img = Image.new(source_img.mode, source_size)
         target_img.putdata(list(source_img.getdata()))
         source_img.resize(target_size)
@@ -52,6 +52,12 @@ def run():
         for file_name in files:
             img_path = os.path.join(root, file_name)
             resize_and_desensitization(img_path)
+
+
+def test():
+    img_path = "source/resource/img/15552247425780.jpg"
+    import pdb; pdb.set_trace()
+    resize_and_desensitization(img_path)
 
 
 if __name__ == "__main__":
