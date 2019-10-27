@@ -133,6 +133,7 @@ type: "stack"
         * [结算开发中遇到的坑](/2017/03/02/1.html)
         * [Python 包管理](/2015/09/19/1.html)
         * [Python 虚拟环境 virtualenv](/2017/12/12/1.html)
+        * [基本的照片脱敏处理](/2019/10/27/1.html)
 
         * #### Tornado
             * [Tornado学习总结](/2015/05/28/1.html)
