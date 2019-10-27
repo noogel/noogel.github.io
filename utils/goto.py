@@ -75,7 +75,7 @@ def _build_node_data():
             }
             extract_chapters.append(node)
         except KeyError as ex:
-            logging.warn("{}: {}".format(chapter["source"].encode("utf-8"), ex))
+            logging.warn("{}: {}".format(chapter["source"], ex))
 
     return extract_chapters
 
@@ -114,10 +114,10 @@ def gen_stack():
                                                         "#" * (
                                                             node["deep"] + 1 if node["path"] and node[
                                                                                                      "deep"] < 5 else 0),
-                                                        node["path"].split("/")[-1].encode("utf-8")))
+                                                        node["path"].split("/")[-1]))
             paths.add(node["path"])
         sorted_chapters.append("{}* [{}]({})".format(" " * 4 * (node["deep"] if node["path"] else 0),
-                                                     node["title"].encode("utf-8"),
+                                                     node["title"],
                                                      node["page_path"]))
 
     head = """---
@@ -128,7 +128,7 @@ type: "stack"
 {}
 """.format("\n".join(sorted_chapters))
 
-    with open(STACK_INDEX, "w") as wf:
+    with open(STACK_INDEX, "w", encoding="utf-8") as wf:
         wf.write(head)
 
     logging.info("Rewrite stack/index.md ok!")
@@ -154,7 +154,7 @@ def gen_stack_and_check():
     """
     extract_chapters, check_path = gen_stack(), {}
     for node in extract_chapters:
-        title = "{}/{}.md".format(node["path"].encode("utf-8"), node["title"].encode("utf-8"))
+        title = "{}/{}.md".format(node["path"], node["title"])
         page_path = node["page_path"]
         if page_path in check_path:
             check_path[page_path].append(title)
@@ -177,6 +177,8 @@ def gen_stack_and_check():
 
 
 if __name__ == "__main__":
+    if sys.version_info[0] < 3:
+        raise RuntimeError("不支持 python 2")
     op = sys.argv[-1]
     op_map = {
         "blog": blog,
