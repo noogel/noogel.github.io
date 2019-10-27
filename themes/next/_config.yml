@@ -424,7 +424,7 @@ use_motion: false
 fancybox: true
 
 # Canvas-nest 背景动态
-canvas_nest: true
+canvas_nest: false
 
 # Script Vendors.
 # Set a CDN address for the vendor you want to customize.
