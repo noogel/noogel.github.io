@@ -12,7 +12,7 @@ timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://noogel.xyz
+url: https://noogel.xyz
 root: /
 permalink: :year/:month/:day/:id.html
 pypermalink: '{year}/{month}/{day}/{id}.html'
@@ -78,3 +78,8 @@ admin:
   username: noogel
   password_hash: $2a$10$CMR/GX.e6TuoGGOYOF7ks.R.WmSUC8RvelPPXIH5wV3S6hPLYPnx6
   secret: a33x8sd83ndfus82jrfi8sj28djk438ds
+
+sitemap:
+  path: sitemap.xml
+baidusitemap:
+  path: baidusitemap.xml
