@@ -135,6 +135,14 @@ type: "stack"
     return extract_chapters
 
 
+def do_desensitize():
+    try:
+        import desensitize
+        desensitize.run()
+    except Exception as exc:
+        logging.info(exc)
+
+
 def push():
     """
     自动发布博客
@@ -143,6 +151,7 @@ def push():
     is_checked = gen_stack_and_check()
     if not is_checked:
         raise ValueError("You need to fixture chapters path!")
+    do_desensitize()
     os.system(HEXO_PUB_CMD)
     logging.info("Publish file ok!")
 
@@ -183,6 +192,7 @@ if __name__ == "__main__":
     op_map = {
         "blog": blog,
         "stack": gen_stack,
+        "desensitize": do_desensitize,
         "push": push,
         "check": gen_stack_and_check,
     }
