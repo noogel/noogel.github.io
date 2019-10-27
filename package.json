@@ -3,10 +3,10 @@
   "version": "1.1.1",
   "private": true,
   "hexo": {
-    "version": "3.2.0"
+    "version": "3.9.0"
   },
   "dependencies": {
-    "hexo": "^3.2.0",
+    "hexo": "^3.9.0",
     "hexo-admin": "^2.2.1",
     "hexo-d3cloudtag": "1.0.0",
     "hexo-deployer-git": "^0.2.0",
