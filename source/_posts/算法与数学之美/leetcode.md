@@ -1178,7 +1178,7 @@ Java中PriorityQueue通过二叉小顶堆实现，可以用一棵完全二叉树
 
 操作说明：
 
-<table><thead><trclass="header"><th>方法名</th><th>功能描述</th></tr></thead>
+<table><thead><tr class="header"><th>方法名</th><th>功能描述</th></tr></thead>
 <tbody><tr class="odd"><td>add(Ee)</td><td>在队列头部增加一个元素，如果容量已满，则抛出异常，成功则返回true。</td></tr>
 <tr class="even"><td>clear()</td><td>清空</td></tr>
 <tr class="odd"><td>contains(Objecto)</td><td>检查是否包含当前参数元素</td></tr>
