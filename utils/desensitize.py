@@ -13,7 +13,7 @@ import operator
 from functools import reduce
 from PIL import Image
 
-TARGET_WIDTH = 1024
+TARGET_MAX_SIZE = 1024
 TARGET_DIR = "source/resource/img/"
 PREFIX = "图像处理"
 EXT_MAX_SIZE = 40
@@ -36,17 +36,22 @@ def progressbar(cur, total, prefix="Process", ext=""):
     sys.stdout.flush()
 
 
-def geometric_resize(size_tuple, target_width):
+def geometric_resize(size_tuple, target_max_size):
     """
     等比缩放
     :param size_tuple:
-    :param target_width:
+    :param target_max_size:
     :return:
     """
     source_width, source_height = size_tuple
-    if source_width < target_width:
+    if source_width <= target_max_size and source_height <= target_max_size:
         return size_tuple
-    return target_width, int(target_width / source_width * source_height)
+    target_height = int(target_max_size / source_width * source_height)
+    target_width = int(target_max_size / source_height * source_width)
+    if target_height > target_max_size:
+        return target_width, target_max_size
+    else:
+        return target_max_size, target_height
 
 
 def resize_and_desensitization(img_path):
@@ -55,7 +60,7 @@ def resize_and_desensitization(img_path):
         return "Invalid img."
     source_img = Image.open(img_path)
     source_size = source_img.size
-    target_size = geometric_resize(source_size, TARGET_WIDTH)
+    target_size = geometric_resize(source_size, TARGET_MAX_SIZE)
     if (hasattr(source_img, "_getexif") and source_img._getexif()) or target_size[0] != source_size[0]:
         source_img = source_img.resize(target_size)
         target_img = Image.new(source_img.mode, target_size)
