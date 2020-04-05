@@ -44,14 +44,15 @@ def geometric_resize(size_tuple, target_max_size):
     :return:
     """
     source_width, source_height = size_tuple
-    if source_width <= target_max_size and source_height <= target_max_size:
+    # if source_width <= target_max_size and source_height <= target_max_size:
+    if source_width <= target_max_size:
         return size_tuple
     target_height = int(target_max_size / source_width * source_height)
-    target_width = int(target_max_size / source_height * source_width)
-    if target_height > target_max_size:
-        return target_width, target_max_size
-    else:
-        return target_max_size, target_height
+    # target_width = int(target_max_size / source_height * source_width)
+    # if target_height > target_max_size:
+    #     return target_width, target_max_size
+    # else:
+    return target_max_size, target_height
 
 
 def resize_and_desensitization(img_path):
