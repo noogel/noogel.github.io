@@ -1,7 +1,7 @@
 ---
 title: JVM GC
 date: 2020-04-05
-tags: Java
+tags: JVM
 id: 4
 ---
 

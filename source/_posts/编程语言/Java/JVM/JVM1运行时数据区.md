@@ -1,7 +1,7 @@
 ---
 title: JVM 运行时数据区
 date: 2020-04-05
-tags: Java
+tags: JVM
 id: 2
 ---
 
