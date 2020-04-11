@@ -13,3 +13,4 @@ bin/
 lib/
 local/
 pip-selfcheck.json
+package-lock.json
