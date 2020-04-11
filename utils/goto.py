@@ -110,13 +110,13 @@ def gen_stack():
     extract_chapters = _build_node_data()
     for node in sorted(extract_chapters, key=lambda val: val["path"]):
         if node["path"] and node["path"] not in paths:
-            sorted_chapters.append("\n{}* {} {}".format(" " * 4 * (node["deep"] - 1),
+            sorted_chapters.append("\n{}* {} {}".format(" " * 2 * (node["deep"] - 1),
                                                         "#" * (
                                                             node["deep"] + 1 if node["path"] and node[
                                                                                                      "deep"] < 5 else 0),
                                                         node["path"].split("/")[-1]))
             paths.add(node["path"])
-        sorted_chapters.append("{}* [{}]({})".format(" " * 4 * (node["deep"] if node["path"] else 0),
+        sorted_chapters.append("{}* [{}]({})".format(" " * 2 * (node["deep"] if node["path"] else 0),
                                                      node["title"],
                                                      node["page_path"]))
 
