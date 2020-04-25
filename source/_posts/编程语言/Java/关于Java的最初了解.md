@@ -1,6 +1,6 @@
 ---
 title: 关于Java的最初了解
-date: 2018-03-15
+date: 2017-03-15
 tags: Java
 id: 1
 ---
