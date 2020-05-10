@@ -1,7 +1,7 @@
 ---
 title: 数据库事务隔离级别与 InnoDB
 date: 2019-05-22
-tags: MySQL
+tags: 数据库
 id: 1
 ---
 

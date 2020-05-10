@@ -927,6 +927,10 @@ a.article-more:hover {
 /*  GALLERY
 /*-----------------------------------------------------------------------------------*/
 
+.post-gallery-page {
+  margin-top: 50px;
+}
+
 .post-gallery-page p {
   display: inline-block;
 }

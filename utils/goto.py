@@ -121,6 +121,7 @@ def gen_stack():
                                                      node["page_path"]))
 
     head = """---
+title: stack
 date: 2017-01-24 12:09:47
 type: "stack"
 ---

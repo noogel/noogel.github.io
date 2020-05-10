@@ -2,13 +2,18 @@ extends _partial/layout.jade
 
 block container
   if page.title === 'about'
-    h3.aside-title ABOUT ME
-    .about-me-image
+    h3.aside-title 关于我
+    //- .about-me-image
     .post
       article.post-block
         .post-entry.post-about!= page.content
   if page.title === 'gallery'
-    h3.gallery-title.aside-title GALLERY
+    h3.gallery-title.aside-title 画廊
+    .post
+      article.post-block
+        .post-entry.post-gallery-page!= page.content
+  if page.title === 'stack'
+    h3.gallery-title.aside-title 图谱
     .post
       article.post-block
         .post-entry.post-gallery-page!= page.content

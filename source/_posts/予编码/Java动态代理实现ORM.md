@@ -1,7 +1,7 @@
 ---
 title: Java 动态代理实现 ORM
 date: 2020-04-29
-tags: Java
+tags: 编程语言
 id: 1
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: VS Code 与 HEXO 结合写博客
 date: 2020-04-05
-tags: [vscode, hexo]
+tags: [效率, HEXO]
 id: 3
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: MWeb与HEXO结合写博客
 date: 2017-12-06
-tags: [MWeb, HEXO]
+tags: [效率, HEXO]
 id: 1
 ---
 

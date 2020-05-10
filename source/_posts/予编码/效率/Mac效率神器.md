@@ -1,7 +1,7 @@
 ---
 title: 这些Mac神器也许你正需要
 date: 2017-10-08
-tags: [Mac, Workflow, Alfred, Hammerspoon, Jietu, Reeder]
+tags: 效率
 id: 1
 ---
 

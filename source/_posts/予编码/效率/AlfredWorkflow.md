@@ -1,7 +1,7 @@
 ---
 title: AlfredWorkflow
 date: 2017-08-17
-tags: [Alfred, Workflow]
+tags: 效率
 id: 1
 ---
 
