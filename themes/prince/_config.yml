@@ -1,0 +1,26 @@
+#header
+name: 知一杂谈
+description: 我思故我在
+favicon: /resource/img/favicon2018.png
+ga: ''
+
+#nav
+nav:
+    主页: /
+    归档: /archives/
+    关于我: /about/
+
+#post
+excerpt_link: Continue Reading
+
+
+#about me
+aboutMeImg: /resource/img/favicon2018.png
+
+github: https://github.com/noogel
+zhihu: https://www.zhihu.com/people/xyz5011
+nuniok: https://nuniok.github.io
+
+#copyright
+themeLink: https://github.com/yiliashaw/hexo-theme-prince
+
