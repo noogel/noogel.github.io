@@ -107,11 +107,3 @@ sitemap:
   path: sitemap.xml
 baidusitemap:
   path: baidusitemap.xml
-
-# 主题
-# https://github.com/yiliashaw/hexo-theme-prince
-# https://github.com/sjaakvandenberg/flexy
-# https://www.cnblogs.com/heart-king/p/5246904.html
-# https://github.com/SuperKieran/TKL
-# https://github.com/sjaakvandenberg/flexy
-# https://github.com/sanjinhub/hexo-theme-geek
