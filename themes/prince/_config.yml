@@ -1,5 +1,6 @@
 #header
 name: 知一杂谈
+author: noogel
 description: 我思故我在
 favicon: /resource/img/favicon2018.png
 ga: ''
@@ -9,8 +10,8 @@ nav:
     主页: /
     图谱: /stack/
     归档: /archives/
+    指纹: https://nuniok.github.io
     关于我: /about/
-    训练场: https://nuniok.github.io
 
 #post
 excerpt_link: Continue Reading
@@ -25,6 +26,8 @@ nuniok: https://nuniok.github.io
 
 #copyright
 themeLink: https://github.com/yiliashaw/hexo-theme-prince
+
+livere_uid: MTAyMC8zMDMzOS82ODky
 
 # TODO
 # 1. 评论系统
