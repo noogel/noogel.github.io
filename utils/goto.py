@@ -45,7 +45,7 @@ NPM_BUILD_CMD = (
 CHAPTERS_DB = "db.json"
 CHAPTERS_SUB_PATH = "_posts/"
 BLOG_CONFIG = "_config.yml"
-STACK_INDEX = "source/stack/index.md"
+STACK_INDEX = "source/atlas/index.md"
 
 
 def _build_node_data():
@@ -105,7 +105,7 @@ def gen_stack():
     """
     logging.info("Start generating db.json!")
     os.system(HEXO_GEN_CMD)
-    logging.info("Start build stack!")
+    logging.info("Start build atlas!")
     sorted_chapters, paths = [], set()
     extract_chapters = _build_node_data()
     for node in sorted(extract_chapters, key=lambda val: val["path"]):
@@ -121,9 +121,9 @@ def gen_stack():
                                                      node["page_path"]))
 
     head = """---
-title: stack
+title: atlas
 date: 2017-01-24 12:09:47
-type: "stack"
+type: "atlas"
 ---
 
 {}
@@ -132,7 +132,7 @@ type: "stack"
     with open(STACK_INDEX, "w", encoding="utf-8") as wf:
         wf.write(head)
 
-    logging.info("Rewrite stack/index.md ok!")
+    logging.info("Rewrite atlas/index.md ok!")
     return extract_chapters
 
 
@@ -192,7 +192,7 @@ if __name__ == "__main__":
     op = sys.argv[-1]
     op_map = {
         "blog": blog,
-        "stack": gen_stack,
+        "atlas": gen_stack,
         "desensitize": do_desensitize,
         "push": push,
         "check": gen_stack_and_check,
