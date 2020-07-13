@@ -8,7 +8,7 @@ ga: ''
 #nav
 nav:
     主页: /
-    图谱: /stack/
+    # 图谱: /stack/
     归档: /archives/
     指纹: https://nuniok.github.io
     关于我: /about/
