@@ -1,0 +1,71 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>知一杂谈</title><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/aboutme.png"><link href="/css/bootstrap.min.css" rel="stylesheet"><link href="/css/font-awesome.min.css" rel="stylesheet"><link href="/css/main.css" rel="stylesheet"><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="知一杂谈" type="application/atom+xml">
+</head><body><div class="wrap"><nav class="page-navigation"><div class="nav-container"><div class="page-header-logo"><h1 class="prince-log"><a href="/" class="home-link">知一杂谈</a></h1></div><button type="button" data-toggle="collapse" data-target=".main-nav-items" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><ul class="collapse navbar-collapse main-nav-items"><li class="menu-item"><a href="/" target="_self">主页</a></li><li class="menu-item"><a href="/archives/" target="_self">归档</a></li><li class="menu-item"><a href="https://nuniok.github.io" target="_self">指纹</a></li><li class="menu-item"><a href="/about/" target="_self">关于我</a></li></ul></div></nav><main class="prince-container"><div class="articles"><article class="post-block"><h2 class="post-title"><a href="/2015/07/18/1.html" class="post-link">分布式系统常用指标</a></h2><div class="post-info">2015-07-18</div><div class="post-entry"><h2 id="性能指标"><a href="#性能指标" class="headerlink" title="性能指标"></a>性能指标</h2><ol>
+<li>吞度量</li>
+<li>响应延迟 P95 P999</li>
+<li>并发量</li>
+</ol>
+<h2 id="可用性指标"><a href="#可用性指标" class="headerlink" title="可用性指标"></a>可用性指标</h2><ol>
+<li>可提供的服务时间 / (可提供的服务时间 + 不可提供的服务时间)</li>
+<li>请求成功次数 / 总请求次数</li>
+</ol>
+<h2 id="可扩展性指标"><a href="#可扩展性指标" class="headerlink" title="可扩展性指标"></a>可扩展性指标</h2><p>是否能实现水平扩展，通过增加服务器数量增加计算能力、存储容量等。</p>
+<p>存储系统中有两种扩展方式：<br>Scale Out（也就是Scale horizontally）横向扩展，比如在原有系统中新增一台服务器。<br>Scale Up（也就是Scale vertically）纵向扩展，在原有机器上增加 CPU 、内存。</p>
+<h2 id="一致性指标"><a href="#一致性指标" class="headerlink" title="一致性指标"></a>一致性指标</h2><p>实现多副本之间一致性的能力。不同的应用场景对于数据一致性指标要求不同，需要根据场景做具体的评估。</p>
+<h2 id="水平拆分和垂直拆分"><a href="#水平拆分和垂直拆分" class="headerlink" title="水平拆分和垂直拆分"></a>水平拆分和垂直拆分</h2><h2 id="ACID"><a href="#ACID" class="headerlink" title="ACID"></a>ACID</h2><p>原子性（Atomicity）<br>一致性（Atomicity）<br>隔离性（Isolation）<br>持久性（Durability）</p>
+<h2 id="CAP（帽子理论）"><a href="#CAP（帽子理论）" class="headerlink" title="CAP（帽子理论）"></a>CAP（帽子理论）</h2><p>一致性（Consistency）<br>可用性（Availability）<br>可靠性（Partition tolerance 分区容错性）</p>
+<h2 id="BASE"><a href="#BASE" class="headerlink" title="BASE"></a>BASE</h2><p>基本可用（Basically Available）<br>软状态（Soft State）<br>最终一致（Eventually Consistent）</p>
+<h2 id="分布式一致性协议"><a href="#分布式一致性协议" class="headerlink" title="分布式一致性协议"></a>分布式一致性协议</h2><p>TX协议<br>XA协议</p>
+<h2 id="两阶段提交协议"><a href="#两阶段提交协议" class="headerlink" title="两阶段提交协议"></a>两阶段提交协议</h2><h2 id="三阶段提交协议"><a href="#三阶段提交协议" class="headerlink" title="三阶段提交协议"></a>三阶段提交协议</h2><h2 id="TCC"><a href="#TCC" class="headerlink" title="TCC"></a>TCC</h2><h2 id="最终一致性模式"><a href="#最终一致性模式" class="headerlink" title="最终一致性模式"></a>最终一致性模式</h2></div><div class="post-meta"><a href="/2015/07/18/1.html" class="article-more">Continue Reading</a><div class="post-tags-box"><a class="tag-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/" rel="tag">分布式系统</a></div></div></article><article class="post-block"><h2 class="post-title"><a href="/2014/01/29/1.html" class="post-link">写在2013年末</a></h2><div class="post-info">2014-01-29</div><div class="post-entry"><p>微弱的灯光驱散浓重的夜色，压低的歌声怕惊醒梦中人。</p>
+<p>又是深夜，双手在键盘上飞舞，闪烁的光标不断向前推进，一行行的注释和代码呈现在屏幕上，对于我来说这便成为了一种习惯，喜欢在深夜学习编程，接触编程有两年半了，非睡眠状态下的大部分时间都贡献给了我手中这台笔记本电脑，现在被我的朋友称之为我的“媳妇”。哈哈，因为她对于我来说兴趣很浓，我从不迷恋游戏，只是偶尔玩玩，也很少购物，电影基本不看，只是偶尔听听歌，还是敲代码的时候。转眼这不又是要过年了，该来点总结了，看看都学了什么，有什么体会都要来写写的。</p>
+<p>主要学习的语言是C#，两年半的时间大部分都是用C#在编程；当然对C++/Java也是比较熟悉的，给点代码也是能看懂什么意思的。对汇编语言也有所了解，目前正在学习中。<br>那下面就是要讲讲主攻技能.NET平台下的学习细节了：</p>
+<ol>
+<li>ASP.NET网站开发方面能做出个像模像样的网站，但是不能保证效率；熟悉三层架构，用的比较烂；对于难理解的HttpModule、HttpHandler有些了解。</li>
+<li>Winform方面百分之八十的控件能熟练使用，剩下的就是感觉不好用的了，这里的熟练使用是了解并使用过常用的属性、方法、事件。</li>
+<li>再有就是关于多线程、网络编程、数字图像处理、单元测试等等升级技能也是用的比较不错，专门买过书学习过。</li>
+</ol>
+<p>像一些附加技能的话如HTML/CSS用的还是比较不错的，至少能做出能拿得出手的网页去，各种效果咱不会写还不会“偷”吗，其实就是拷贝网上现有的呗。JS/jQuery这些吗，实话是没有怎么接触，也基本能写一点点的，都不好意思说了。不想走网站开发方面，感觉没有前途，也不好玩，就学了一年就止步了。</p>
+<p>再有就是编程的基本功，像数据结构、操作系统、算法、数据库这些知识是学会六分左右，现在正在补习其余的四分，并且是努力的在夯实这方面欠缺的。至于软件工程的知识我觉得是先有所了解然后在工作中主键掌握并熟练运用。</p>
+<p>最大的优点是对计算机软件技术充满了热情，乐死不疲的。各种好玩的新技术都想鼓捣一下，比如：Wifi共享、RamDisk、远程开机等等。</p>
+<p>不足之处是不太爱说话，喜欢熬夜。</p>
+<p>目前学习计划：</p>
+<ul>
+<li>数据结构+算法</li>
+<li>Unity3D游戏开发</li>
+</ul>
+<p>职业规划还木有想好，因为还未毕业，干嘛这么早就草率决定，等工作一两年之后再说呗，定居城市也是这样。但是目前来说不想一直走.NET发展路线，先打好基本功到时候好转行。</p>
+<p>2014年，把前半年的时间用在刀刃上，学习的技能放在毕业找的工作方面。另外要努力学习英语，这个也是个大大的重点。</p>
+</div><div class="post-meta"><a href="/2014/01/29/1.html" class="article-more">Continue Reading</a><div class="post-tags-box"><a class="tag-link" href="/tags/%E9%97%B2%E8%81%8A/" rel="tag">闲聊</a></div></div></article><article class="post-block"><h2 class="post-title"><a href="/2010/01/01/12.html" class="post-link">支付交易系统架构调研</a></h2><div class="post-info">2010-01-01</div><div class="post-entry"><p>交易过程：</p>
+<ol>
+<li>客户下单</li>
+<li>客户完成支付</li>
+<li>商家接单</li>
+<li>商家发货</li>
+</ol>
+<p>从软件开发角度， 还有一些非功能性需求需要实现：</p>
+<ol>
+<li>性能： 特别是秒杀的时候，如何满足高频率的支付需求？</li>
+<li>可靠性：不用说，系统能达到几个9，是衡量软件设计功力的重要指标。 99%是基础， 99.999%是目标，更多的9哪就是神了。</li>
+<li>易用性：支付中多一个步骤，就会流失至少2%的用户。 产品经理都在削尖脑袋想想怎么让用户赶紧掏钱。</li>
+<li>可扩展性： 近年来支付业务创新产品多，一元购、红包、打赏等，还有各种的支付场景。 怎么能够快速满足产品经理的需求，尽快上线来抢占市场，可扩展性对支付系统设计也是一个挑战。</li>
+<li>可伸缩性：为了支持公司业务，搞一些促销活动是必须的。 那促销带来的爆发流量，最佳应对方法就是加机器了。 平时流量低，用不了那么多机器，该释放的就释放掉了， 给公司省点钱。</li>
+</ol>
+<p>典型支付系统架构：<br><img src="/resource/img/15135039006989.jpg" alt=""></p>
+<p>某旅游公司：<br><img src="/resource/img/15135039141413.jpg" alt=""></p>
+<p>京东金融：<br><img src="/resource/img/15135039244991.jpg" alt=""></p>
+<p>支付系统一般会提供如下子系统：</p>
+<ol>
+<li>支付应用和产品.(应用层)： 这是针对各端（PC Web端、android、IOS)的应用和产品。 为各个业务系统提供收银台支持，同时支付作为一个独立的模块，可以提供诸如银行卡管理、理财、零钱、虚拟币管理、交易记录查阅、卡券等功能；</li>
+<li>支付运营系统(应用层)： 支付系统从安全的角度来说，有一个重要的要求是，懂代码的不碰线上，管运营的不碰代码。这对运营系统的要求就很高，要求基本上所有线上的问题，都可以通过运营系统来解决。</li>
+<li>支付BI系统(应用层): 支付中产生大量的数据，对这些数据进行分析， 有助于公司老板们了解运营状况，进行决策支持。</li>
+<li>风控系统(应用层)：这是合规要求的风险控制、反洗钱合规等。</li>
+<li>信用信息管理系统(应用层)：用来支持对信用算法做配置，对用户的信用信息做管理。<br>支付系统一般会提供如下子系统：</li>
+<li>支付应用和产品.(应用层)： 这是针对各端（PC Web端、android、IOS)的应用和产品。 为各个业务系统提供收银台支持，同时支付作为一个独立的模块，可以提供诸如银行卡管理、理财、零钱、虚拟币管理、交易记录查阅、卡券等功能；</li>
+<li>支付运营系统(应用层)： 支付系统从安全的角度来说，有一个重要的要求是，懂代码的不碰线上，管运营的不碰代码。这对运营系统的要求就很高，要求基本上所有线上的问题，都可以通过运营系统来解决。</li>
+<li>支付BI系统(应用层): 支付中产生大量的数据，对这些数据进行分析， 有助于公司老板们了解运营状况，进行决策支持。</li>
+<li>风控系统(应用层)：这是合规要求的风险控制、反洗钱合规等。</li>
+<li>信用信息管理系统(应用层)：用来支持对信用算法做配置，对用户的信用信息做管理。</li>
+</ol>
+<blockquote>
+<p><a href="http://www.bijishequ.com/detail/95641" target="_blank" rel="noopener">http://www.bijishequ.com/detail/95641</a></p>
+</blockquote>
+</div><div class="post-meta"><a href="/2010/01/01/12.html" class="article-more">Continue Reading</a><div class="post-tags-box"><a class="tag-link" href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag">架构</a></div></div></article></div><div class="paginator"><div class="prev-wrap col-md-6 col-xs-6"><i class="fa fa-angle-double-left"></i><a href="/page/12/" class="prev-page">上一页</a></div></div></main></div><footer><div class="copyright"><p>© 2015 – 2020 <i class="fa fa-user"></i>&nbsp;noogel<br/>Powered by&nbsp;<a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="https://github.com/yiliashaw/hexo-theme-prince" target="_blank">Prince</a> by SHAW</p></div></footer><script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script><script src="/js/bootstrap.min.js"></script><script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.0.47/jquery.fancybox.min.js"></script><script src="/js/script.js"></script></body></html>
