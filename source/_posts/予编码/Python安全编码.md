@@ -1,5 +1,5 @@
 ---
-title: Python安全编码-代码注入的实践与防范
+title: Python安全编码
 date: 2016-10-16
 tags: 网络安全
 id: 1
