@@ -122,6 +122,7 @@ menu:
   life: /life/ || sitemap
   future: /future/ || sitemap
   archives: /archives/ || archive
+  tags: /tags/ || tags
   about: /about/ || user
 
 # Enable / Disable menu icons / item badges.
