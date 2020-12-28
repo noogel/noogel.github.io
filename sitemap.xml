@@ -2,9 +2,37 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://noogel.xyz/2020/09/07/1.html</loc>
+    
+    <lastmod>2020-12-28T18:37:19.332Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://noogel.xyz/career/index.html</loc>
+    
+    <lastmod>2020-12-28T18:29:32.748Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://noogel.xyz/future/index.html</loc>
+    
+    <lastmod>2020-12-28T18:29:32.748Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://noogel.xyz/life/index.html</loc>
+    
+    <lastmod>2020-12-28T18:29:32.748Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://noogel.xyz/atlas/index.html</loc>
     
-    <lastmod>2020-12-28T17:44:02.582Z</lastmod>
+    <lastmod>2020-12-28T18:02:54.405Z</lastmod>
     
   </url>
   
@@ -61,13 +89,6 @@
     <loc>https://noogel.xyz/2019/08/29/2.html</loc>
     
     <lastmod>2020-10-22T17:11:06.955Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://noogel.xyz/2020/09/07/1.html</loc>
-    
-    <lastmod>2020-10-05T16:57:13.086Z</lastmod>
     
   </url>
   
@@ -292,13 +313,6 @@
     <loc>https://noogel.xyz/tags/index.html</loc>
     
     <lastmod>2020-04-11T13:28:02.995Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://noogel.xyz/stack/index.html</loc>
-    
-    <lastmod>2017-12-16T17:28:06.000Z</lastmod>
     
   </url>
   
