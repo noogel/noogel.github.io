@@ -1,5 +1,231 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>知一杂谈</title><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/aboutme.png"><link href="/css/bootstrap.min.css" rel="stylesheet"><link href="/css/font-awesome.min.css" rel="stylesheet"><link href="/css/main.css" rel="stylesheet"><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="知一杂谈" type="application/atom+xml">
-</head><body><div class="wrap"><nav class="page-navigation"><div class="nav-container"><div class="page-header-logo"><h1 class="prince-log"><a href="/" class="home-link">知一杂谈</a></h1></div><button type="button" data-toggle="collapse" data-target=".main-nav-items" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><ul class="collapse navbar-collapse main-nav-items"><li class="menu-item"><a href="/" target="_self">主页</a></li><li class="menu-item"><a href="/archives/" target="_self">归档</a></li><li class="menu-item"><a href="https://nuniok.github.io" target="_self">指纹</a></li><li class="menu-item"><a href="/about/" target="_self">关于我</a></li></ul></div></nav><main class="prince-container"><div class="articles"><article class="post-block"><h2 class="post-title"><a href="/2015/07/18/1.html" class="post-link">分布式系统常用指标</a></h2><div class="post-info">2015-07-18</div><div class="post-entry"><h2 id="性能指标"><a href="#性能指标" class="headerlink" title="性能指标"></a>性能指标</h2><ol>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/resource/img/favicon2018.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/resource/img/favicon2018.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/resource/img/favicon2018.png">
+  <link rel="mask-icon" href="/resource/img/favicon2018.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"noogel.xyz","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="website">
+<meta property="og:title" content="知一杂谈">
+<meta property="og:url" content="https://noogel.xyz/page/13/index.html">
+<meta property="og:site_name" content="知一杂谈">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="noogel">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://noogel.xyz/page/13/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : true,
+    isPost : false,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>知一杂谈</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="知一杂谈" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">知一杂谈</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我思故我在</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-atlas">
+
+    <a href="/atlas/" rel="section"><i class="fa fa-fw fa-sitemap"></i>图谱</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/noogel" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content index posts-expand">
+            
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2015/07/18/1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/resource/img/favicon2018.png">
+      <meta itemprop="name" content="noogel">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知一杂谈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/07/18/1.html" class="post-title-link" itemprop="url">分布式系统常用指标</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2015-07-18 00:00:00" itemprop="dateCreated datePublished" datetime="2015-07-18T00:00:00+08:00">2015-07-18</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="性能指标"><a href="#性能指标" class="headerlink" title="性能指标"></a>性能指标</h2><ol>
 <li>吞度量</li>
 <li>响应延迟 P95 P999</li>
 <li>并发量</li>
@@ -15,7 +241,64 @@
 <h2 id="CAP（帽子理论）"><a href="#CAP（帽子理论）" class="headerlink" title="CAP（帽子理论）"></a>CAP（帽子理论）</h2><p>一致性（Consistency）<br>可用性（Availability）<br>可靠性（Partition tolerance 分区容错性）</p>
 <h2 id="BASE"><a href="#BASE" class="headerlink" title="BASE"></a>BASE</h2><p>基本可用（Basically Available）<br>软状态（Soft State）<br>最终一致（Eventually Consistent）</p>
 <h2 id="分布式一致性协议"><a href="#分布式一致性协议" class="headerlink" title="分布式一致性协议"></a>分布式一致性协议</h2><p>TX协议<br>XA协议</p>
-<h2 id="两阶段提交协议"><a href="#两阶段提交协议" class="headerlink" title="两阶段提交协议"></a>两阶段提交协议</h2><h2 id="三阶段提交协议"><a href="#三阶段提交协议" class="headerlink" title="三阶段提交协议"></a>三阶段提交协议</h2><h2 id="TCC"><a href="#TCC" class="headerlink" title="TCC"></a>TCC</h2><h2 id="最终一致性模式"><a href="#最终一致性模式" class="headerlink" title="最终一致性模式"></a>最终一致性模式</h2></div><div class="post-meta"><a href="/2015/07/18/1.html" class="article-more">Continue Reading</a><div class="post-tags-box"><a class="tag-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/" rel="tag">分布式系统</a></div></div></article><article class="post-block"><h2 class="post-title"><a href="/2014/01/29/1.html" class="post-link">写在2013年末</a></h2><div class="post-info">2014-01-29</div><div class="post-entry"><p>微弱的灯光驱散浓重的夜色，压低的歌声怕惊醒梦中人。</p>
+<h2 id="两阶段提交协议"><a href="#两阶段提交协议" class="headerlink" title="两阶段提交协议"></a>两阶段提交协议</h2><h2 id="三阶段提交协议"><a href="#三阶段提交协议" class="headerlink" title="三阶段提交协议"></a>三阶段提交协议</h2><h2 id="TCC"><a href="#TCC" class="headerlink" title="TCC"></a>TCC</h2><h2 id="最终一致性模式"><a href="#最终一致性模式" class="headerlink" title="最终一致性模式"></a>最终一致性模式</h2>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2014/01/29/1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/resource/img/favicon2018.png">
+      <meta itemprop="name" content="noogel">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知一杂谈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2014/01/29/1.html" class="post-title-link" itemprop="url">写在2013年末</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2014-01-29 00:00:00" itemprop="dateCreated datePublished" datetime="2014-01-29T00:00:00+08:00">2014-01-29</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>微弱的灯光驱散浓重的夜色，压低的歌声怕惊醒梦中人。</p>
 <p>又是深夜，双手在键盘上飞舞，闪烁的光标不断向前推进，一行行的注释和代码呈现在屏幕上，对于我来说这便成为了一种习惯，喜欢在深夜学习编程，接触编程有两年半了，非睡眠状态下的大部分时间都贡献给了我手中这台笔记本电脑，现在被我的朋友称之为我的“媳妇”。哈哈，因为她对于我来说兴趣很浓，我从不迷恋游戏，只是偶尔玩玩，也很少购物，电影基本不看，只是偶尔听听歌，还是敲代码的时候。转眼这不又是要过年了，该来点总结了，看看都学了什么，有什么体会都要来写写的。</p>
 <p>主要学习的语言是C#，两年半的时间大部分都是用C#在编程；当然对C++/Java也是比较熟悉的，给点代码也是能看懂什么意思的。对汇编语言也有所了解，目前正在学习中。<br>那下面就是要讲讲主攻技能.NET平台下的学习细节了：</p>
 <ol>
@@ -34,7 +317,64 @@
 </ul>
 <p>职业规划还木有想好，因为还未毕业，干嘛这么早就草率决定，等工作一两年之后再说呗，定居城市也是这样。但是目前来说不想一直走.NET发展路线，先打好基本功到时候好转行。</p>
 <p>2014年，把前半年的时间用在刀刃上，学习的技能放在毕业找的工作方面。另外要努力学习英语，这个也是个大大的重点。</p>
-</div><div class="post-meta"><a href="/2014/01/29/1.html" class="article-more">Continue Reading</a><div class="post-tags-box"><a class="tag-link" href="/tags/%E9%97%B2%E8%81%8A/" rel="tag">闲聊</a></div></div></article><article class="post-block"><h2 class="post-title"><a href="/2010/01/01/12.html" class="post-link">支付交易系统架构调研</a></h2><div class="post-info">2010-01-01</div><div class="post-entry"><p>交易过程：</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2010/01/01/12.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/resource/img/favicon2018.png">
+      <meta itemprop="name" content="noogel">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知一杂谈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2010/01/01/12.html" class="post-title-link" itemprop="url">支付交易系统架构调研</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2010-01-01 00:00:00" itemprop="dateCreated datePublished" datetime="2010-01-01T00:00:00+08:00">2010-01-01</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>交易过程：</p>
 <ol>
 <li>客户下单</li>
 <li>客户完成支付</li>
@@ -68,4 +408,204 @@
 <blockquote>
 <p><a href="http://www.bijishequ.com/detail/95641" target="_blank" rel="noopener">http://www.bijishequ.com/detail/95641</a></p>
 </blockquote>
-</div><div class="post-meta"><a href="/2010/01/01/12.html" class="article-more">Continue Reading</a><div class="post-tags-box"><a class="tag-link" href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag">架构</a></div></div></article></div><div class="paginator"><div class="prev-wrap col-md-6 col-xs-6"><i class="fa fa-angle-double-left"></i><a href="/page/12/" class="prev-page">上一页</a></div></div></main></div><footer><div class="copyright"><p>© 2015 – 2020 <i class="fa fa-user"></i>&nbsp;noogel<br/>Powered by&nbsp;<a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="https://github.com/yiliashaw/hexo-theme-prince" target="_blank">Prince</a> by SHAW</p></div></footer><script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script><script src="/js/bootstrap.min.js"></script><script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.0.47/jquery.fancybox.min.js"></script><script src="/js/script.js"></script></body></html>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/12/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span>
+  </nav>
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="noogel"
+      src="/resource/img/favicon2018.png">
+  <p class="site-author-name" itemprop="name">noogel</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">39</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="sidebar-button motion-element"><i class="fa fa-comment"></i>
+    Chat
+  </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/noogel" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;noogel" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:noogel@163.com" title="E-Mail → mailto:noogel@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">noogel</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1261171488&web_id=1261171488"></script>
+  </div>
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+</body>
+</html>
