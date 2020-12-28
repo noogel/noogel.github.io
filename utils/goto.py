@@ -46,6 +46,7 @@ CHAPTERS_DB = "db.json"
 CHAPTERS_SUB_PATH = "_posts/"
 BLOG_CONFIG = "_config.yml"
 STACK_INDEX = "source/atlas/index.md"
+STACK_SPLIT_MAP = {"予编码": "source/career/index.md", "予生活": "source/life/index.md", "予未来": "source/future/index.md"}
 
 
 def _build_node_data():
@@ -121,7 +122,7 @@ def gen_stack():
                                                      node["page_path"]))
 
     head = """---
-title: atlas
+title: 
 date: 2017-01-24 12:09:47
 type: "atlas"
 ---
@@ -133,7 +134,52 @@ type: "atlas"
         wf.write(head)
 
     logging.info("Rewrite atlas/index.md ok!")
+    split_chapters(extract_chapters)
     return extract_chapters
+
+
+def gen_stack_split_data(save_path, extract_chapters):
+    """生成拆分后的章节数据并写入文件"""
+    sorted_chapters, paths = [], set()
+    for node in sorted(extract_chapters, key=lambda val: val["path"]):
+        if node["path"] and node["path"] not in paths:
+            sorted_chapters.append("\n{}* {} {}".format(" " * 2 * (node["deep"] - 1),
+                                                        "#" * (
+                                                            node["deep"] + 1 if node["path"] and node[
+                                                                                                     "deep"] < 5 else 0),
+                                                        node["path"].split("/")[-1]))
+            paths.add(node["path"])
+        sorted_chapters.append("{}* [{}]({})".format(" " * 2 * (node["deep"] if node["path"] else 0),
+                                                     node["title"],
+                                                     node["page_path"]))
+
+    head = """---
+title: 
+date: 2017-01-24 12:09:47
+type: "atlas"
+---
+
+{}
+""".format("\n".join(sorted_chapters))
+
+    with open(save_path, "w", encoding="utf-8") as wf:
+        wf.write(head)
+
+    logging.info("Rewrite {} ok!".format(save_path))
+    return extract_chapters
+
+
+def split_chapters(extract_chapters):
+    """拆分章节数据并分别保存"""
+    for key, path in STACK_SPLIT_MAP.items():
+        split_data = [val for val in extract_chapters if val["path"].startswith(key)]
+        for item in split_data:
+            # 降低一个深度，并且删除根路径
+            item["deep"] -= 1
+            item["path"] = item["path"].replace(key, "")
+            if item["path"].startswith("/"):
+                item["path"] = item["path"][1:]
+        gen_stack_split_data(path, split_data)
 
 
 def do_desensitize():
