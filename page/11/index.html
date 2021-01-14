@@ -202,6 +202,106 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2018/01/07/2.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/resource/img/favicon2018.png">
+      <meta itemprop="name" content="noogel">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知一杂谈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/01/07/2.html" class="post-title-link" itemprop="url">SHH打洞配置</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-01-07 00:00:00" itemprop="dateCreated datePublished" datetime="2018-01-07T00:00:00+08:00">2018-01-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>拿三台机器举例打洞配置讲解</p>
+<table>
+<thead>
+<tr>
+<th>机器</th>
+<th>网络环境</th>
+<th>用途</th>
+<th>SSH服务</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A机器</td>
+<td>公网IP固定</td>
+<td>中转机器</td>
+<td>需要</td>
+</tr>
+<tr>
+<td>B机器</td>
+<td>NAT网络</td>
+<td>被访问机器</td>
+<td>需要</td>
+</tr>
+<tr>
+<td>C机器</td>
+<td>任意网络环境</td>
+<td>需要访问B机器</td>
+<td>不需要</td>
+</tr>
+</tbody></table>
+<h2 id="自动连接重试"><a href="#自动连接重试" class="headerlink" title="自动连接重试"></a>自动连接重试</h2><p>需要B机器向A机器建立 SSH 反向隧道，命令如下：</p>
+<p><code>autossh -p 22 -M 6777 -NR &#39;*:6766:127.0.0.1:22&#39; usera@a.site</code></p>
+<p>通过 <code>autossh</code> 可以实现连接失败自动重连，<code>*:6766:127.0.0.1:22</code> 是将A机器的6766端口转发到B机器的22端口，<code>usera@a.site</code> 是请求B机器的用户名和地址。</p>
+<h2 id="打洞"><a href="#打洞" class="headerlink" title="打洞"></a>打洞</h2><p>开启端口转发功能，编辑 sshd 的配置文件 /etc/ssh/sshd_config，增加配置：<br><code>GatewayPorts yes</code></p>
+<h2 id="另一台机器连接"><a href="#另一台机器连接" class="headerlink" title="另一台机器连接"></a>另一台机器连接</h2><p>通过C机器对A机器的6766端口发起连接就会自动被转发到B机器。</p>
+<p><code>ssh -p 6766 userb@a.site</code></p>
+<h2 id="SSH-私钥认证"><a href="#SSH-私钥认证" class="headerlink" title="SSH 私钥认证"></a>SSH 私钥认证</h2><p>把请求机器的 ~/.ssh/id_rsa.pub 添加到被请求机器的 ~/.ssh/authorzied_keys 文件中</p>
+<p>同时设置文件权限为 <code>chmod 600 ~/.ssh/authorzied_keys</code></p>
+<p>设置后在连接机器的时候就不需要密码了，可以走私钥认证。</p>
+<h2 id="守护进程"><a href="#守护进程" class="headerlink" title="守护进程"></a>守护进程</h2><p>这里通过 supervisord 配置保证B机器重启后 autossh 能启动。</p>
+<h2 id="有固定公网IP的机器"><a href="#有固定公网IP的机器" class="headerlink" title="有固定公网IP的机器"></a>有固定公网IP的机器</h2><p>这里我选用的是阿里云的机器，因为平时用的量不大，所以选择按量付费就可以了，看了下费用大概 80RMB/月。</p>
+<h2 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h2><blockquote>
+<p><a href="http://blog.csdn.net/lidongshengajz/article/details/73482908" target="_blank" rel="noopener">http://blog.csdn.net/lidongshengajz/article/details/73482908</a><br><a href="https://linux.cn/article-5975-1.html" target="_blank" rel="noopener">https://linux.cn/article-5975-1.html</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2017/12/27/1.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -381,107 +481,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2017/10/08/1.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/resource/img/favicon2018.png">
-      <meta itemprop="name" content="noogel">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="知一杂谈">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/10/08/1.html" class="post-title-link" itemprop="url">这些Mac神器也许你正需要</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-10-08 00:00:00" itemprop="dateCreated datePublished" datetime="2017-10-08T00:00:00+08:00">2017-10-08</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>这篇文章主要介绍Mac下常用的效率工具，也许正是你所需要的或者使用后对你的工作有很大的效率提升，废话不多说，看下面介绍的五款常用效率工具。</p>
-<h2 id="Alfred"><a href="#Alfred" class="headerlink" title="Alfred"></a>Alfred</h2><p><img src="/resource/img/efficiency/a1.png" alt="Alfred"></p>
-<p>Alfred 作为神器的霸主地位可谓实至名归，它不仅可以帮我们快速打开切换应用、打开网址，使用计算器、词典、剪贴板增强等功能，还可以通过Workflow模块实现功能的扩展，下面详细介绍一下此神器的一些功能。</p>
-<p>首先我们定义调出 Alfred 的快捷键，这里我设置的是 Command + Space ，可以启动输入框。</p>
-<p><img src="/resource/img/efficiency/a2.png" alt="Alfred"></p>
-<p>在输入框中我们可以输入想要打开或切换的应用：</p>
-<p><img src="/resource/img/efficiency/a3.png" alt="Alfred"></p>
-<p>也可以输入基本的数学公式，计算结果：</p>
-<p><img src="/resource/img/efficiency/a4.png" alt="Alfred"></p>
-<p>或者去 Google 搜索：</p>
-<p><img src="/resource/img/efficiency/a5.png" alt="Alfred"></p>
-<p>打开 Terminal 执行命令：</p>
-<p><img src="/resource/img/efficiency/a6.png" alt="Alfred"></p>
-<p>在 Web Search 中配置自定义打开的网址：</p>
-<p><img src="/resource/img/efficiency/a7.png" alt="Alfred"></p>
-<p>调出剪贴板历史，我设置的快捷键是 Option + Command + C：</p>
-<p><img src="/resource/img/efficiency/a8.png" alt="Alfred"></p>
-<p>默认回车会执行第一个结果，或打开网址，或将结果复制到剪贴板，这样可以极大地提高我们操作的效率。</p>
-<p>当然这些默认的功能是不能够满足我们的，还可以通过 Worklow 去扩展效率工具，这里是自己做的一个效率工具箱 xyzUtils ：</p>
-<p><img src="/resource/img/efficiency/a9.png" alt="Alfred"></p>
-<p>Github 地址： <a href="https://github.com/noogel/Alfred-Workflow" target="_blank" rel="noopener">https://github.com/noogel/Alfred-Workflow</a></p>
-<p>这里我做了一些开发中常用的数据转换功能，时间戳与时间的互相转换、Unicode码中文转换、随机字符串生成、IP查询、base64编码解码、MD5生成等，回车复制结果到剪贴板，举例如下：</p>
-<p><img src="/resource/img/efficiency/a10.png" alt="Alfred"></p>
-<p>网友们还提供了更多的 自定义功能，可自行知乎。</p>
-<h2 id="Jietu"><a href="#Jietu" class="headerlink" title="Jietu"></a>Jietu</h2><p><img src="/resource/img/efficiency/j1.png" alt="Jietu"></p>
-<p>这个是腾讯提供的免费截图工具，可进行区域截图或者屏幕录制功能，可以快捷编辑截图，也是我常用的一个神器。配置信息如下图：</p>
-<p><img src="/resource/img/efficiency/j2.png" alt="Jietu"></p>
-<p>截好图后可以按 空格键 进行快速编辑，很是方便，截图后会自动放到剪贴板，可直接粘贴到微信、QQ、Slack等应用的对话框中。</p>
-<p><img src="/resource/img/efficiency/j3.png" alt="Jietu"></p>
-<h2 id="Hammerspoon"><a href="#Hammerspoon" class="headerlink" title="Hammerspoon"></a>Hammerspoon</h2><p><img src="/resource/img/efficiency/h1.png" alt="Hammerspoon"></p>
-<p>这款神器和上面的 Alfred 功能点有些重合，可以提供快速启动应用、调整窗口大小等功能。通过自定义 Lua 脚本实现所需的功能，这些功能主要通过绑定快捷键实现功能出发，当然也会绑定一些系统事件触发脚本功能。</p>
-<p>目前在网上搜集了一些基本功能，调整窗口比例，连接到办公区网络自动静音等功能。</p>
-<p><img src="/resource/img/efficiency/h2.png" alt="Hammerspoon"></p>
-<h2 id="Time-Out"><a href="#Time-Out" class="headerlink" title="Time Out"></a>Time Out</h2><p><img src="/resource/img/efficiency/t1.png" alt="Time Out"></p>
-<p>这款工具主要是可以帮助久用电脑的人每隔一段时间暂停一下，我这里设置的每隔 50分钟暂停 3分钟，就是在这 3分钟时间这个软件会弹出屏保提醒你稍事休息一下再工作，当然暂停期间是可以随之取消的，暂停的时候就是这个样子的。</p>
-<p><img src="/resource/img/efficiency/t2.png" alt="Time Out"></p>
-<h2 id="Reeder"><a href="#Reeder" class="headerlink" title="Reeder"></a>Reeder</h2><p>这是一款 Mac 上知名度很高的 RSS 阅读器，简洁的外观与便捷的操作方式可以省去了去个站点看文章。结合Mac 触控板的左右滑动操作还是很方便的。</p>
-<p><img src="/resource/img/efficiency/r1.png" alt="Reeder"></p>
-<p><img src="/resource/img/efficiency/r2.png" alt="Reeder"></p>
-<p>最后，来还有一些常用效率工具会在在后面的文章继续介绍，或许正是你所需要的，敬请期待！</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -549,14 +552,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">39</span>
+          <span class="site-state-item-count">40</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">21</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -595,7 +598,7 @@
 <div class="copyright">
   
   &copy; 2015 – 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

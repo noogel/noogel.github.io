@@ -202,6 +202,81 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2020/03/05/1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/resource/img/favicon2018.png">
+      <meta itemprop="name" content="noogel">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知一杂谈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/03/05/1.html" class="post-title-link" itemprop="url">设计模式与设计原则</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-05 00:00:00" itemprop="dateCreated datePublished" datetime="2020-03-05T00:00:00+08:00">2020-03-05</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="设计原则"><a href="#设计原则" class="headerlink" title="设计原则"></a>设计原则</h2><p>如果把设计模式理解为优秀软件系统模块设计的最小抽象，那么设计原则就是这些抽象的指导思想。目的是设计一个易于扩展和维护的系统。设计模式的六大原则有：</p>
+<ul>
+<li>Single Responsibility Principle：单一职责原则</li>
+<li>Open Closed Principle：开闭原则</li>
+<li>Liskov Substitution Principle：里氏替换原则</li>
+<li>Law of Demeter：迪米特法则</li>
+<li>Interface Segregation Principle：接口隔离原则</li>
+<li>Dependence Inversion Principle：依赖倒置原则</li>
+</ul>
+<h3 id="单一职责原则"><a href="#单一职责原则" class="headerlink" title="单一职责原则"></a>单一职责原则</h3><p>应该有且只有一个原因引起类的变化，一个类只负责一个职责。一个功能应该要划分成多少个职责类去实现，并没有明显的限定。举例说明对于用户管理，用户信息管理和用户行为管理可以做初步拆分，用户信息管理又可以拆分成普通信息维护和敏感信息的维护。又比如用户发生一笔支付行为可以初步拆分为交易信息管理和支付信息管理。职责划分的粗细的影响因素有对于业务理解程度、项目开发阶段等，过粗会造成一个处理类包含太多职责，过细又会增加开发维护成本。单一职责是“高内聚低耦合”设计的一种实现形式，单一职责即为同一职责内部的内聚性，降低不同职责之间的耦合性。</p>
+<h3 id="里氏替换原则"><a href="#里氏替换原则" class="headerlink" title="里氏替换原则"></a>里氏替换原则</h3><p>描述继承关系，子类全部实现或继承父类方法，子类可以扩展父类方法实现，将子类替换父类不会产生异常。在重构角度来说如果多个子类拥有相同的行为，可以将相同行为提取到父类实现，子类调用扩展父类实现。在开发上基于“组合大于继承”的原则，通过定义实现接口的形成被其它类调用。违反这个原则不一定会产生严重后果，但是会对后面的开发维护造成困难。</p>
+<h3 id="开闭原则"><a href="#开闭原则" class="headerlink" title="开闭原则"></a>开闭原则</h3><p>描述的是对于需求产生变化后，软件实体部分应该进行扩展开发，避免修改。通过扩展实体行为来响应需求变化，而不是通过修改现有软件代码。</p>
+<h3 id="迪米特法则"><a href="#迪米特法则" class="headerlink" title="迪米特法则"></a>迪米特法则</h3><p>描述的是一个对象应该进行减少对于其它对象的理解。通过封装我们可以屏蔽类内部逻辑，只提供足够用且少量的方法来给外部使用，降低对象之间的耦合性。当一个接口或者一个对象被公开，意味着后面我们进行开发和维护的时候很难再将这个对象收回，重构内部逻辑时也会更加困难。</p>
+<h3 id="接口隔离原则"><a href="#接口隔离原则" class="headerlink" title="接口隔离原则"></a>接口隔离原则</h3><p>描述的是建立单一的接口，不要建立庞大臃肿的接口，尽量细化接口，接口中的方法尽量行为统一，避免臃肿。对于支付接口来说，定义类通用支付方法，对于获取分期支付信息也属于支付行为的一个环节，但不是所有实体类必须要实现的，可以拆分出来。</p>
+<h3 id="依赖倒置原则"><a href="#依赖倒置原则" class="headerlink" title="依赖倒置原则"></a>依赖倒置原则</h3><p>描述的是实现类之间不能直接发生依赖关系，其依赖关系是通过接口或者抽象类产生，即面向接口编程。实现类依赖接口或者抽象类，而接口或者抽象类不依赖实现类。</p>
+<h2 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h2><blockquote>
+<p><a href="https://design-patterns.readthedocs.io/zh_CN/latest/index.html" target="_blank" rel="noopener">https://design-patterns.readthedocs.io/zh_CN/latest/index.html</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2020/01/17/1.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -352,79 +427,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2020/01/01/1.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/resource/img/favicon2018.png">
-      <meta itemprop="name" content="noogel">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="知一杂谈">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/01/01/1.html" class="post-title-link" itemprop="url">待整理文章列表</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-01-01 00:00:00" itemprop="dateCreated datePublished" datetime="2020-01-01T00:00:00+08:00">2020-01-01</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="待整理文章列表"><a href="#待整理文章列表" class="headerlink" title="待整理文章列表"></a>待整理文章列表</h2><p>常用设计模式应用</p>
-<p>缓存一致性问题分析</p>
-<p>爬虫系统设计实践</p>
-<p>高性能网络模型介绍</p>
-<p>Java NIO 模型</p>
-<p>时间轮算法详解</p>
-<p>稀疏矩阵数据结构</p>
-<p>零拷贝技术</p>
-<p>MySQL 索引设计与使用</p>
-<h2 id="如何写好技术文章"><a href="#如何写好技术文章" class="headerlink" title="如何写好技术文章"></a>如何写好技术文章</h2><p><a href="https://zhuanlan.zhihu.com/p/25720136" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/25720136</a></p>
-<p><a href="https://www.zhihu.com/question/22861247/answer/730177950" target="_blank" rel="noopener">https://www.zhihu.com/question/22861247/answer/730177950</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/37133420" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/37133420</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -492,14 +498,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">39</span>
+          <span class="site-state-item-count">40</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">21</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -538,7 +544,7 @@
 <div class="copyright">
   
   &copy; 2015 – 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

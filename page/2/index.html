@@ -202,6 +202,115 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2020/04/29/1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/resource/img/favicon2018.png">
+      <meta itemprop="name" content="noogel">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知一杂谈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/04/29/1.html" class="post-title-link" itemprop="url">Java 动态代理实现 ORM</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-29 00:00:00" itemprop="dateCreated datePublished" datetime="2020-04-29T00:00:00+08:00">2020-04-29</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>ORM（Object/Relational Mapper），即“对象-关系型数据映射组件”。对于O/R，即 Object（对象）和Relational（关系型数据），表示必须同时使用面向对象和关系型数据进行开发。本文简述通过 Java 动态代理机制实现关系数据与 POJO 对象的映射。</p>
+<h2 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h2><h3 id="静态代理"><a href="#静态代理" class="headerlink" title="静态代理"></a>静态代理</h3><p>静态代理其实就是指设计模式中的代理模式。<br>代理模式为其他对象提供一种代理以控制对这个对象的访问。</p>
+<p><img src="/resource/img/2020-04-29-23-12-29.png" alt=""></p>
+<p>静态代理模式在增强现有的接口业务功能方面有很大的优点，但是大量使用这种静态代理，会使我们系统内的类的规模增大，并且不易维护。</p>
+<h3 id="动态代理"><a href="#动态代理" class="headerlink" title="动态代理"></a>动态代理</h3><p>为了解决静态代理的问题，引入动态代理的概念，在编译时或者运行时，可以在需要代理的地方动态生成代理，减轻代理类和类在系统中冗余的问题。</p>
+<p><img src="/resource/img/2020-04-29-23-17-27.png" alt=""></p>
+<p>Java 动态代理基于经典代理模式，引入了一个 InvocationHandler，InvocationHandler 负责统一管理所有的方法调用。</p>
+<h4 id="InvocationHandler"><a href="#InvocationHandler" class="headerlink" title="InvocationHandler"></a>InvocationHandler</h4><p>InvocationHandler 接口定义：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public interface InvocationHandler &#123;</span><br><span class="line">	public Object invoke(Object proxy, Method method, Object[] args)</span><br><span class="line">	        throws Throwable;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>每一个动态代理类都必须要实现 InvocationHandler 这个接口，通过代理类的实例调用一个方法时，这个方法的调用就会被转发为由 InvocationHandler 这个接口的 invoke 方法来进行调用。</p>
+<h4 id="Proxy"><a href="#Proxy" class="headerlink" title="Proxy"></a>Proxy</h4><p>Proxy 这个类的作用就是用来动态创建一个代理对象的类，它提供了许多的方法，但是我们用的最多的就是 newProxyInstance 这个方法，可以获得一个动态的代理对象：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public static Object newProxyInstance(ClassLoader loader, Class&lt;?&gt;[] interfaces,  InvocationHandler h)  throws IllegalArgumentException</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>参照 mybaits 的用法实现基本的映射能力。</p>
+<h3 id="注解"><a href="#注解" class="headerlink" title="注解"></a>注解</h3><p>首先定义了三个注解，一个作用在类上 <code>DaoMapper</code> 作用在类上标记这是一个映射类，然后定义注解 <code>Selector</code> 作用在方法上标记查询作用，定义注解 <code>Param</code> 作用在参数上为预编译位的映射。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">@Documented</span><br><span class="line">@Target(ElementType.TYPE)</span><br><span class="line">@Retention(RetentionPolicy.RUNTIME)</span><br><span class="line">public @interface DaoMapper &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Documented</span><br><span class="line">@Target(ElementType.METHOD)</span><br><span class="line">@Retention(RetentionPolicy.RUNTIME)</span><br><span class="line">public @interface Selector &#123;</span><br><span class="line">    String value();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Documented</span><br><span class="line">@Target(ElementType.PARAMETER)</span><br><span class="line">@Retention(RetentionPolicy.RUNTIME)</span><br><span class="line">public @interface Param &#123;</span><br><span class="line">    String value();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>定义一个实体类，与数据库的表字段映射上。增强 feature 可以自动做驼峰转换，这里没有实现。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@Data</span><br><span class="line">public class BaseLineModel &#123;</span><br><span class="line">    public static final String TABLE &#x3D; &quot;baseline&quot;;</span><br><span class="line"></span><br><span class="line">    private Integer id;</span><br><span class="line">    private String report_name;</span><br><span class="line">    private Integer report_period;</span><br><span class="line">    private LocalDateTime creation_date;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>定义dao层接口，加上注解</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@DaoMapper</span><br><span class="line">public interface BaseLineDao &#123;</span><br><span class="line"></span><br><span class="line">    @Selector(&quot;select * from &quot;+ BaseLineModel.TABLE +&quot; where report_name &#x3D; #&#123;reportName&#125;&quot;)</span><br><span class="line">    BaseLineModel select(@Param(&quot;reportName&quot;) String report_name);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="JDBC-OP"><a href="#JDBC-OP" class="headerlink" title="JDBC OP"></a>JDBC OP</h3><p>做到一个很简单的 JDBC 操作工具类，字段映射处理也写到了这里。实现了查询操作，将入参 sql template 以及参数按顺序传入，生成 <code>prepareStatement</code> 后执行，再将返回结果映射到 model 对象。这里的连接池管理、自动重连、配置管理等增强 features 非重点，不做实现。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line">    * 查询</span><br><span class="line">    * @param clazz model类</span><br><span class="line">    * @param sql</span><br><span class="line">    * @param params</span><br><span class="line">    * @param &lt;T&gt;</span><br><span class="line">    * @return</span><br><span class="line">    *&#x2F;</span><br><span class="line">public &lt;T&gt; T query(Class&lt;T&gt; clazz, String sql, Object... params) throws SQLException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException &#123;</span><br><span class="line">    Object model &#x3D;  clazz.newInstance();</span><br><span class="line">    try (Connection conn &#x3D; DriverManager.getConnection(&quot;jdbc:mysql:&#x2F;&#x2F;localhost:3306&#x2F;cat&quot;, &quot;root&quot;, &quot;123456&quot;)) &#123;</span><br><span class="line">        PreparedStatement statement &#x3D; conn.prepareStatement(sql);</span><br><span class="line">        int flag &#x3D; 1;</span><br><span class="line">        for (Object obj : params) &#123;</span><br><span class="line">            setValue(statement, flag, obj);</span><br><span class="line">            flag++;</span><br><span class="line">        &#125;</span><br><span class="line">        ResultSet resultSet &#x3D; statement.executeQuery();</span><br><span class="line">        resultSet.afterLast();</span><br><span class="line">        resultSet.previous();</span><br><span class="line">        fullRes(resultSet, model);</span><br><span class="line">    &#125;</span><br><span class="line">    return (T) model;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>映射函数，通过自动寻找 setter 方法填充结果，这里只实现了三种字段。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">private static void fullRes(ResultSet resultSet, Object model) throws SQLException, InvocationTargetException, IllegalAccessException, NoSuchMethodException &#123;</span><br><span class="line">    Field[] declaredFields &#x3D; model.getClass().getDeclaredFields();</span><br><span class="line">    for (Field field : declaredFields) &#123;</span><br><span class="line">        String fieldName &#x3D; field.getName();</span><br><span class="line">        if (fieldName.toUpperCase().equals(fieldName)) &#123;</span><br><span class="line">            continue;</span><br><span class="line">        &#125;</span><br><span class="line">        String setFuncName &#x3D; &quot;set&quot; + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);</span><br><span class="line">        String fieldType &#x3D; field.getGenericType().toString();</span><br><span class="line"></span><br><span class="line">        Object object &#x3D; resultSet.getObject(fieldName);</span><br><span class="line">        if (fieldType.equals(&quot;class java.lang.String&quot;)) &#123;</span><br><span class="line">            Method m &#x3D; model.getClass().getMethod(setFuncName, String.class);</span><br><span class="line">            m.invoke(model, object);</span><br><span class="line">        &#125; else if (fieldType.equals(&quot;class java.lang.Integer&quot;)) &#123;</span><br><span class="line">            Method m &#x3D; model.getClass().getMethod(setFuncName, Integer.class);</span><br><span class="line">            m.invoke(model, object);</span><br><span class="line">        &#125; else if (fieldType.equals(&quot;class java.time.LocalDateTime&quot;)) &#123;</span><br><span class="line">            Method m &#x3D; model.getClass().getMethod(setFuncName, LocalDateTime.class);</span><br><span class="line">            if (object instanceof Timestamp) &#123;</span><br><span class="line">                object &#x3D; ((Timestamp) object).toLocalDateTime();</span><br><span class="line">            &#125;</span><br><span class="line">            m.invoke(model, object);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="动态代理部分"><a href="#动态代理部分" class="headerlink" title="动态代理部分"></a>动态代理部分</h3><p>定义一个 <code>MapperMethod</code> 类，实例化的时候提取接口方法的注解信息解析成 JDBC 需要的参数以及记录接口方法的返回对象， <code>execute</code> 执行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">public class MapperMethod&lt;T&gt; &#123;</span><br><span class="line">    private String sql;</span><br><span class="line">    private Class&lt;?&gt; resType;</span><br><span class="line">    private int[] paramsIndex;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    public MapperMethod(Method method) &#123;</span><br><span class="line">        this.resType &#x3D; method.getReturnType();</span><br><span class="line">        String sourceSql &#x3D; method.getAnnotation(Selector.class).value();</span><br><span class="line">        Parameter[] parameters &#x3D; method.getParameters();</span><br><span class="line">        int flag &#x3D; 0;</span><br><span class="line">        this.paramsIndex &#x3D; new int[parameters.length];</span><br><span class="line">        for (Parameter parameter: parameters) &#123;</span><br><span class="line">            String paramName &#x3D; parameter.getAnnotation(Param.class).value();</span><br><span class="line">            String paramFullName &#x3D; String.format(&quot;#&#123;%s&#125;&quot;, paramName);</span><br><span class="line">            int indexOf &#x3D; sourceSql.indexOf(paramFullName);</span><br><span class="line">            this.paramsIndex[flag] &#x3D; indexOf;</span><br><span class="line">            flag++;</span><br><span class="line">            this.sql &#x3D; sourceSql.replace(paramFullName, &quot;?&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Object execute(Object[] objects) &#123;</span><br><span class="line">        JdbcUtil jdbcUtil &#x3D; new JdbcUtil();</span><br><span class="line">        try &#123;</span><br><span class="line">            return jdbcUtil.query(this.resType, this.sql, objects);</span><br><span class="line">        &#125; catch (SQLException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (IllegalAccessException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (NoSuchMethodException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (InvocationTargetException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (InstantiationException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>定义动态代理类，在实例化的时候记录代理接口，以及代理方法类缓存，调用接口的时候会被动态代理到 <code>invoke</code> 函数执行，然后交由 <code>MapperMethod</code> 代理方法实例执行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">import java.lang.reflect.InvocationHandler;</span><br><span class="line">import java.lang.reflect.Method;</span><br><span class="line">import java.util.Map;</span><br><span class="line">import java.util.Objects;</span><br><span class="line"></span><br><span class="line">public class MapperProxy&lt;T&gt; implements InvocationHandler &#123;</span><br><span class="line"></span><br><span class="line">    private final Class&lt;T&gt; mapperInterface;</span><br><span class="line"></span><br><span class="line">    private final Map&lt;Method, MapperMethod&gt; methodCache;</span><br><span class="line"></span><br><span class="line">    public MapperProxy(Class&lt;T&gt; mapperInterface, Map&lt;Method, MapperMethod&gt; methodCache) &#123;</span><br><span class="line">        this.mapperInterface &#x3D; mapperInterface;</span><br><span class="line">        this.methodCache &#x3D; methodCache;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public Object invoke(Object o, Method method, Object[] objects) throws Throwable &#123;</span><br><span class="line">        MapperMethod mapperMethod &#x3D; cachedMapperMethod(method);</span><br><span class="line">        return mapperMethod.execute(objects);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private MapperMethod cachedMapperMethod(Method method) &#123;</span><br><span class="line">        MapperMethod mapperMethod &#x3D; methodCache.get(method);</span><br><span class="line">        if (Objects.isNull(mapperMethod)) &#123;</span><br><span class="line">            mapperMethod &#x3D; new MapperMethod(method);</span><br><span class="line">            methodCache.put(method, mapperMethod);</span><br><span class="line">        &#125;</span><br><span class="line">        return mapperMethod;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后代理工厂类，接收被 <code>DaoMapper</code> 作用的接口，并通过 <code>newInstance</code> 方法创建代理类实例。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public class MapperProxyFactory&lt;T&gt; &#123;</span><br><span class="line"></span><br><span class="line">    private final Class&lt;T&gt; mapperInterface;</span><br><span class="line"></span><br><span class="line">    private Map&lt;Method, MapperMethod&gt; methodCache &#x3D; new ConcurrentHashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    public MapperProxyFactory(Class&lt;T&gt; mapperInterface) &#123;</span><br><span class="line">        if (Objects.isNull(mapperInterface.getAnnotation(DaoMapper.class))) &#123;</span><br><span class="line">            throw new RuntimeException(&quot;缺少注解 DaoMapper&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        this.mapperInterface &#x3D; mapperInterface;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    public T newInstance() &#123;</span><br><span class="line">        final MapperProxy&lt;T&gt; mapperProxy &#x3D; new MapperProxy&lt;&gt;(mapperInterface, methodCache);</span><br><span class="line">        return (T) Proxy.newProxyInstance(mapperInterface.getClassLoader(), new Class[]&#123;mapperInterface&#125;, mapperProxy);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行，创建一个代理工厂，然后创建 <code>BaseLineDao</code> 的代理对象， 调用 <code>select</code> 方法，实际上调用到代理对象的 <code>invoke</code> 方法，然后交由 <code>mapperMethod.execute</code> 方法执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">    MapperProxyFactory mapperProxyFactory &#x3D; new MapperProxyFactory(BaseLineDao.class);</span><br><span class="line">    BaseLineDao baseLineDao &#x3D; (BaseLineDao) mapperProxyFactory.newInstance();</span><br><span class="line">    BaseLineModel test1 &#x3D; baseLineDao.select(&quot;TEST1&quot;);</span><br><span class="line">    System.out.println(test1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><p>TODO：</p>
+<ol>
+<li>Java动态代理与 cglib 动态代理的异同点。</li>
+<li>动态代理的实现原理。</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过这个个简单的实践，了解了 Java 动态代理的使用方法以及对象关系数据的映射处理。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote>
+<p><a href="https://zhuanlan.zhihu.com/p/60805342" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/60805342</a><br><a href="https://www.zhihu.com/question/20794107/answer/658139129" target="_blank" rel="noopener">https://www.zhihu.com/question/20794107/answer/658139129</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2020/04/26/1.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -348,85 +457,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2020/03/05/1.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/resource/img/favicon2018.png">
-      <meta itemprop="name" content="noogel">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="知一杂谈">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/05/1.html" class="post-title-link" itemprop="url">设计模式与设计原则</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-03-05 00:00:00" itemprop="dateCreated datePublished" datetime="2020-03-05T00:00:00+08:00">2020-03-05</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="设计原则"><a href="#设计原则" class="headerlink" title="设计原则"></a>设计原则</h2><p>如果把设计模式理解为优秀软件系统模块设计的最小抽象，那么设计原则就是这些抽象的指导思想。目的是设计一个易于扩展和维护的系统。设计模式的六大原则有：</p>
-<ul>
-<li>Single Responsibility Principle：单一职责原则</li>
-<li>Open Closed Principle：开闭原则</li>
-<li>Liskov Substitution Principle：里氏替换原则</li>
-<li>Law of Demeter：迪米特法则</li>
-<li>Interface Segregation Principle：接口隔离原则</li>
-<li>Dependence Inversion Principle：依赖倒置原则</li>
-</ul>
-<h3 id="单一职责原则"><a href="#单一职责原则" class="headerlink" title="单一职责原则"></a>单一职责原则</h3><p>应该有且只有一个原因引起类的变化，一个类只负责一个职责。一个功能应该要划分成多少个职责类去实现，并没有明显的限定。举例说明对于用户管理，用户信息管理和用户行为管理可以做初步拆分，用户信息管理又可以拆分成普通信息维护和敏感信息的维护。又比如用户发生一笔支付行为可以初步拆分为交易信息管理和支付信息管理。职责划分的粗细的影响因素有对于业务理解程度、项目开发阶段等，过粗会造成一个处理类包含太多职责，过细又会增加开发维护成本。单一职责是“高内聚低耦合”设计的一种实现形式，单一职责即为同一职责内部的内聚性，降低不同职责之间的耦合性。</p>
-<h3 id="里氏替换原则"><a href="#里氏替换原则" class="headerlink" title="里氏替换原则"></a>里氏替换原则</h3><p>描述继承关系，子类全部实现或继承父类方法，子类可以扩展父类方法实现，将子类替换父类不会产生异常。在重构角度来说如果多个子类拥有相同的行为，可以将相同行为提取到父类实现，子类调用扩展父类实现。在开发上基于“组合大于继承”的原则，通过定义实现接口的形成被其它类调用。违反这个原则不一定会产生严重后果，但是会对后面的开发维护造成困难。</p>
-<h3 id="开闭原则"><a href="#开闭原则" class="headerlink" title="开闭原则"></a>开闭原则</h3><p>描述的是对于需求产生变化后，软件实体部分应该进行扩展开发，避免修改。通过扩展实体行为来响应需求变化，而不是通过修改现有软件代码。</p>
-<h3 id="迪米特法则"><a href="#迪米特法则" class="headerlink" title="迪米特法则"></a>迪米特法则</h3><p>描述的是一个对象应该进行减少对于其它对象的理解。通过封装我们可以屏蔽类内部逻辑，只提供足够用且少量的方法来给外部使用，降低对象之间的耦合性。当一个接口或者一个对象被公开，意味着后面我们进行开发和维护的时候很难再将这个对象收回，重构内部逻辑时也会更加困难。</p>
-<h3 id="接口隔离原则"><a href="#接口隔离原则" class="headerlink" title="接口隔离原则"></a>接口隔离原则</h3><p>描述的是建立单一的接口，不要建立庞大臃肿的接口，尽量细化接口，接口中的方法尽量行为统一，避免臃肿。对于支付接口来说，定义类通用支付方法，对于获取分期支付信息也属于支付行为的一个环节，但不是所有实体类必须要实现的，可以拆分出来。</p>
-<h3 id="依赖倒置原则"><a href="#依赖倒置原则" class="headerlink" title="依赖倒置原则"></a>依赖倒置原则</h3><p>描述的是实现类之间不能直接发生依赖关系，其依赖关系是通过接口或者抽象类产生，即面向接口编程。实现类依赖接口或者抽象类，而接口或者抽象类不依赖实现类。</p>
-<h2 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h2><blockquote>
-<p><a href="https://design-patterns.readthedocs.io/zh_CN/latest/index.html" target="_blank" rel="noopener">https://design-patterns.readthedocs.io/zh_CN/latest/index.html</a></p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -494,14 +528,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">39</span>
+          <span class="site-state-item-count">40</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">21</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -540,7 +574,7 @@
 <div class="copyright">
   
   &copy; 2015 – 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
