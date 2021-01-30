@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.0">
+<meta name="generator" content="Hexo 4.2.1">
   <link rel="apple-touch-icon" sizes="180x180" href="/resource/img/favicon2018.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/resource/img/favicon2018.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/resource/img/favicon2018.png">
@@ -20,24 +20,25 @@
     var CONFIG = {"hostname":"noogel.xyz","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="交易过程：  客户下单 客户完成支付 商家接单 商家发货  从软件开发角度， 还有一些非功能性需求需要实现：  性能： 特别是秒杀的时候，如何满足高频率的支付需求？ 可靠性：不用说，系统能达到几个9，是衡量软件设计功力的重要指标。 99%是基础， 99.999%是目标，更多的9哪就是神了。 易用性：支付中多一个步骤，就会流失至少2%的用户。 产品经理都在削尖脑袋想想怎么让用户赶紧掏钱。 可扩展性：">
+  <meta name="description" content="本文是对于订单建模的一点思考整理，里面应用一些对领域驱动设计的思考，默认读者对于领域概念有一些基本了解。 基本元素交易最早是通过以物易物的方式来交换，后面产生等价通用物品即货币。交易上下文领域对象包括： 1234顾客 Consumer货 Goods货币 Currency商家 Merchant  对于交易一句话描述就是，顾客在商家那里通过等价货币购换取了货物。 上面描述的四种领域对象作为领域实体，每">
 <meta property="og:type" content="article">
-<meta property="og:title" content="支付交易系统架构调研">
-<meta property="og:url" content="https://noogel.xyz/2010/01/01/12.html">
+<meta property="og:title" content="订单系统建模思考">
+<meta property="og:url" content="https://noogel.xyz/2021/01/30/1.html">
 <meta property="og:site_name" content="知一杂谈">
-<meta property="og:description" content="交易过程：  客户下单 客户完成支付 商家接单 商家发货  从软件开发角度， 还有一些非功能性需求需要实现：  性能： 特别是秒杀的时候，如何满足高频率的支付需求？ 可靠性：不用说，系统能达到几个9，是衡量软件设计功力的重要指标。 99%是基础， 99.999%是目标，更多的9哪就是神了。 易用性：支付中多一个步骤，就会流失至少2%的用户。 产品经理都在削尖脑袋想想怎么让用户赶紧掏钱。 可扩展性：">
+<meta property="og:description" content="本文是对于订单建模的一点思考整理，里面应用一些对领域驱动设计的思考，默认读者对于领域概念有一些基本了解。 基本元素交易最早是通过以物易物的方式来交换，后面产生等价通用物品即货币。交易上下文领域对象包括： 1234顾客 Consumer货 Goods货币 Currency商家 Merchant  对于交易一句话描述就是，顾客在商家那里通过等价货币购换取了货物。 上面描述的四种领域对象作为领域实体，每">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://noogel.xyz/resource/img/15135039006989.jpg">
-<meta property="og:image" content="https://noogel.xyz/resource/img/15135039141413.jpg">
-<meta property="og:image" content="https://noogel.xyz/resource/img/15135039244991.jpg">
-<meta property="article:published_time" content="2009-12-31T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-10-22T17:17:22.400Z">
+<meta property="og:image" content="https://noogel.xyz/resource/img/2021-01-30-23-46-47.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/2021-01-30-23-46-53.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/2021-01-30-23-47-00.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/2021-01-30-23-47-06.png">
+<meta property="article:published_time" content="2021-01-29T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-01-30T16:02:12.023Z">
 <meta property="article:author" content="noogel">
-<meta property="article:tag" content="架构">
+<meta property="article:tag" content="系统建模">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://noogel.xyz/resource/img/15135039006989.jpg">
+<meta name="twitter:image" content="https://noogel.xyz/resource/img/2021-01-30-23-46-47.png">
 
-<link rel="canonical" href="https://noogel.xyz/2010/01/01/12.html">
+<link rel="canonical" href="https://noogel.xyz/2021/01/30/1.html">
 
 
 <script id="page-configurations">
@@ -50,7 +51,7 @@
   };
 </script>
 
-  <title>支付交易系统架构调研 | 知一杂谈</title>
+  <title>订单系统建模思考 | 知一杂谈</title>
   
 
 
@@ -125,6 +126,11 @@
     <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
 
   </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
         <li class="menu-item menu-item-career">
 
     <a href="/career/" rel="section"><i class="fa fa-fw fa-sitemap"></i>编码</a>
@@ -138,11 +144,6 @@
         <li class="menu-item menu-item-future">
 
     <a href="/future/" rel="section"><i class="fa fa-fw fa-sitemap"></i>未来</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
 
   </li>
         <li class="menu-item menu-item-tags">
@@ -212,7 +213,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2010/01/01/12.html">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2021/01/30/1.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/resource/img/favicon2018.png">
@@ -225,7 +226,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          支付交易系统架构调研
+          订单系统建模思考
         </h1>
 
         <div class="post-meta">
@@ -235,7 +236,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2010-01-01 00:00:00" itemprop="dateCreated datePublished" datetime="2010-01-01T00:00:00+08:00">2010-01-01</time>
+              <time title="创建时间：2021-01-30 00:00:00" itemprop="dateCreated datePublished" datetime="2021-01-30T00:00:00+08:00">2021-01-30</time>
             </span>
 
           
@@ -249,40 +250,49 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>交易过程：</p>
-<ol>
-<li>客户下单</li>
-<li>客户完成支付</li>
-<li>商家接单</li>
-<li>商家发货</li>
-</ol>
-<p>从软件开发角度， 还有一些非功能性需求需要实现：</p>
-<ol>
-<li>性能： 特别是秒杀的时候，如何满足高频率的支付需求？</li>
-<li>可靠性：不用说，系统能达到几个9，是衡量软件设计功力的重要指标。 99%是基础， 99.999%是目标，更多的9哪就是神了。</li>
-<li>易用性：支付中多一个步骤，就会流失至少2%的用户。 产品经理都在削尖脑袋想想怎么让用户赶紧掏钱。</li>
-<li>可扩展性： 近年来支付业务创新产品多，一元购、红包、打赏等，还有各种的支付场景。 怎么能够快速满足产品经理的需求，尽快上线来抢占市场，可扩展性对支付系统设计也是一个挑战。</li>
-<li>可伸缩性：为了支持公司业务，搞一些促销活动是必须的。 那促销带来的爆发流量，最佳应对方法就是加机器了。 平时流量低，用不了那么多机器，该释放的就释放掉了， 给公司省点钱。</li>
-</ol>
-<p>典型支付系统架构：<br><img src="/resource/img/15135039006989.jpg" alt=""></p>
-<p>某旅游公司：<br><img src="/resource/img/15135039141413.jpg" alt=""></p>
-<p>京东金融：<br><img src="/resource/img/15135039244991.jpg" alt=""></p>
-<p>支付系统一般会提供如下子系统：</p>
-<ol>
-<li>支付应用和产品.(应用层)： 这是针对各端（PC Web端、android、IOS)的应用和产品。 为各个业务系统提供收银台支持，同时支付作为一个独立的模块，可以提供诸如银行卡管理、理财、零钱、虚拟币管理、交易记录查阅、卡券等功能；</li>
-<li>支付运营系统(应用层)： 支付系统从安全的角度来说，有一个重要的要求是，懂代码的不碰线上，管运营的不碰代码。这对运营系统的要求就很高，要求基本上所有线上的问题，都可以通过运营系统来解决。</li>
-<li>支付BI系统(应用层): 支付中产生大量的数据，对这些数据进行分析， 有助于公司老板们了解运营状况，进行决策支持。</li>
-<li>风控系统(应用层)：这是合规要求的风险控制、反洗钱合规等。</li>
-<li>信用信息管理系统(应用层)：用来支持对信用算法做配置，对用户的信用信息做管理。<br>支付系统一般会提供如下子系统：</li>
-<li>支付应用和产品.(应用层)： 这是针对各端（PC Web端、android、IOS)的应用和产品。 为各个业务系统提供收银台支持，同时支付作为一个独立的模块，可以提供诸如银行卡管理、理财、零钱、虚拟币管理、交易记录查阅、卡券等功能；</li>
-<li>支付运营系统(应用层)： 支付系统从安全的角度来说，有一个重要的要求是，懂代码的不碰线上，管运营的不碰代码。这对运营系统的要求就很高，要求基本上所有线上的问题，都可以通过运营系统来解决。</li>
-<li>支付BI系统(应用层): 支付中产生大量的数据，对这些数据进行分析， 有助于公司老板们了解运营状况，进行决策支持。</li>
-<li>风控系统(应用层)：这是合规要求的风险控制、反洗钱合规等。</li>
-<li>信用信息管理系统(应用层)：用来支持对信用算法做配置，对用户的信用信息做管理。</li>
-</ol>
-<blockquote>
-<p><a href="http://www.bijishequ.com/detail/95641" target="_blank" rel="noopener">http://www.bijishequ.com/detail/95641</a></p>
-</blockquote>
+        <p>本文是对于订单建模的一点思考整理，里面应用一些对领域驱动设计的思考，默认读者对于领域概念有一些基本了解。</p>
+<h2 id="基本元素"><a href="#基本元素" class="headerlink" title="基本元素"></a>基本元素</h2><p>交易最早是通过以物易物的方式来交换，后面产生等价通用物品即货币。交易上下文领域对象包括：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">顾客 Consumer</span><br><span class="line">货 Goods</span><br><span class="line">货币 Currency</span><br><span class="line">商家 Merchant</span><br></pre></td></tr></table></figure>
+
+<p>对于交易一句话描述就是，顾客在商家那里通过等价货币购换取了货物。</p>
+<p>上面描述的四种领域对象作为领域实体，每一种领域实体通过 key 组合来确定实体的唯一性，ext 是值对象，用来描述实体。对应的实体描述如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Consumer:</span><br><span class="line">&#123;</span><br><span class="line">    &quot;key&quot;: &quot;USER_ID&quot;,</span><br><span class="line">    &quot;ext&quot;: &#123; &#125;</span><br><span class="line">&#125;</span><br><span class="line">Goods</span><br><span class="line">&#123;</span><br><span class="line">    &quot;key&quot;: &quot;SKU_ID&quot;,</span><br><span class="line">    &quot;amount&quot;: 100,</span><br><span class="line">    &quot;ext&quot;: &#123; &#125;</span><br><span class="line">&#125;</span><br><span class="line">Currency</span><br><span class="line">&#123;</span><br><span class="line">    &quot;type&quot;: &quot;CNY|VIRTUAL_COIN&quot;,</span><br><span class="line">    &quot;amount&quot;: 100</span><br><span class="line">&#125;</span><br><span class="line">Merchant</span><br><span class="line">&#123;</span><br><span class="line">    &quot;key&quot;: &quot;yO7LmcWjqsJz1N5j&quot;,</span><br><span class="line">    &quot;ext&quot;: &#123; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="状态事件抽象"><a href="#状态事件抽象" class="headerlink" title="状态事件抽象"></a>状态事件抽象</h2><p>订单状态变更命令通用流程抽象如下图，一个领域命令被触发后，首先进行状态变更前的资格校验事件回调，所有校验方均校验通过后方可进行后续处理，将交易修改为对应状态，状态修改后发布对应的状态变更事件，经由事件总线发布事件，所有监听方进行后续处理。一个领域命令执行结束。此流程可以套用到任何状态变更命令。</p>
+<p><img src="/resource/img/2021-01-30-23-46-47.png" alt=""></p>
+<p>状态变化通过领域命令发起 <code>command</code>，首先进行 <code>BeforeOperating</code> 操作前的处理，每一个命令都定义了事件的资格校验 <code>qualification</code> 接口，实现接口的可能是子域内处理，比如下单的库存校验，优惠校验等，也可能是具体业务的校验，需要实现资格校验接口。通过后进行事务性的状态变更操作 <code>updateState</code>，操作后进行状态变更后 <code>AfterOperating</code> 的事件发布，由各个业务监听进行后续处理。这样处理方便业务逻辑解耦，订单子域专注于订单状态的管理。</p>
+<p>对应到订单系统，对于订单状态和物流状态节点以及领域事件如下表示：</p>
+<p><img src="/resource/img/2021-01-30-23-46-53.png" alt=""></p>
+<p><strong>订单状态</strong></p>
+<ul>
+<li>已创建 CREATE(COMMIT)</li>
+<li>已支付 PAID</li>
+<li>已退款 REFUND(REFUNDING)</li>
+<li>已关闭 CLOSED</li>
+</ul>
+<p><strong>物流状态</strong></p>
+<ul>
+<li>待发货 WAITING</li>
+<li>已发货 DELIVERED</li>
+<li>已收货 RECEIVED</li>
+<li>已退货 RETURN</li>
+</ul>
+<p><strong>领域命令</strong></p>
+<ul>
+<li>创建订单 createOrder</li>
+<li>超时关单 closeOrder</li>
+<li>支付订单 payOrder</li>
+<li>申请退款 refundOrder</li>
+<li>订单履约 deliverOrder</li>
+<li>商家发货 deliverGoods</li>
+<li>用户收货 receiveGoods</li>
+<li>用户退货 returnGoods</li>
+</ul>
+<h2 id="子域拆分"><a href="#子域拆分" class="headerlink" title="子域拆分"></a>子域拆分</h2><p>订单子域的拆分也是业务职责的拆分，订单管理和物流管理是相对独立的两个模块，订单主要关注收款履约退款，物流主要关注用户的收退货状态，所以整个交易域的订单和物流会被拆分成两个子域。</p>
+<p><img src="/resource/img/2021-01-30-23-47-00.png" alt=""></p>
+<h2 id="订单事件举例"><a href="#订单事件举例" class="headerlink" title="订单事件举例"></a>订单事件举例</h2><p>订单创建命令，首先对注册的条件回调方进行回调，确认当前的购买资格，通过后进行事务性的订单创建，创建后进行订单已创建的事件发布，所有监听方接收到消息后进行分析处理。</p>
+<p><img src="/resource/img/2021-01-30-23-47-06.png" alt=""></p>
 
     </div>
 
@@ -331,7 +341,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag"># 架构</a>
+              <a href="/tags/%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1/" rel="tag"># 系统建模</a>
           </div>
 
         
@@ -339,11 +349,11 @@
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2014/01/29/1.html" rel="next" title="写在2013年末">
-      写在2013年末 <i class="fa fa-chevron-right"></i>
+    <a href="/2021/01/15/1.html" rel="prev" title="领域基本概念字典">
+      <i class="fa fa-chevron-left"></i> 领域基本概念字典
     </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -407,6 +417,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本元素"><span class="nav-number">1.</span> <span class="nav-text">基本元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#状态事件抽象"><span class="nav-number">2.</span> <span class="nav-text">状态事件抽象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#子域拆分"><span class="nav-number">3.</span> <span class="nav-text">子域拆分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#订单事件举例"><span class="nav-number">4.</span> <span class="nav-text">订单事件举例</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -422,14 +433,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">40</span>
+          <span class="site-state-item-count">41</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">22</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
