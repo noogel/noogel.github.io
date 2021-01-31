@@ -202,7 +202,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2020/09/07/1.html">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2020/04/26/1.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/resource/img/favicon2018.png">
@@ -216,7 +216,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/09/07/1.html" class="post-title-link" itemprop="url">小米粥声控音箱总体计划</a>
+            <a href="/2020/04/26/1.html" class="post-title-link" itemprop="url">Java 锁基础概念</a>
         </h2>
 
         <div class="post-meta">
@@ -226,7 +226,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-09-07 00:00:00" itemprop="dateCreated datePublished" datetime="2020-09-07T00:00:00+08:00">2020-09-07</time>
+              <time title="创建时间：2020-04-26 00:00:00" itemprop="dateCreated datePublished" datetime="2020-04-26T00:00:00+08:00">2020-04-26</time>
             </span>
 
           
@@ -240,88 +240,30 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p><img src="/resource/img/2020-09-07-12-51-24.png" alt=""></p>
-<p>关注树莓派很久了，只是没有很感兴趣的应用场景，就没有买来玩。几个月前偶然得到一个小度音箱，发现了新大陆，各种语音控制功能，便捷性不言而喻，还买了一些外部设备可以通过小度控制，发现有红外遥控器可以控制家里的大部分红外家电，奈何码库不是很全，有些设备还是不能控制的，而且不支持定制功能。恰好在知乎看到了一些 geek 视频，想着自己也做一个，可以支持红外数据的定制，做到自由遥控。于是乎说干就干，从一个什么硬件都不懂的小白一步步的了解了点硬件知识，软件部分相对好实现一些。主要计划的功能是通过语音来控制红外家电、温湿度监控以及智能提醒等功能，先完成主体框架然后再不断开发插件形式来增强可玩性。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/09/07/1.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
+          <p>锁解决的问题是并发操作引起的脏读、数据不一致问题。</p>
+<h2 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h2><h3 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h3><p>在Java中允许线程访问共享变量，为了确保共享变量能被准确和一致的更新，线程应该确保使用排它锁来单独获得这个变量，Java中提供了 volatile，使之在多处理器开发中保证变量的可见性，当一个线程改变了共享变量，另一个线程能够及时读到这个修改的值。恰当的使用它会比 synchronized 成本更低，因为不会引起上下文的切换和调度。</p>
+<h3 id="synchronized"><a href="#synchronized" class="headerlink" title="synchronized"></a>synchronized</h3><p>通过锁机制实现同步，在Java中每一个对象都可以作为锁，有以下三种形式：</p>
+<ul>
+<li>对于普通同步方法，锁的是当前实例对象。</li>
+<li>对于静态同步方法，所得是当前类 class 对象。</li>
+<li>对于同步方法块，锁的是括号内指定的对象。</li>
+</ul>
+<p>为了减少获得锁和释放锁带来的性能消耗，Java SE 1.6 引入了偏向锁和轻量级锁。<strong>偏向锁</strong> 的核心思想是：如果一个线程获得了锁，就进入偏向模式，当这个线程再次请求锁时，如果没有其它线程获取过该锁，无需再做任何同步操作，可以节省大量锁申请的操作，来提高性能。如果偏向锁获取失败，会通过 <strong>轻量级锁</strong> 的方式获取，如果获取成功则进入临界区，如果失败则表示有其它线程争夺到锁，当前线程锁请求会膨胀为 <strong>重量级锁</strong> 。</p>
+<p><img src="/resource/img/2020-10-23-00-45-19.png" alt=""></p>
+<p><strong>锁粗化</strong> 是指在遇到一连串连续的对同一个锁不断的进行请求和释放的操作时，会把所有的锁操作整合成对锁的一次请求，减少锁请求的同步次数。</p>
+<p><strong>锁消除</strong> 是指在编译期，通过对上下文的扫描，去除不可能存在共享资源竞争的锁。</p>
+<p><strong>自旋锁</strong> 是指在锁膨胀后，避免线程真正的在操作系统层面被挂起，通过对线程做几个空循环，以期望在这之后能获取到锁，顺利的进入临界区，如果还获取不到，则会真正被操作系统层面挂起。</p>
+<p><img src="/resource/img/2020-10-23-00-45-37.png" alt=""></p>
+<h3 id="CAS"><a href="#CAS" class="headerlink" title="CAS"></a>CAS</h3><p>指的是比较并交换，它是一个原子操作，比较一个内存位置的值并且只有相等时修改这个内存位置的值并更新值，保证新的值总是基于最新的信息计算的。在 JVM 中 CAS 操作是利用处理器提供的 CMPXCHS 指令实现。是实现我们平时所说的自旋锁或乐观锁的核心操作。</p>
+<p>优点是竞争小的时候使用系统开销小；对应缺点是循环时间长开销大、ABA问题、只能保证一个变量的原子操作。</p>
+<h4 id="ABA-问题"><a href="#ABA-问题" class="headerlink" title="ABA 问题"></a>ABA 问题</h4><p>问题产生原因是两个线程处理的时间差导致，具体如下图：</p>
+<p><img src="/resource/img/2020-10-23-00-45-48.png" alt=""></p>
+<p>解决 ABA 问题可以增加一个版本号，在每次修改值的时候增加一个版本号。</p>
+<p>产生：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> AtomicReference&lt;Integer&gt; atomicReference = <span class="keyword">new</span> AtomicReference&lt;Integer&gt;(<span class="number">100</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">        atomicReference.compareAndSet(<span class="number">100</span>, <span class="number">101</span>);</span><br><span class="line">        atomicReference.compareAndSet(<span class="number">101</span>, <span class="number">100</span>);</span><br><span class="line">    &#125;,<span class="string">"t1"</span>).start();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            TimeUnit.SECONDS.sleep(<span class="number">1</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(atomicReference.compareAndSet(<span class="number">100</span>, <span class="number">2019</span>) + <span class="string">"\t修改后的值:"</span> + atomicReference.get());</span><br><span class="line">    &#125;,<span class="string">"t2"</span>).start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2020/05/11/1.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/resource/img/favicon2018.png">
-      <meta itemprop="name" content="noogel">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="知一杂谈">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/05/11/1.html" class="post-title-link" itemprop="url">程序员升级打怪之路</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-05-11 00:00:00" itemprop="dateCreated datePublished" datetime="2020-05-11T00:00:00+08:00">2020-05-11</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>这个标题看起有点鸡汤文，不过我还是建议对以下总结出的几点做些深入思考，这些会在今后的工作中越来越多的感受到它的作用。</p>
-<p><img src="/resource/img/2020-05-11-23-49-10.png" alt=""></p>
-<h2 id="寻找你行业内的专家"><a href="#寻找你行业内的专家" class="headerlink" title="寻找你行业内的专家"></a>寻找你行业内的专家</h2><p>找到你所属行业内的专家，这些人往往做事高效并且很有才华。你要做的是跟随他们所关注的方向，学习他们做事的方法，思考如何应用到你的工作和生活上。找到他们，和他们去交流思考，提出自己的观点和想法。不要仅仅把眼光放到身边的人身上，这样会局限住你的视野。</p>
-<h2 id="每天都写新代码"><a href="#每天都写新代码" class="headerlink" title="每天都写新代码"></a>每天都写新代码</h2><p>工作重复枯燥？也许有时候我们只是懒得思考，用最顺手的方式把工作做完，容易形成惯性思维。为什么会有很多的复制粘贴？简单的修改来适配当前需求，这里我们更需要的是想想能不能把这段逻辑抽象出来变得更通用，整个模块的设计是否不够合理，多想一想多做一点，下一次再来需求也许可以提升十倍的效率。</p>
-<h2 id="底层的原理更重要"><a href="#底层的原理更重要" class="headerlink" title="底层的原理更重要"></a>底层的原理更重要</h2><p>客观的说，更快进步的方法之一是忽略掉那些并不能提高技能的东西，比如语言语法和配置工具，这些技能属于“知其然”，而你更需要的是“知其所以然”。有一次去医院科室挂号使用的是先到先叫的模式，而在急诊室挂号是按照轻重缓急分成四个等级的，危重病人优先抢救的模式。这不就和操作系统中的任务调度概念是一样的，优先级调度模式，这些底层的概念才是一通百通真正提高帮助你的东西。我在尝试去找行业经典论文看。</p>
-<h2 id="学会调研"><a href="#学会调研" class="headerlink" title="学会调研"></a>学会调研</h2><p>作为程序员会比较容易脑子一热，有一个想法很容易趁热着急写代码，但往往缺乏思考写出来的代码不能尽如人意。这时候你更需要的是慢下来，好好思考一下，也许这些别人已经做过，有更好的方案，看看别人是如何做的。先调研再实施，这样会彻底改变你解决问题的思路。</p>
-<h2 id="学好英语"><a href="#学好英语" class="headerlink" title="学好英语"></a>学好英语</h2><p>真的是这样，如果你英语不好，那么会比别人走更多的弯路，就像走在密林深处看不清路一样。不得不承认很多优秀框架的官方文档还是英文为主，如果再经过翻译里面的很多语义语境会丢失，在项目的社区中，你还能与作者们去交流你学习中遇到的问题。</p>
-<h2 id="如何去做"><a href="#如何去做" class="headerlink" title="如何去做"></a>如何去做</h2><p>说了这么多，看着就好像道理我都懂，但是我不知道怎么做。我这里先总结几个点，也是自己在不断尝试学习的方法。</p>
-<ol>
-<li>看行业经典论文，比如 mapreduce、raft 这些都是一通百通的底层概念。</li>
-<li>研究优秀框架的源代码，理解核心原理，尝试造轮子。</li>
-<li>每天学英语，尝试在开源社区与作者们进行互动。</li>
-<li>找到一两位行业专家，向他们学习和请教问题。</li>
-<li>坚持以上几点。</li>
-</ol>
-<p>end.</p>
+<p>解决：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> AtomicStampedReference&lt;Integer&gt; atomicStampedReference = <span class="keyword">new</span> AtomicStampedReference&lt;Integer&gt;(<span class="number">100</span>,<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">        System.out.println(<span class="string">"t1拿到的初始版本号:"</span> + atomicStampedReference.getStamp());</span><br><span class="line"></span><br><span class="line">        <span class="comment">//睡眠1秒，是为了让t2线程也拿到同样的初始版本号</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            TimeUnit.SECONDS.sleep(<span class="number">1</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        atomicStampedReference.compareAndSet(<span class="number">100</span>, <span class="number">101</span>,atomicStampedReference.getStamp(),atomicStampedReference.getStamp()+<span class="number">1</span>);</span><br><span class="line">        atomicStampedReference.compareAndSet(<span class="number">101</span>, <span class="number">100</span>,atomicStampedReference.getStamp(),atomicStampedReference.getStamp()+<span class="number">1</span>);</span><br><span class="line">    &#125;,<span class="string">"t1"</span>).start();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">        <span class="keyword">int</span> stamp = atomicStampedReference.getStamp();</span><br><span class="line">        System.out.println(<span class="string">"t2拿到的初始版本号:"</span> + stamp);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//睡眠3秒，是为了让t1线程完成ABA操作</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            TimeUnit.SECONDS.sleep(<span class="number">3</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">"最新版本号:"</span> + atomicStampedReference.getStamp());</span><br><span class="line">        System.out.println(atomicStampedReference.compareAndSet(<span class="number">100</span>, <span class="number">2019</span>,stamp,atomicStampedReference.getStamp() + <span class="number">1</span>) + <span class="string">"\t当前 值:"</span> + atomicStampedReference.getReference());</span><br><span class="line">    &#125;,<span class="string">"t2"</span>).start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -341,7 +283,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2020/04/29/1.html">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2020/04/05/3.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/resource/img/favicon2018.png">
@@ -355,7 +297,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/04/29/1.html" class="post-title-link" itemprop="url">Java 动态代理实现 ORM</a>
+            <a href="/2020/04/05/3.html" class="post-title-link" itemprop="url">VS Code 与 HEXO 结合写博客</a>
         </h2>
 
         <div class="post-meta">
@@ -365,7 +307,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-04-29 00:00:00" itemprop="dateCreated datePublished" datetime="2020-04-29T00:00:00+08:00">2020-04-29</time>
+              <time title="创建时间：2020-04-05 00:00:00" itemprop="dateCreated datePublished" datetime="2020-04-05T00:00:00+08:00">2020-04-05</time>
             </span>
 
           
@@ -379,58 +321,316 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>ORM（Object/Relational Mapper），即“对象-关系型数据映射组件”。对于O/R，即 Object（对象）和Relational（关系型数据），表示必须同时使用面向对象和关系型数据进行开发。本文简述通过 Java 动态代理机制实现关系数据与 POJO 对象的映射。</p>
-<h2 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h2><h3 id="静态代理"><a href="#静态代理" class="headerlink" title="静态代理"></a>静态代理</h3><p>静态代理其实就是指设计模式中的代理模式。<br>代理模式为其他对象提供一种代理以控制对这个对象的访问。</p>
-<p><img src="/resource/img/2020-04-29-23-12-29.png" alt=""></p>
-<p>静态代理模式在增强现有的接口业务功能方面有很大的优点，但是大量使用这种静态代理，会使我们系统内的类的规模增大，并且不易维护。</p>
-<h3 id="动态代理"><a href="#动态代理" class="headerlink" title="动态代理"></a>动态代理</h3><p>为了解决静态代理的问题，引入动态代理的概念，在编译时或者运行时，可以在需要代理的地方动态生成代理，减轻代理类和类在系统中冗余的问题。</p>
-<p><img src="/resource/img/2020-04-29-23-17-27.png" alt=""></p>
-<p>Java 动态代理基于经典代理模式，引入了一个 InvocationHandler，InvocationHandler 负责统一管理所有的方法调用。</p>
-<h4 id="InvocationHandler"><a href="#InvocationHandler" class="headerlink" title="InvocationHandler"></a>InvocationHandler</h4><p>InvocationHandler 接口定义：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public interface InvocationHandler &#123;</span><br><span class="line">	public Object invoke(Object proxy, Method method, Object[] args)</span><br><span class="line">	        throws Throwable;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <p>在 mac 机器上可以使用 mweb 来写博客，比较好用的地方就是可以直接把剪贴板的图片粘贴上来，缺点是 mac 键盘超难用并且不支持窗口内开启命令行。平时在家的时候都用 Ubuntu 台式机，博客使用 VS Code 编写，一直以来阻挡我的是图片的粘贴特别费劲，今天发现一个很好用的插件 pasteimage，可以直接将剪贴板图片粘贴到 markdown 使用，并且支持配置保存路径。</p>
+<p><img src="/resource/img/2020-04-05-15-57-27.png" alt=""></p>
+<p>然后按照教程配置好参数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;pasteImage.path&quot;: &quot;$&#123;projectRoot&#125;&#x2F;source&#x2F;resource&#x2F;img&quot;,</span><br><span class="line">    &quot;pasteImage.basePath&quot;: &quot;$&#123;projectRoot&#125;&#x2F;source&quot;,</span><br><span class="line">    &quot;pasteImage.forceUnixStyleSeparator&quot;: true,</span><br><span class="line">    &quot;pasteImage.prefix&quot;: &quot;&#x2F;&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>每一个动态代理类都必须要实现 InvocationHandler 这个接口，通过代理类的实例调用一个方法时，这个方法的调用就会被转发为由 InvocationHandler 这个接口的 invoke 方法来进行调用。</p>
-<h4 id="Proxy"><a href="#Proxy" class="headerlink" title="Proxy"></a>Proxy</h4><p>Proxy 这个类的作用就是用来动态创建一个代理对象的类，它提供了许多的方法，但是我们用的最多的就是 newProxyInstance 这个方法，可以获得一个动态的代理对象：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public static Object newProxyInstance(ClassLoader loader, Class&lt;?&gt;[] interfaces,  InvocationHandler h)  throws IllegalArgumentException</span><br></pre></td></tr></table></figure>
-
-
-<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>参照 mybaits 的用法实现基本的映射能力。</p>
-<h3 id="注解"><a href="#注解" class="headerlink" title="注解"></a>注解</h3><p>首先定义了三个注解，一个作用在类上 <code>DaoMapper</code> 作用在类上标记这是一个映射类，然后定义注解 <code>Selector</code> 作用在方法上标记查询作用，定义注解 <code>Param</code> 作用在参数上为预编译位的映射。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">@Documented</span><br><span class="line">@Target(ElementType.TYPE)</span><br><span class="line">@Retention(RetentionPolicy.RUNTIME)</span><br><span class="line">public @interface DaoMapper &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Documented</span><br><span class="line">@Target(ElementType.METHOD)</span><br><span class="line">@Retention(RetentionPolicy.RUNTIME)</span><br><span class="line">public @interface Selector &#123;</span><br><span class="line">    String value();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Documented</span><br><span class="line">@Target(ElementType.PARAMETER)</span><br><span class="line">@Retention(RetentionPolicy.RUNTIME)</span><br><span class="line">public @interface Param &#123;</span><br><span class="line">    String value();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>定义一个实体类，与数据库的表字段映射上。增强 feature 可以自动做驼峰转换，这里没有实现。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@Data</span><br><span class="line">public class BaseLineModel &#123;</span><br><span class="line">    public static final String TABLE &#x3D; &quot;baseline&quot;;</span><br><span class="line"></span><br><span class="line">    private Integer id;</span><br><span class="line">    private String report_name;</span><br><span class="line">    private Integer report_period;</span><br><span class="line">    private LocalDateTime creation_date;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>定义dao层接口，加上注解</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@DaoMapper</span><br><span class="line">public interface BaseLineDao &#123;</span><br><span class="line"></span><br><span class="line">    @Selector(&quot;select * from &quot;+ BaseLineModel.TABLE +&quot; where report_name &#x3D; #&#123;reportName&#125;&quot;)</span><br><span class="line">    BaseLineModel select(@Param(&quot;reportName&quot;) String report_name);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="JDBC-OP"><a href="#JDBC-OP" class="headerlink" title="JDBC OP"></a>JDBC OP</h3><p>做到一个很简单的 JDBC 操作工具类，字段映射处理也写到了这里。实现了查询操作，将入参 sql template 以及参数按顺序传入，生成 <code>prepareStatement</code> 后执行，再将返回结果映射到 model 对象。这里的连接池管理、自动重连、配置管理等增强 features 非重点，不做实现。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line">    * 查询</span><br><span class="line">    * @param clazz model类</span><br><span class="line">    * @param sql</span><br><span class="line">    * @param params</span><br><span class="line">    * @param &lt;T&gt;</span><br><span class="line">    * @return</span><br><span class="line">    *&#x2F;</span><br><span class="line">public &lt;T&gt; T query(Class&lt;T&gt; clazz, String sql, Object... params) throws SQLException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException &#123;</span><br><span class="line">    Object model &#x3D;  clazz.newInstance();</span><br><span class="line">    try (Connection conn &#x3D; DriverManager.getConnection(&quot;jdbc:mysql:&#x2F;&#x2F;localhost:3306&#x2F;cat&quot;, &quot;root&quot;, &quot;123456&quot;)) &#123;</span><br><span class="line">        PreparedStatement statement &#x3D; conn.prepareStatement(sql);</span><br><span class="line">        int flag &#x3D; 1;</span><br><span class="line">        for (Object obj : params) &#123;</span><br><span class="line">            setValue(statement, flag, obj);</span><br><span class="line">            flag++;</span><br><span class="line">        &#125;</span><br><span class="line">        ResultSet resultSet &#x3D; statement.executeQuery();</span><br><span class="line">        resultSet.afterLast();</span><br><span class="line">        resultSet.previous();</span><br><span class="line">        fullRes(resultSet, model);</span><br><span class="line">    &#125;</span><br><span class="line">    return (T) model;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>映射函数，通过自动寻找 setter 方法填充结果，这里只实现了三种字段。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">private static void fullRes(ResultSet resultSet, Object model) throws SQLException, InvocationTargetException, IllegalAccessException, NoSuchMethodException &#123;</span><br><span class="line">    Field[] declaredFields &#x3D; model.getClass().getDeclaredFields();</span><br><span class="line">    for (Field field : declaredFields) &#123;</span><br><span class="line">        String fieldName &#x3D; field.getName();</span><br><span class="line">        if (fieldName.toUpperCase().equals(fieldName)) &#123;</span><br><span class="line">            continue;</span><br><span class="line">        &#125;</span><br><span class="line">        String setFuncName &#x3D; &quot;set&quot; + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);</span><br><span class="line">        String fieldType &#x3D; field.getGenericType().toString();</span><br><span class="line"></span><br><span class="line">        Object object &#x3D; resultSet.getObject(fieldName);</span><br><span class="line">        if (fieldType.equals(&quot;class java.lang.String&quot;)) &#123;</span><br><span class="line">            Method m &#x3D; model.getClass().getMethod(setFuncName, String.class);</span><br><span class="line">            m.invoke(model, object);</span><br><span class="line">        &#125; else if (fieldType.equals(&quot;class java.lang.Integer&quot;)) &#123;</span><br><span class="line">            Method m &#x3D; model.getClass().getMethod(setFuncName, Integer.class);</span><br><span class="line">            m.invoke(model, object);</span><br><span class="line">        &#125; else if (fieldType.equals(&quot;class java.time.LocalDateTime&quot;)) &#123;</span><br><span class="line">            Method m &#x3D; model.getClass().getMethod(setFuncName, LocalDateTime.class);</span><br><span class="line">            if (object instanceof Timestamp) &#123;</span><br><span class="line">                object &#x3D; ((Timestamp) object).toLocalDateTime();</span><br><span class="line">            &#125;</span><br><span class="line">            m.invoke(model, object);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="动态代理部分"><a href="#动态代理部分" class="headerlink" title="动态代理部分"></a>动态代理部分</h3><p>定义一个 <code>MapperMethod</code> 类，实例化的时候提取接口方法的注解信息解析成 JDBC 需要的参数以及记录接口方法的返回对象， <code>execute</code> 执行。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">public class MapperMethod&lt;T&gt; &#123;</span><br><span class="line">    private String sql;</span><br><span class="line">    private Class&lt;?&gt; resType;</span><br><span class="line">    private int[] paramsIndex;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    public MapperMethod(Method method) &#123;</span><br><span class="line">        this.resType &#x3D; method.getReturnType();</span><br><span class="line">        String sourceSql &#x3D; method.getAnnotation(Selector.class).value();</span><br><span class="line">        Parameter[] parameters &#x3D; method.getParameters();</span><br><span class="line">        int flag &#x3D; 0;</span><br><span class="line">        this.paramsIndex &#x3D; new int[parameters.length];</span><br><span class="line">        for (Parameter parameter: parameters) &#123;</span><br><span class="line">            String paramName &#x3D; parameter.getAnnotation(Param.class).value();</span><br><span class="line">            String paramFullName &#x3D; String.format(&quot;#&#123;%s&#125;&quot;, paramName);</span><br><span class="line">            int indexOf &#x3D; sourceSql.indexOf(paramFullName);</span><br><span class="line">            this.paramsIndex[flag] &#x3D; indexOf;</span><br><span class="line">            flag++;</span><br><span class="line">            this.sql &#x3D; sourceSql.replace(paramFullName, &quot;?&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Object execute(Object[] objects) &#123;</span><br><span class="line">        JdbcUtil jdbcUtil &#x3D; new JdbcUtil();</span><br><span class="line">        try &#123;</span><br><span class="line">            return jdbcUtil.query(this.resType, this.sql, objects);</span><br><span class="line">        &#125; catch (SQLException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (IllegalAccessException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (NoSuchMethodException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (InvocationTargetException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (InstantiationException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>定义动态代理类，在实例化的时候记录代理接口，以及代理方法类缓存，调用接口的时候会被动态代理到 <code>invoke</code> 函数执行，然后交由 <code>MapperMethod</code> 代理方法实例执行。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">import java.lang.reflect.InvocationHandler;</span><br><span class="line">import java.lang.reflect.Method;</span><br><span class="line">import java.util.Map;</span><br><span class="line">import java.util.Objects;</span><br><span class="line"></span><br><span class="line">public class MapperProxy&lt;T&gt; implements InvocationHandler &#123;</span><br><span class="line"></span><br><span class="line">    private final Class&lt;T&gt; mapperInterface;</span><br><span class="line"></span><br><span class="line">    private final Map&lt;Method, MapperMethod&gt; methodCache;</span><br><span class="line"></span><br><span class="line">    public MapperProxy(Class&lt;T&gt; mapperInterface, Map&lt;Method, MapperMethod&gt; methodCache) &#123;</span><br><span class="line">        this.mapperInterface &#x3D; mapperInterface;</span><br><span class="line">        this.methodCache &#x3D; methodCache;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public Object invoke(Object o, Method method, Object[] objects) throws Throwable &#123;</span><br><span class="line">        MapperMethod mapperMethod &#x3D; cachedMapperMethod(method);</span><br><span class="line">        return mapperMethod.execute(objects);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private MapperMethod cachedMapperMethod(Method method) &#123;</span><br><span class="line">        MapperMethod mapperMethod &#x3D; methodCache.get(method);</span><br><span class="line">        if (Objects.isNull(mapperMethod)) &#123;</span><br><span class="line">            mapperMethod &#x3D; new MapperMethod(method);</span><br><span class="line">            methodCache.put(method, mapperMethod);</span><br><span class="line">        &#125;</span><br><span class="line">        return mapperMethod;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>最后代理工厂类，接收被 <code>DaoMapper</code> 作用的接口，并通过 <code>newInstance</code> 方法创建代理类实例。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public class MapperProxyFactory&lt;T&gt; &#123;</span><br><span class="line"></span><br><span class="line">    private final Class&lt;T&gt; mapperInterface;</span><br><span class="line"></span><br><span class="line">    private Map&lt;Method, MapperMethod&gt; methodCache &#x3D; new ConcurrentHashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    public MapperProxyFactory(Class&lt;T&gt; mapperInterface) &#123;</span><br><span class="line">        if (Objects.isNull(mapperInterface.getAnnotation(DaoMapper.class))) &#123;</span><br><span class="line">            throw new RuntimeException(&quot;缺少注解 DaoMapper&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        this.mapperInterface &#x3D; mapperInterface;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    public T newInstance() &#123;</span><br><span class="line">        final MapperProxy&lt;T&gt; mapperProxy &#x3D; new MapperProxy&lt;&gt;(mapperInterface, methodCache);</span><br><span class="line">        return (T) Proxy.newProxyInstance(mapperInterface.getClassLoader(), new Class[]&#123;mapperInterface&#125;, mapperProxy);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>执行，创建一个代理工厂，然后创建 <code>BaseLineDao</code> 的代理对象， 调用 <code>select</code> 方法，实际上调用到代理对象的 <code>invoke</code> 方法，然后交由 <code>mapperMethod.execute</code> 方法执行：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">    MapperProxyFactory mapperProxyFactory &#x3D; new MapperProxyFactory(BaseLineDao.class);</span><br><span class="line">    BaseLineDao baseLineDao &#x3D; (BaseLineDao) mapperProxyFactory.newInstance();</span><br><span class="line">    BaseLineModel test1 &#x3D; baseLineDao.select(&quot;TEST1&quot;);</span><br><span class="line">    System.out.println(test1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><p>TODO：</p>
-<ol>
-<li>Java动态代理与 cglib 动态代理的异同点。</li>
-<li>动态代理的实现原理。</li>
-</ol>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过这个个简单的实践，了解了 Java 动态代理的使用方法以及对象关系数据的映射处理。</p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote>
-<p><a href="https://zhuanlan.zhihu.com/p/60805342" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/60805342</a><br><a href="https://www.zhihu.com/question/20794107/answer/658139129" target="_blank" rel="noopener">https://www.zhihu.com/question/20794107/answer/658139129</a></p>
+<p>就可以直接将图片粘贴到 markdown 中，其中遇到个问题就是配置不生效，会导致文件直接保存到当前文件目录，具体配置方法可以参考下面连接。</p>
+<blockquote>
+<p><a href="https://www.crifan.com/vscode_how_to_config_setting_plugin/" target="_blank" rel="noopener">https://www.crifan.com/vscode_how_to_config_setting_plugin/</a>  这篇文章写的很详细了。<br><a href="https://github.com/mushanshitiancai/vscode-paste-image" target="_blank" rel="noopener">https://github.com/mushanshitiancai/vscode-paste-image</a> 这篇是配置教程，里面有些地方比较容易被误导。</p>
 </blockquote>
+<p>对于Linux系统需要有 xclip 支持，使用的时候会给提示的。</p>
+<p><img src="/resource/img/2020-04-05-16-03-56.png" alt=""></p>
+<p>另外记录一下 Ubuntu 的截屏和粘贴快捷键：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Ctrl + Shift + Print Screen  &#x2F;&#x2F; 区域截屏到剪贴板</span><br><span class="line">Ctrl + Alt + s  &#x2F;&#x2F; 在 VS Code 中粘贴</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2020/03/05/1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/resource/img/favicon2018.png">
+      <meta itemprop="name" content="noogel">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知一杂谈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/03/05/1.html" class="post-title-link" itemprop="url">设计模式与设计原则</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-05 00:00:00" itemprop="dateCreated datePublished" datetime="2020-03-05T00:00:00+08:00">2020-03-05</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="设计原则"><a href="#设计原则" class="headerlink" title="设计原则"></a>设计原则</h2><p>如果把设计模式理解为优秀软件系统模块设计的最小抽象，那么设计原则就是这些抽象的指导思想。目的是设计一个易于扩展和维护的系统。设计模式的六大原则有：</p>
+<ul>
+<li>Single Responsibility Principle：单一职责原则</li>
+<li>Open Closed Principle：开闭原则</li>
+<li>Liskov Substitution Principle：里氏替换原则</li>
+<li>Law of Demeter：迪米特法则</li>
+<li>Interface Segregation Principle：接口隔离原则</li>
+<li>Dependence Inversion Principle：依赖倒置原则</li>
+</ul>
+<h3 id="单一职责原则"><a href="#单一职责原则" class="headerlink" title="单一职责原则"></a>单一职责原则</h3><p>应该有且只有一个原因引起类的变化，一个类只负责一个职责。一个功能应该要划分成多少个职责类去实现，并没有明显的限定。举例说明对于用户管理，用户信息管理和用户行为管理可以做初步拆分，用户信息管理又可以拆分成普通信息维护和敏感信息的维护。又比如用户发生一笔支付行为可以初步拆分为交易信息管理和支付信息管理。职责划分的粗细的影响因素有对于业务理解程度、项目开发阶段等，过粗会造成一个处理类包含太多职责，过细又会增加开发维护成本。单一职责是“高内聚低耦合”设计的一种实现形式，单一职责即为同一职责内部的内聚性，降低不同职责之间的耦合性。</p>
+<h3 id="里氏替换原则"><a href="#里氏替换原则" class="headerlink" title="里氏替换原则"></a>里氏替换原则</h3><p>描述继承关系，子类全部实现或继承父类方法，子类可以扩展父类方法实现，将子类替换父类不会产生异常。在重构角度来说如果多个子类拥有相同的行为，可以将相同行为提取到父类实现，子类调用扩展父类实现。在开发上基于“组合大于继承”的原则，通过定义实现接口的形成被其它类调用。违反这个原则不一定会产生严重后果，但是会对后面的开发维护造成困难。</p>
+<h3 id="开闭原则"><a href="#开闭原则" class="headerlink" title="开闭原则"></a>开闭原则</h3><p>描述的是对于需求产生变化后，软件实体部分应该进行扩展开发，避免修改。通过扩展实体行为来响应需求变化，而不是通过修改现有软件代码。</p>
+<h3 id="迪米特法则"><a href="#迪米特法则" class="headerlink" title="迪米特法则"></a>迪米特法则</h3><p>描述的是一个对象应该进行减少对于其它对象的理解。通过封装我们可以屏蔽类内部逻辑，只提供足够用且少量的方法来给外部使用，降低对象之间的耦合性。当一个接口或者一个对象被公开，意味着后面我们进行开发和维护的时候很难再将这个对象收回，重构内部逻辑时也会更加困难。</p>
+<h3 id="接口隔离原则"><a href="#接口隔离原则" class="headerlink" title="接口隔离原则"></a>接口隔离原则</h3><p>描述的是建立单一的接口，不要建立庞大臃肿的接口，尽量细化接口，接口中的方法尽量行为统一，避免臃肿。对于支付接口来说，定义类通用支付方法，对于获取分期支付信息也属于支付行为的一个环节，但不是所有实体类必须要实现的，可以拆分出来。</p>
+<h3 id="依赖倒置原则"><a href="#依赖倒置原则" class="headerlink" title="依赖倒置原则"></a>依赖倒置原则</h3><p>描述的是实现类之间不能直接发生依赖关系，其依赖关系是通过接口或者抽象类产生，即面向接口编程。实现类依赖接口或者抽象类，而接口或者抽象类不依赖实现类。</p>
+<h2 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h2><blockquote>
+<p><a href="https://design-patterns.readthedocs.io/zh_CN/latest/index.html" target="_blank" rel="noopener">https://design-patterns.readthedocs.io/zh_CN/latest/index.html</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2020/01/17/1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/resource/img/favicon2018.png">
+      <meta itemprop="name" content="noogel">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知一杂谈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/17/1.html" class="post-title-link" itemprop="url">2020知识储备计划</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-01-17 00:00:00" itemprop="dateCreated datePublished" datetime="2020-01-17T00:00:00+08:00">2020-01-17</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li>六本本职技术书籍/专题<ul>
+<li>effective java done 01.29</li>
+<li>Java 并发编程实战  done 02.14</li>
+<li>深入理解 Java 虚拟机 part 04.01</li>
+<li>Java 性能优化 21 讲 done 12.01</li>
+</ul>
+</li>
+<li>六本技术扩展书籍/专题<ul>
+<li>图解密码技术 第三版 done 10.08</li>
+<li>Linux 内核设计与实现（原书第三版）</li>
+<li>现代编译原理</li>
+<li>数据密集型应用系统设计</li>
+<li>MySQL 实战 45 讲 part 08.26</li>
+<li>Wireshark 数据包分析实战（第 3 版） done 2020.12.13</li>
+<li>实现领域驱动设计 part</li>
+</ul>
+</li>
+<li>六本人文社科书籍<ul>
+<li>精进 done 02.11</li>
+<li>我的改变：个人现代化 40 年 done 09.27</li>
+<li>高效 PDCA 工作术 done 09.16</li>
+<li>薄世宁医学通识讲义 done 10.20</li>
+<li>这里是中国 done 10.05</li>
+<li>活着 余华 done 12.10</li>
+<li>论中国 基辛格 done </li>
+<li>美国陷阱 done</li>
+</ul>
+</li>
+<li>整理输出两篇高质量博客文章</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2020/01/11/1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/resource/img/favicon2018.png">
+      <meta itemprop="name" content="noogel">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知一杂谈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/11/1.html" class="post-title-link" itemprop="url">丹东之旅</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-01-11 00:00:00" itemprop="dateCreated datePublished" datetime="2020-01-11T00:00:00+08:00">2020-01-11</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>丹东是中国的一个边境小城市，在东三省的辽宁，与朝鲜隔鸭绿江相望。丹东春秋去会比较好，还有点景色可以看看，冬天的话来泡温泉吧，还可以顺便来一趟朝鲜游，带着护照来就好了。可惜的是因为一些原因无法泡温泉和去趟朝鲜。所以只是趁着年末逃离下北京，换个环境放松一下，其它的不重要了。</p>
+<p><img src="/resource/img/15786783058231.jpg" alt=""></p>
+<p><img src="/resource/img/15786783449355.jpg" alt=""></p>
+<p>丹东是个有山有水有美食的地方，来这边可以沿着鸭绿江散步，好奇的望望对面神秘的社会主义同僚。去趟鸭绿江美术馆、抗美援朝纪念馆之类的地方看看当地的人文。鸭绿江断桥是一定要去的，走上去一点点感受下当年的气息和脚下的滚滚江水，一座见证历史的铁桥。丹东的🍓很出名，冬天来了可以尝尝，味道还是很甜的。还有当地著名的全州拌饭馆，超级好吃绝对不是吹的，还有有名参鸡汤，夜里的烧烤。。。想想又饿了。</p>
+<p><img src="/resource/img/15786783222921.jpg" alt=""></p>
+<p>这里的夜景也还不错，丹东这个城市挺小的，发展还不错，赶上季节好可以来这里吃海鲜~</p>
+<p><img src="/resource/img/15786784433586.jpg" alt=""></p>
+<p><img src="/resource/img/15786784707412.jpg" alt=""></p>
+<p><img src="/resource/img/15786786649467.jpg" alt=""></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2020/01/01/1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/resource/img/favicon2018.png">
+      <meta itemprop="name" content="noogel">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知一杂谈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/01/1.html" class="post-title-link" itemprop="url">待整理文章列表</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-01-01 00:00:00" itemprop="dateCreated datePublished" datetime="2020-01-01T00:00:00+08:00">2020-01-01</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="待整理文章列表"><a href="#待整理文章列表" class="headerlink" title="待整理文章列表"></a>待整理文章列表</h2><p>常用设计模式应用</p>
+<p>缓存一致性问题分析</p>
+<p>爬虫系统设计实践</p>
+<p>高性能网络模型介绍</p>
+<p>Java NIO 模型</p>
+<p>时间轮算法详解</p>
+<p>稀疏矩阵数据结构</p>
+<p>零拷贝技术</p>
+<p>MySQL 索引设计与使用</p>
+<h2 id="如何写好技术文章"><a href="#如何写好技术文章" class="headerlink" title="如何写好技术文章"></a>如何写好技术文章</h2><p><a href="https://zhuanlan.zhihu.com/p/25720136" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/25720136</a></p>
+<p><a href="https://www.zhihu.com/question/22861247/answer/730177950" target="_blank" rel="noopener">https://www.zhihu.com/question/22861247/answer/730177950</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/37133420" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/37133420</a></p>
 
       
     </div>
@@ -449,7 +649,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
