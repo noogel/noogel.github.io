@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
-<meta name="generator" content="Hexo 5.4.2">
+<meta name="generator" content="Hexo 7.3.0">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/resource/img/favicon2018.png">
@@ -134,7 +134,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-count">79</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -183,6 +183,93 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2021/08/13/1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="noogel">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知一杂谈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/08/13/1.html" class="post-title-link" itemprop="url">软件重构的三个层次</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-08-13 00:00:00" itemprop="dateCreated datePublished" datetime="2021-08-13T00:00:00+00:00">2021-08-13</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>你有没有遇到过一个函数几百行长度，如果没有可以跳过本文章了，如果没有那么应该看看下面的内容。一个超长函数的复杂性不在于那些胶水代码，而是其中的逻辑分支，大量的逻辑分支导致你的代码难以理解。而重构的过程分为两步：</p>
+<ol>
+<li>编写单元测试，如果覆盖到了函数的每个分支，那么重构的风险性就会降到最低。</li>
+<li>重构代码，对代码进行拆分重写，为了使代码变得易于维护。</li>
+</ol>
+<p>重构分为三个层次：</p>
+<ol>
+<li>小重构<ul>
+<li>消除重复代码</li>
+<li>拆分小函数（单一职责）</li>
+</ul>
+</li>
+<li>设计模式<ul>
+<li>GoF 23种</li>
+</ul>
+</li>
+<li>抽象建模<ul>
+<li>四色建模法</li>
+<li>风暴建模法</li>
+</ul>
+</li>
+</ol>
+<p>复杂度问题的应对办法，防止偶然复杂性。</p>
+<p>TODO</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1363,93 +1450,6 @@
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/60805342">https://zhuanlan.zhihu.com/p/60805342</a><br><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/20794107/answer/658139129">https://www.zhihu.com/question/20794107/answer/658139129</a></p>
 </blockquote>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2020/04/26/1.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="noogel">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="知一杂谈">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/04/26/1.html" class="post-title-link" itemprop="url">Java 锁基础概念</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-04-26 00:00:00" itemprop="dateCreated datePublished" datetime="2020-04-26T00:00:00+00:00">2020-04-26</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>锁解决的问题是并发操作引起的脏读、数据不一致问题。</p>
-<h2 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h2><h3 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h3><p>在Java中允许线程访问共享变量，为了确保共享变量能被准确和一致的更新，线程应该确保使用排它锁来单独获得这个变量，Java中提供了 volatile，使之在多处理器开发中保证变量的可见性，当一个线程改变了共享变量，另一个线程能够及时读到这个修改的值。恰当的使用它会比 synchronized 成本更低，因为不会引起上下文的切换和调度。</p>
-<h3 id="synchronized"><a href="#synchronized" class="headerlink" title="synchronized"></a>synchronized</h3><p>通过锁机制实现同步，在Java中每一个对象都可以作为锁，有以下三种形式：</p>
-<ul>
-<li>对于普通同步方法，锁的是当前实例对象。</li>
-<li>对于静态同步方法，所得是当前类 class 对象。</li>
-<li>对于同步方法块，锁的是括号内指定的对象。</li>
-</ul>
-<p>为了减少获得锁和释放锁带来的性能消耗，Java SE 1.6 引入了偏向锁和轻量级锁。<strong>偏向锁</strong> 的核心思想是：如果一个线程获得了锁，就进入偏向模式，当这个线程再次请求锁时，如果没有其它线程获取过该锁，无需再做任何同步操作，可以节省大量锁申请的操作，来提高性能。如果偏向锁获取失败，会通过 <strong>轻量级锁</strong> 的方式获取，如果获取成功则进入临界区，如果失败则表示有其它线程争夺到锁，当前线程锁请求会膨胀为 <strong>重量级锁</strong> 。</p>
-<p><img src="/resource/img/2020-10-23-00-45-19.png"></p>
-<p><strong>锁粗化</strong> 是指在遇到一连串连续的对同一个锁不断的进行请求和释放的操作时，会把所有的锁操作整合成对锁的一次请求，减少锁请求的同步次数。</p>
-<p><strong>锁消除</strong> 是指在编译期，通过对上下文的扫描，去除不可能存在共享资源竞争的锁。</p>
-<p><strong>自旋锁</strong> 是指在锁膨胀后，避免线程真正的在操作系统层面被挂起，通过对线程做几个空循环，以期望在这之后能获取到锁，顺利的进入临界区，如果还获取不到，则会真正被操作系统层面挂起。</p>
-<p><img src="/resource/img/2020-10-23-00-45-37.png"></p>
-<h3 id="CAS"><a href="#CAS" class="headerlink" title="CAS"></a>CAS</h3><p>指的是比较并交换，它是一个原子操作，比较一个内存位置的值并且只有相等时修改这个内存位置的值并更新值，保证新的值总是基于最新的信息计算的。在 JVM 中 CAS 操作是利用处理器提供的 CMPXCHS 指令实现。是实现我们平时所说的自旋锁或乐观锁的核心操作。</p>
-<p>优点是竞争小的时候使用系统开销小；对应缺点是循环时间长开销大、ABA问题、只能保证一个变量的原子操作。</p>
-<h4 id="ABA-问题"><a href="#ABA-问题" class="headerlink" title="ABA 问题"></a>ABA 问题</h4><p>问题产生原因是两个线程处理的时间差导致，具体如下图：</p>
-<p><img src="/resource/img/2020-10-23-00-45-48.png"></p>
-<p>解决 ABA 问题可以增加一个版本号，在每次修改值的时候增加一个版本号。</p>
-<p>产生：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> AtomicReference&lt;Integer&gt; atomicReference = <span class="keyword">new</span> <span class="title class_">AtomicReference</span>&lt;Integer&gt;(<span class="number">100</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">        atomicReference.compareAndSet(<span class="number">100</span>, <span class="number">101</span>);</span><br><span class="line">        atomicReference.compareAndSet(<span class="number">101</span>, <span class="number">100</span>);</span><br><span class="line">    &#125;,<span class="string">&quot;t1&quot;</span>).start();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            TimeUnit.SECONDS.sleep(<span class="number">1</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(atomicReference.compareAndSet(<span class="number">100</span>, <span class="number">2019</span>) + <span class="string">&quot;\t修改后的值:&quot;</span> + atomicReference.get());</span><br><span class="line">    &#125;,<span class="string">&quot;t2&quot;</span>).start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>解决：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> AtomicStampedReference&lt;Integer&gt; atomicStampedReference = <span class="keyword">new</span> <span class="title class_">AtomicStampedReference</span>&lt;Integer&gt;(<span class="number">100</span>,<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;t1拿到的初始版本号:&quot;</span> + atomicStampedReference.getStamp());</span><br><span class="line"></span><br><span class="line">        <span class="comment">//睡眠1秒，是为了让t2线程也拿到同样的初始版本号</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            TimeUnit.SECONDS.sleep(<span class="number">1</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        atomicStampedReference.compareAndSet(<span class="number">100</span>, <span class="number">101</span>,atomicStampedReference.getStamp(),atomicStampedReference.getStamp()+<span class="number">1</span>);</span><br><span class="line">        atomicStampedReference.compareAndSet(<span class="number">101</span>, <span class="number">100</span>,atomicStampedReference.getStamp(),atomicStampedReference.getStamp()+<span class="number">1</span>);</span><br><span class="line">    &#125;,<span class="string">&quot;t1&quot;</span>).start();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">stamp</span> <span class="operator">=</span> atomicStampedReference.getStamp();</span><br><span class="line">        System.out.println(<span class="string">&quot;t2拿到的初始版本号:&quot;</span> + stamp);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//睡眠3秒，是为了让t1线程完成ABA操作</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            TimeUnit.SECONDS.sleep(<span class="number">3</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;最新版本号:&quot;</span> + atomicStampedReference.getStamp());</span><br><span class="line">        System.out.println(atomicStampedReference.compareAndSet(<span class="number">100</span>, <span class="number">2019</span>,stamp,atomicStampedReference.getStamp() + <span class="number">1</span>) + <span class="string">&quot;\t当前 值:&quot;</span> + atomicStampedReference.getReference());</span><br><span class="line">    &#125;,<span class="string">&quot;t2&quot;</span>).start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
-<meta name="generator" content="Hexo 5.4.2">
+<meta name="generator" content="Hexo 7.3.0">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/resource/img/favicon2018.png">
@@ -134,7 +134,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-count">79</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -183,6 +183,93 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2016/12/10/1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="noogel">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知一杂谈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2016/12/10/1.html" class="post-title-link" itemprop="url">图像边缘算法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2016-12-10 10:00:01" itemprop="dateCreated datePublished" datetime="2016-12-10T10:00:01+00:00">2016-12-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">数据结构与算法</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>算法描述：将当前像素与邻接的下边和右边像素进行比较，如果相似设置为白色，否则设置为黑色。</p>
+<p>欧氏距离算法，如果两个像素的欧氏距离小于某个常数的阀值则认定为相似。</p>
+<p>两个n维向量<code>a(x11, x12, ..., x1n)</code>与<code>b(x21, x22, ..., x2n)</code>间的欧氏距离如下公式：</p>
+<p>$$d&#x3D;\sqrt{\sum_{k&#x3D;1}^n(x_{1k}-x_{2k})^2}$$</p>
+<p>Python代码实现</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_euclidean_distance</span>(<span class="params">x, y</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    计算欧氏距离</span></span><br><span class="line"><span class="string">    :param x:</span></span><br><span class="line"><span class="string">    :param y:</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    myx = np.array(x)</span><br><span class="line">    myy = np.array(y)</span><br><span class="line">    <span class="keyword">return</span> np.sqrt(np.<span class="built_in">sum</span>((myx - myy) * (myx - myy)))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>阀值设置为16</p>
+<p><strong>原始图片</strong><br><img src="/resource/img/dd4d3f8b54124d4c.png" alt="原始图片"></p>
+<p><strong>描边图片</strong><br><img src="/resource/img/d6e4f48caabdd0da.png" alt="描边图片"></p>
+<p><strong>完整代码如下</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#! /usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">@author: abc</span></span><br><span class="line"><span class="string">@file: euclidean_distance.py</span></span><br><span class="line"><span class="string">@date: 2016-12-09</span></span><br><span class="line"><span class="string">@desc: 欧氏距离</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line">__author__ = <span class="string">&quot;abc&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_euclidean_distance</span>(<span class="params">x, y</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    计算欧氏距离</span></span><br><span class="line"><span class="string">    :param x:</span></span><br><span class="line"><span class="string">    :param y:</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    myx = np.array(x)</span><br><span class="line">    myy = np.array(y)</span><br><span class="line">    <span class="keyword">return</span> np.sqrt(np.<span class="built_in">sum</span>((myx - myy) * (myx - myy)))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">handle_img</span>(<span class="params">imgpath</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    handle_img</span></span><br><span class="line"><span class="string">    :param imgpath:</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    myimg1 = cv2.imread(imgpath)</span><br><span class="line"></span><br><span class="line">    cv2.namedWindow(<span class="string">&#x27;img1&#x27;</span>)</span><br><span class="line">    cv2.imshow(<span class="string">&#x27;img1&#x27;</span>, myimg1)</span><br><span class="line">    cv2.waitKey()</span><br><span class="line">    cv2.destroyAllWindows()</span><br><span class="line"></span><br><span class="line">    w = myimg1.shape[<span class="number">1</span>]</span><br><span class="line">    h = myimg1.shape[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    sz1 = w</span><br><span class="line">    sz0 = h</span><br><span class="line"></span><br><span class="line">    flag = <span class="number">16</span></span><br><span class="line"></span><br><span class="line">    myimg2 = np.zeros((sz0, sz1, <span class="number">3</span>), np.uint8)</span><br><span class="line">    black = np.array([<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>])</span><br><span class="line">    white = np.array([<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>])</span><br><span class="line">    centercolor = np.array([<span class="number">125</span>, <span class="number">125</span>, <span class="number">125</span>])</span><br><span class="line">    <span class="keyword">for</span> y <span class="keyword">in</span> xrange(sz0 - <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> xrange(sz1 - <span class="number">1</span>):</span><br><span class="line">            myhere = myimg1[y, x, :]</span><br><span class="line">            mydown = myimg1[y + <span class="number">1</span>, x, :]</span><br><span class="line">            myright = myimg1[y, x + <span class="number">1</span>, :]</span><br><span class="line"></span><br><span class="line">            lmyhere = myhere</span><br><span class="line">            lmyright = myright</span><br><span class="line">            lmydown = mydown</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> get_euclidean_distance(lmyhere, lmydown) &gt; flag <span class="keyword">and</span> get_euclidean_distance(lmyhere, lmyright) &gt; flag:</span><br><span class="line">                myimg2[y, x, :] = black</span><br><span class="line">            <span class="keyword">elif</span> get_euclidean_distance(lmyhere, lmydown) &lt;= flag <span class="keyword">and</span> get_euclidean_distance(lmyhere, lmyright) &lt;= flag:</span><br><span class="line">                myimg2[y, x, :] = white</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                myimg2[y, x, :] = centercolor</span><br><span class="line"></span><br><span class="line">    cv2.namedWindow(<span class="string">&#x27;img2&#x27;</span>)</span><br><span class="line">    cv2.imshow(<span class="string">&#x27;img2&#x27;</span>, myimg2)</span><br><span class="line">    cv2.waitKey()</span><br><span class="line">    cv2.destroyAllWindows()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    imgpath = <span class="string">&quot;/home/abc/Projects/machine_learning/img/test4.png&quot;</span></span><br><span class="line">    handle_img(imgpath)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_52510b1d01015nrg.html">http://blog.sina.com.cn/s/blog_52510b1d01015nrg.html</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
