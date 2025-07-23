@@ -134,7 +134,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">79</span>
+          <span class="site-state-item-count">80</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -183,6 +183,89 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2016/12/15/1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="noogel">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知一杂谈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2016/12/15/1.html" class="post-title-link" itemprop="url">余弦相似度分类</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2016-12-15 00:00:00" itemprop="dateCreated datePublished" datetime="2016-12-15T00:00:00+00:00">2016-12-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">数据结构与算法</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>计算余弦值公式<br>$$cos\theta &#x3D; \frac{x_1y_1+x_2y_2+…+x_ny_n}{\sqrt{x_1^2+x_2^2+…+x_n^2}\sqrt{y_1^2+y_2^2+…+y_n^2}}$$</p>
+<p>样本和待分类图像</p>
+<p><img src="/resource/img/9ce24513b3daf2d8.png" alt="样本和待分类图像"></p>
+<p>执行结果</p>
+<p><img src="/resource/img/e1c67f947d03a7db.png" alt="执行结果"></p>
+<p>完整代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">#! /usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">@author: abc</span></span><br><span class="line"><span class="string">@file: euclidean_distance.py</span></span><br><span class="line"><span class="string">@date: 2016-12-09</span></span><br><span class="line"><span class="string">@desc: 余弦相似度</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line">__author__ = <span class="string">&quot;abc&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">w_fg = <span class="number">20</span></span><br><span class="line">h_fg = <span class="number">15</span></span><br><span class="line">pic_flag = <span class="number">3</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">read_pic</span>(<span class="params">fn</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    read_pic</span></span><br><span class="line"><span class="string">    :param fn:</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    fnimg = cv2.imread(fn)</span><br><span class="line">    img = cv2.resize(fnimg, (<span class="number">800</span>, <span class="number">600</span>), interpolation=cv2.INTER_AREA)</span><br><span class="line">    w = img.shape[<span class="number">1</span>]</span><br><span class="line">    h = img.shape[<span class="number">0</span>]</span><br><span class="line">    w_interval = w / w_fg</span><br><span class="line">    h_interval = h / h_fg</span><br><span class="line"></span><br><span class="line">    alltz = []</span><br><span class="line">    alltz.append([])</span><br><span class="line">    alltz.append([])</span><br><span class="line">    alltz.append([])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> now_h <span class="keyword">in</span> xrange(<span class="number">0</span>, h, h_interval):</span><br><span class="line">        <span class="keyword">for</span> now_w <span class="keyword">in</span> xrange(<span class="number">0</span>, w, w_interval):</span><br><span class="line">            b = img[now_h:now_h + h_interval, now_w:now_w + w_interval, <span class="number">0</span>]</span><br><span class="line">            g = img[now_h:now_h + h_interval, now_w:now_w + w_interval, <span class="number">1</span>]</span><br><span class="line">            r = img[now_h:now_h + h_interval, now_w:now_w + w_interval, <span class="number">2</span>]</span><br><span class="line">            btz = np.mean(b)</span><br><span class="line">            gtz = np.mean(g)</span><br><span class="line">            rtz = np.mean(r)</span><br><span class="line"></span><br><span class="line">            alltz[<span class="number">0</span>].append(btz)</span><br><span class="line">            alltz[<span class="number">1</span>].append(gtz)</span><br><span class="line">            alltz[<span class="number">2</span>].append(rtz)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> alltz</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_cossimi</span>(<span class="params">x, y</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    get_cossimi</span></span><br><span class="line"><span class="string">    :param x:</span></span><br><span class="line"><span class="string">    :param y:</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    myx = np.array(x)</span><br><span class="line">    myy = np.array(y)</span><br><span class="line">    cos1 = np.<span class="built_in">sum</span>(myx * myy)</span><br><span class="line">    cos21 = np.sqrt(<span class="built_in">sum</span>(myx * myx))</span><br><span class="line">    cos22 = np.sqrt(<span class="built_in">sum</span>(myy * myy))</span><br><span class="line">    <span class="keyword">return</span> cos1 / <span class="built_in">float</span>(cos21 * cos22)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment"># 提取特征</span></span><br><span class="line">    train_x = []</span><br><span class="line">    d = []</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> ii <span class="keyword">in</span> xrange(<span class="number">1</span>, pic_flag + <span class="number">1</span>):</span><br><span class="line">        smp_x = []</span><br><span class="line">        b_tz = np.array([<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>])</span><br><span class="line">        g_tz = np.array([<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>])</span><br><span class="line">        r_tz = np.array([<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>])</span><br><span class="line">        mytz = np.zeros((<span class="number">3</span>, w_fg * h_fg))</span><br><span class="line">        <span class="keyword">for</span> jj <span class="keyword">in</span> xrange(<span class="number">1</span>, <span class="number">3</span>):</span><br><span class="line">            fn = <span class="string">&#x27;/home/abc/Projects/machine_learning/img/base/p&#x27;</span> + <span class="built_in">str</span>(ii) + <span class="string">&#x27;-&#x27;</span> + <span class="built_in">str</span>(jj) + <span class="string">&#x27;.jpg&#x27;</span></span><br><span class="line">            <span class="built_in">print</span> fn</span><br><span class="line">            tmptz = read_pic(fn)</span><br><span class="line">            mytz += np.array(tmptz)</span><br><span class="line">        mytz /= <span class="number">3</span></span><br><span class="line">        train_x.append(mytz[<span class="number">0</span>].tolist() + mytz[<span class="number">1</span>].tolist() + mytz[<span class="number">2</span>].tolist())</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> index <span class="keyword">in</span> xrange(<span class="number">1</span>, <span class="number">5</span>):</span><br><span class="line">        fn = <span class="string">&#x27;/home/abc/Projects/machine_learning/img/base/test&#123;&#125;.jpg&#x27;</span>.<span class="built_in">format</span>(index)</span><br><span class="line">        testtz = np.array(read_pic(fn))</span><br><span class="line">        simtz = testtz[<span class="number">0</span>].tolist() + testtz[<span class="number">1</span>].tolist() + testtz[<span class="number">2</span>].tolist()</span><br><span class="line">        maxtz = <span class="number">0</span></span><br><span class="line">        nowi = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> xrange(pic_flag):</span><br><span class="line">            nowsim = get_cossimi(train_x[i], simtz)</span><br><span class="line">            <span class="keyword">if</span> nowsim &gt; maxtz:</span><br><span class="line">                maxtz = nowsim</span><br><span class="line">                nowi = i</span><br><span class="line"></span><br><span class="line">        <span class="built_in">print</span> <span class="string">&#x27;%s属于第%d类&#x27;</span> % (fn, nowi + <span class="number">1</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><a target="_blank" rel="noopener" href="http://www.cnblogs.com/chaosimple/archive/2013/06/28/3160839.html">http://www.cnblogs.com/chaosimple/archive/2013/06/28/3160839.html</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 7.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/resource/img/favicon2018.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/resource/img/favicon2018.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/resource/img/favicon2018.png">
+  <link rel="mask-icon" href="/resource/img/favicon2018.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"noogel.xyz","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="在日常的信息处理中，有效管理和查找文档是许多人面临的实际需求。无论是个人积累的资料，还是团队共享的文档，一个可靠的检索工具都能提供帮助。本文将介绍 畅文全索（xyz-search），一个基于 Spring Boot 和 ElasticSearch 开发的文档检索系统，旨在为用户提供一种相对便捷的文档内容查找方案。 💡 项目概述：畅文全索的功能定位畅文全索被定位为一个辅助性的全文检索系统。它基于">
+<meta property="og:type" content="article">
+<meta property="og:title" content="畅文全索：文档检索系统的探索与实践">
+<meta property="og:url" content="https://noogel.xyz/2025/04/18/1.html">
+<meta property="og:site_name" content="知一杂谈">
+<meta property="og:description" content="在日常的信息处理中，有效管理和查找文档是许多人面临的实际需求。无论是个人积累的资料，还是团队共享的文档，一个可靠的检索工具都能提供帮助。本文将介绍 畅文全索（xyz-search），一个基于 Spring Boot 和 ElasticSearch 开发的文档检索系统，旨在为用户提供一种相对便捷的文档内容查找方案。 💡 项目概述：畅文全索的功能定位畅文全索被定位为一个辅助性的全文检索系统。它基于">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://noogel.xyz/resource/img/2025-07-24-02-16-25.png">
+<meta property="article:published_time" content="2025-04-18T00:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-23T18:20:05.316Z">
+<meta property="article:author" content="noogel">
+<meta property="article:tag" content="项目">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://noogel.xyz/resource/img/2025-07-24-02-16-25.png">
+
+
+<link rel="canonical" href="https://noogel.xyz/2025/04/18/1.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://noogel.xyz/2025/04/18/1.html","path":"2025/04/18/1.html","title":"畅文全索：文档检索系统的探索与实践"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>畅文全索：文档检索系统的探索与实践 | 知一杂谈</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?9cdc9a11cbd242c6336b07c464d8820c"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="知一杂谈" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">知一杂谈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">我思故我在</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-career"><a href="/career/" rel="section"><i class="sitemap fa-fw"></i>├ 技术</a></li>
+        <li class="menu-item menu-item-life"><a href="/life/" rel="section"><i class="sitemap fa-fw"></i>├ 生活</a></li>
+        <li class="menu-item menu-item-future"><a href="/future/" rel="section"><i class="sitemap fa-fw"></i>└ 未来</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%F0%9F%92%A1-%E9%A1%B9%E7%9B%AE%E6%A6%82%E8%BF%B0%EF%BC%9A%E7%95%85%E6%96%87%E5%85%A8%E7%B4%A2%E7%9A%84%E5%8A%9F%E8%83%BD%E5%AE%9A%E4%BD%8D"><span class="nav-number">1.</span> <span class="nav-text">💡 项目概述：畅文全索的功能定位</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%9C%A8-%E4%B8%BB%E8%A6%81%E5%8A%9F%E8%83%BD%EF%BC%9A%E7%95%85%E6%96%87%E5%85%A8%E7%B4%A2%E7%9A%84%E7%89%B9%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">✨ 主要功能：畅文全索的特点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%F0%9F%93%84-%E5%A4%9A%E7%A7%8D%E6%96%87%E6%A1%A3%E6%A0%BC%E5%BC%8F%E6%94%AF%E6%8C%81"><span class="nav-number">2.1.</span> <span class="nav-text">📄 多种文档格式支持</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%F0%9F%94%8E-%E5%9F%BA%E7%A1%80%E6%A3%80%E7%B4%A2%E8%83%BD%E5%8A%9B"><span class="nav-number">2.2.</span> <span class="nav-text">🔎 基础检索能力</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%F0%9F%A4%96-AI-%E5%8A%9F%E8%83%BD%E7%9A%84%E5%BC%95%E5%85%A5"><span class="nav-number">2.3.</span> <span class="nav-text">🤖 AI 功能的引入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%F0%9F%93%9A-%E7%94%B5%E5%AD%90%E4%B9%A6%E7%AE%A1%E7%90%86%E8%BE%85%E5%8A%A9"><span class="nav-number">2.4.</span> <span class="nav-text">📚 电子书管理辅助</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%F0%9F%92%BB-%E7%95%8C%E9%9D%A2%E8%AE%BE%E8%AE%A1%E4%B8%8E%E6%93%8D%E4%BD%9C"><span class="nav-number">2.5.</span> <span class="nav-text">💻 界面设计与操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%F0%9F%9A%80-%E9%83%A8%E7%BD%B2%E6%8C%87%E5%BC%95%EF%BC%9A%E5%A6%82%E4%BD%95%E5%90%AF%E5%8A%A8%E7%95%85%E6%96%87%E5%85%A8%E7%B4%A2"><span class="nav-number">3.</span> <span class="nav-text">🚀 部署指引：如何启动畅文全索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%F0%9F%94%A7-%E9%85%8D%E7%BD%AE%E8%AF%B4%E6%98%8E%EF%BC%9A%E5%AE%9A%E5%88%B6%E5%8C%96%E9%80%89%E9%A1%B9"><span class="nav-number">4.</span> <span class="nav-text">🔧 配置说明：定制化选项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%F0%9F%90%B3-Docker-Compose-%E9%83%A8%E7%BD%B2%EF%BC%9A%E9%9B%86%E6%88%90%E6%9C%8D%E5%8A%A1"><span class="nav-number">5.</span> <span class="nav-text">🐳 Docker Compose 部署：集成服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%F0%9F%93%8A-%E5%BC%80%E5%8F%91%E8%AE%A1%E5%88%92%E4%B8%8E%E8%B4%A1%E7%8C%AE"><span class="nav-number">6.</span> <span class="nav-text">📊 开发计划与贡献</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%F0%9F%93%84-%E8%AE%B8%E5%8F%AF%E8%AF%81"><span class="nav-number">7.</span> <span class="nav-text">📄 许可证</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">noogel</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">80</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/noogel" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;noogel" rel="noopener" target="_blank"><i class="github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:noogel@163.com" title="E-Mail → mailto:noogel@163.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2025/04/18/1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="noogel">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知一杂谈">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          畅文全索：文档检索系统的探索与实践
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-04-18 00:00:00" itemprop="dateCreated datePublished" datetime="2025-04-18T00:00:00+00:00">2025-04-18</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>在日常的信息处理中，有效管理和查找文档是许多人面临的实际需求。无论是个人积累的资料，还是团队共享的文档，一个可靠的检索工具都能提供帮助。本文将介绍 <strong>畅文全索（xyz-search）</strong>，一个基于 <strong>Spring Boot</strong> 和 <strong>ElasticSearch</strong> 开发的文档检索系统，旨在为用户提供一种相对便捷的文档内容查找方案。</p>
+<h3 id="💡-项目概述：畅文全索的功能定位"><a href="#💡-项目概述：畅文全索的功能定位" class="headerlink" title="💡 项目概述：畅文全索的功能定位"></a>💡 项目概述：畅文全索的功能定位</h3><p>畅文全索被定位为一个辅助性的全文检索系统。它基于 <strong>Spring Boot</strong> 和 <strong>ElasticSearch</strong> 构建，尝试支持多种文件格式的全文内容检索。通过整合 <strong>Spring AI</strong> 功能，系统也具备了初步的智能搜索和内容分析能力，以期为用户提供更精准的检索体验。</p>
+<p>本系统适用于个人文档管理或小型数字文档集合的检索场景，可处理一定规模的文档数据。它旨在为用户提供一个可行的文档检索和管理工具。</p>
+<p>你可以在 <strong><a target="_blank" rel="noopener" href="https://github.com/noogel/xyz-search">GitHub</a></strong> 上找到畅文全索的开源代码。</p>
+<img src="/resource/img/2025-07-24-02-16-25.png" alt="" width=90% />
+
+<span id="more"></span>
+
+<h3 id="✨-主要功能：畅文全索的特点"><a href="#✨-主要功能：畅文全索的特点" class="headerlink" title="✨ 主要功能：畅文全索的特点"></a>✨ 主要功能：畅文全索的特点</h3><p>畅文全索在功能设计上，尝试涵盖了文档检索的一些核心需求：</p>
+<h4 id="📄-多种文档格式支持"><a href="#📄-多种文档格式支持" class="headerlink" title="📄 多种文档格式支持"></a>📄 多种文档格式支持</h4><p>系统在文档兼容性方面进行了一些尝试，目前支持多种常见文档格式的解析和索引：</p>
+<ul>
+<li><strong>办公文档</strong>：PDF、Word (docx)、Excel (xlsx)、PowerPoint</li>
+<li><strong>电子书</strong>：EPUB (支持内容解析与索引)</li>
+<li><strong>图像识别</strong>：通过集成 <strong>PaddleOCR</strong>，可提取图片中的文本信息。</li>
+<li><strong>多媒体</strong>：支持部分视频元数据索引。</li>
+<li><strong>网页与文本</strong>：支持 HTML 和纯文本文件 (TXT, MD, JSON 等)。</li>
+</ul>
+<h4 id="🔎-基础检索能力"><a href="#🔎-基础检索能力" class="headerlink" title="🔎 基础检索能力"></a>🔎 基础检索能力</h4><p>畅文全索的检索功能基于 ElasticSearch，提供了一些常用的搜索特性：</p>
+<ul>
+<li><strong>全文索引</strong>：采用 ElasticSearch 作为底层索引技术。</li>
+<li><strong>中文分词</strong>：支持中文文本的分词处理。</li>
+<li><strong>索引更新</strong>：具备基本的实时索引更新机制。</li>
+<li><strong>属性过滤</strong>：支持文件属性的过滤检索。</li>
+<li><strong>结果高亮</strong>：对搜索结果中的关键词进行高亮显示。</li>
+</ul>
+<h4 id="🤖-AI-功能的引入"><a href="#🤖-AI-功能的引入" class="headerlink" title="🤖 AI 功能的引入"></a>🤖 AI 功能的引入</h4><p>系统引入了 AI 相关功能，尝试提升检索的智能化程度：</p>
+<ul>
+<li><strong>Spring AI 集成</strong>：利用 Spring AI 框架进行功能扩展。</li>
+<li><strong>语言模型辅助</strong>：尝试基于大语言模型进行内容理解。</li>
+<li><strong>对话式检索</strong>：支持初步的自然语言对话式检索模式。</li>
+<li><strong>Ollama 模型支持</strong>：可配置本地部署 Ollama 模型。</li>
+</ul>
+<h4 id="📚-电子书管理辅助"><a href="#📚-电子书管理辅助" class="headerlink" title="📚 电子书管理辅助"></a>📚 电子书管理辅助</h4><p>对于电子书爱好者，系统也提供了一些辅助管理功能：</p>
+<ul>
+<li><strong>OPDS 协议支持</strong>：兼容 OPDS 电子书协议。</li>
+<li><strong>EPUB 阅读</strong>：内置简易的在线 EPUB 阅读器。</li>
+</ul>
+<h4 id="💻-界面设计与操作"><a href="#💻-界面设计与操作" class="headerlink" title="💻 界面设计与操作"></a>💻 界面设计与操作</h4><p>系统提供了基本的 Web 界面，以方便用户操作：</p>
+<ul>
+<li><strong>Web 界面</strong>：提供一个简洁的 Web 交互界面。</li>
+<li><strong>文档上传</strong>：支持文件上传功能。</li>
+<li><strong>文件采集</strong>：可设置自动采集指定目录下的文件。</li>
+<li><strong>移动端适配</strong>：界面设计考虑了响应式布局。</li>
+</ul>
+<p>系统以 <strong>Spring Boot</strong> 作为主要开发框架，提供了 Web 界面和各类 API 接口。内部功能模块包括搜索、索引、AI 和文件服务。数据存储方面，主要依赖 <strong>ElasticSearch</strong> 进行全文索引，<strong>SQLite</strong> 用于系统配置数据，而 AI 功能则通过 <strong>Spring AI</strong> 实现。文件存储则独立进行管理。</p>
+<hr>
+<h3 id="🚀-部署指引：如何启动畅文全索"><a href="#🚀-部署指引：如何启动畅文全索" class="headerlink" title="🚀 部署指引：如何启动畅文全索"></a>🚀 部署指引：如何启动畅文全索</h3><p>以下是使用 Docker 快速启动畅文全索的基本步骤：</p>
+<p><strong>通过预构建 Docker 镜像启动：</strong></p>
+<ol>
+<li><p><strong>拉取镜像：</strong></p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull noogel/xyz-search:latest</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>运行容器：</strong></p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name xyzSearch --network xyz-bridge-net -p 8081:8081 \</span><br><span class="line">-v /path/to/searchData:/usr/share/xyz-search/data \</span><br><span class="line">-v /path/to/share:/data/share \</span><br><span class="line">noogel/xyz-search:latest</span><br></pre></td></tr></table></figure>
+
+<p> 请将示例路径 <code>/path/to/searchData</code> 和 <code>/path/to/share</code> 替换为实际的文件存储位置。</p>
+</li>
+</ol>
+<p>系统默认配置如下：</p>
+<ul>
+<li><strong>管理员账号</strong>：<code>xyz</code></li>
+<li><strong>初始密码</strong>：<code>search</code></li>
+<li><strong>访问地址</strong>：<a target="_blank" rel="noopener" href="http://localhost:8081/">http://localhost:8081</a></li>
+</ul>
+<blockquote>
+<p><strong>注意</strong>：系统初始密码可在配置页面修改。当前版本账号不支持修改。建议在较为受控的网络环境中使用。</p>
+</blockquote>
+<hr>
+<h3 id="🔧-配置说明：定制化选项"><a href="#🔧-配置说明：定制化选项" class="headerlink" title="🔧 配置说明：定制化选项"></a>🔧 配置说明：定制化选项</h3><p>系统启动后，用户可在 Web 界面进行必要的参数调整：</p>
+<ul>
+<li><strong>索引目录</strong>：指定需要进行索引的文档主目录，并可设置排除的子目录。</li>
+<li><strong>文件自动采集</strong>：配置监控源目录、目标存储目录、文件类型过滤规则以及是否自动删除源文件。</li>
+<li><strong>OPDS 服务根目录</strong>：建议配置为 Calibre 库目录。</li>
+<li><strong>文件存储路径</strong>：包括手动上传和标记删除文件的存储路径。</li>
+<li><strong>通知邮件配置</strong>：用于系统访问通知的邮件设置。</li>
+<li><strong>OCR 服务</strong>：配置 PaddleOCR 服务地址。</li>
+<li><strong>外部搜索链接</strong>：自定义文档详情页的外部搜索链接，如豆瓣、京东、谷歌。</li>
+<li><strong>AI 对话检索</strong>：配置 AI 功能的启用状态，以及 Ollama、Elasticsearch 和 Qdrant 等相关服务的参数。</li>
+</ul>
+<hr>
+<h3 id="🐳-Docker-Compose-部署：集成服务"><a href="#🐳-Docker-Compose-部署：集成服务" class="headerlink" title="🐳 Docker Compose 部署：集成服务"></a>🐳 Docker Compose 部署：集成服务</h3><p>对于偏好使用 Docker Compose 的用户，我们也提供了相应的配置，可以方便地部署包含 Elasticsearch、Qdrant 等服务的完整环境：</p>
+<p>创建一个 <code>docker-compose.yml</code> 文件，并添加以下内容：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&#x27;3&#x27;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">xyz-search:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">noogel/xyz-search:latest</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">xyzSearch</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;8081:8081&quot;</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./searchData:/usr/share/xyz-search/data</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./share:/data/share</span></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">xyz-net</span></span><br><span class="line"></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line">  <span class="attr">xyz-net:</span></span><br><span class="line">    <span class="attr">driver:</span> <span class="string">bridge</span></span><br></pre></td></tr></table></figure>
+
+<p>在 <code>docker-compose.yml</code> 所在目录执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure>
+
+<p>这将启动畅文全索服务。如需部署完整的服务栈（包含 Elasticsearch、Qdrant 和 PaddleOCR），请参考项目仓库中的详细 <code>docker-compose.yml</code> 配置。</p>
+<h3 id="📊-开发计划与贡献"><a href="#📊-开发计划与贡献" class="headerlink" title="📊 开发计划与贡献"></a>📊 开发计划与贡献</h3><p>畅文全索仍在持续改进中。目前已完成的功能包括 RAG 检索增强模型优化和中文分词准确率改进。未来的开发计划包括：</p>
+<ul>
+<li>全新的响应式搜索界面</li>
+<li>多用户系统支持</li>
+<li>支持更多文档格式</li>
+</ul>
+<p>我们欢迎对本项目感兴趣的开发者参与贡献，无论是功能开发、文档完善、Bug 修复，还是性能优化建议，都将为项目的进步提供帮助。</p>
+<hr>
+<h3 id="📄-许可证"><a href="#📄-许可证" class="headerlink" title="📄 许可证"></a>📄 许可证</h3><p>本项目遵循 <strong>GNU General Public License v3.0</strong> 许可证。</p>
+<hr>
+<p>希望以上内容能为您提供关于畅文全索的基本信息。如果您有进一步的疑问或建议，欢迎交流。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div></div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/resource/file/wechat_mini.jpg" alt="noogel 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/resource/file/alipay_mini.jpg" alt="noogel 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/resource/file/qrcode_for_gh_4223a67f3865_258.jpg">
+          <span class="icon">
+            <i class="fab fa-weixin"></i>
+          </span>
+
+          <span class="label">WeChat</span>
+        </a>
+      </div>
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/atom.xml">
+          <span class="icon">
+            <i class="fa fa-rss"></i>
+          </span>
+
+          <span class="label">RSS</span>
+        </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E9%A1%B9%E7%9B%AE/" rel="tag"># 项目</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/02/13/1.html" rel="prev" title="软件系统复杂性治理方法">
+                  <i class="fa fa-chevron-left"></i> 软件系统复杂性治理方法
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/07/23/1.html" rel="next" title="从淘宝看促销：解析电商促销模型">
+                  从淘宝看促销：解析电商促销模型 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">noogel</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.13.4/dist/mermaid.min.js","integrity":"sha256-96rwDGMWIQYB0yKGp1sKi1yrjrLPj2oT39IpbCsIrsg="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"noogel","repo":"noogel.github.io","client_id":"41a4e14aca0b3552334a","client_secret":"ebe0f9bfd24824f3d0d0f41bfd88a8736353759b","admin_user":"noogel","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"cfc30e9c1a6bd5f7149dcf1f1a092069"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>
