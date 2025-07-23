@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/resource/img/favicon2018.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/resource/img/favicon2018.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/resource/img/favicon2018.png">
+  <link rel="mask-icon" href="/resource/img/favicon2018.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"noogel.xyz","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="领域驱动设计中定义了超多的概念，如果不多找几篇资料综合的去看，正确的理解比较困难，下面搜集整理了大部分的领域驱动中的概念，并加以理解描述。  战略设计与战术设计战略设计主要从业务视角出发，建立业务领域模型，划分领域边界，建立通用语言的限界上下文，限界上下文可以作为微服务设计的参考边界。它是从高层事业来绅士我们的软件系统。从战略设计角度来看，一套基础的电商业务应该包含如下领域，支付域、交易域、商品域">
+<meta property="og:type" content="article">
+<meta property="og:title" content="领域基本概念字典">
+<meta property="og:url" content="https://noogel.xyz/2021/01/15/1.html">
+<meta property="og:site_name" content="知一杂谈">
+<meta property="og:description" content="领域驱动设计中定义了超多的概念，如果不多找几篇资料综合的去看，正确的理解比较困难，下面搜集整理了大部分的领域驱动中的概念，并加以理解描述。  战略设计与战术设计战略设计主要从业务视角出发，建立业务领域模型，划分领域边界，建立通用语言的限界上下文，限界上下文可以作为微服务设计的参考边界。它是从高层事业来绅士我们的软件系统。从战略设计角度来看，一套基础的电商业务应该包含如下领域，支付域、交易域、商品域">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://noogel.xyz/resource/img/2021-01-15-01-11-37.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/2021-01-15-01-12-07.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/2021-01-15-01-12-29.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/2021-01-15-01-14-08.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/2021-01-15-01-14-22.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/2021-01-15-01-14-41.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/2021-01-15-01-14-50.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/2021-01-15-01-15-04.png">
+<meta property="article:published_time" content="2021-01-15T00:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-23T07:30:58.918Z">
+<meta property="article:author" content="noogel">
+<meta property="article:tag" content="领域驱动设计">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://noogel.xyz/resource/img/2021-01-15-01-11-37.png">
+
+
+<link rel="canonical" href="https://noogel.xyz/2021/01/15/1.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://noogel.xyz/2021/01/15/1.html","path":"2021/01/15/1.html","title":"领域基本概念字典"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>领域基本概念字典 | 知一杂谈</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?9cdc9a11cbd242c6336b07c464d8820c"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="知一杂谈" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">知一杂谈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">我思故我在</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-career"><a href="/career/" rel="section"><i class="sitemap fa-fw"></i>├ 技术</a></li>
+        <li class="menu-item menu-item-life"><a href="/life/" rel="section"><i class="sitemap fa-fw"></i>├ 生活</a></li>
+        <li class="menu-item menu-item-future"><a href="/future/" rel="section"><i class="sitemap fa-fw"></i>└ 未来</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%98%E7%95%A5%E8%AE%BE%E8%AE%A1%E4%B8%8E%E6%88%98%E6%9C%AF%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.</span> <span class="nav-text">战略设计与战术设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%86%E5%9F%9F-amp-%E5%AD%90%E9%A2%86%E5%9F%9F"><span class="nav-number">2.</span> <span class="nav-text">领域 &amp; 子领域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E5%9F%9F-amp-%E9%80%9A%E7%94%A8%E5%9F%9F-amp-%E6%94%AF%E6%92%91%E5%9F%9F"><span class="nav-number">3.</span> <span class="nav-text">核心域 &amp; 通用域 &amp; 支撑域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E9%A3%8E%E6%9A%B4"><span class="nav-number">4.</span> <span class="nav-text">事件风暴</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E7%94%A8%E8%AF%AD%E8%A8%80-amp-%E7%95%8C%E9%99%90%E4%B8%8A%E4%B8%8B%E6%96%87"><span class="nav-number">5.</span> <span class="nav-text">通用语言 &amp; 界限上下文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E7%94%A8%E8%AF%AD%E8%A8%80"><span class="nav-number">5.1.</span> <span class="nav-text">通用语言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%95%8C%E9%99%90%E4%B8%8A%E4%B8%8B%E6%96%87"><span class="nav-number">5.2.</span> <span class="nav-text">界限上下文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%97%E5%AD%90%E8%AF%B4%E6%98%8E"><span class="nav-number">5.3.</span> <span class="nav-text">栗子说明</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E4%B8%8B%E6%96%87%E6%98%A0%E5%B0%84%E5%9B%BE"><span class="nav-number">6.</span> <span class="nav-text">上下文映射图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%86%E5%9F%9F%E6%9C%8D%E5%8A%A1"><span class="nav-number">7.</span> <span class="nav-text">领域服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%86%E5%9F%9F%E4%BA%8B%E4%BB%B6"><span class="nav-number">8.</span> <span class="nav-text">领域事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E4%BD%93-amp-%E5%80%BC%E5%AF%B9%E8%B1%A1-amp-%E8%81%9A%E5%90%88-amp-%E8%81%9A%E5%90%88%E6%A0%B9"><span class="nav-number">9.</span> <span class="nav-text">实体 &amp; 值对象 &amp; 聚合 &amp; 聚合根</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E4%BD%93-amp-%E5%80%BC%E5%AF%B9%E8%B1%A1"><span class="nav-number">9.1.</span> <span class="nav-text">实体 &amp; 值对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%81%9A%E5%90%88-amp-%E8%81%9A%E5%90%88%E6%A0%B9"><span class="nav-number">9.2.</span> <span class="nav-text">聚合 &amp; 聚合根</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%98%B2%E8%85%90%E5%B1%82"><span class="nav-number">10.</span> <span class="nav-text">防腐层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B4%AB%E8%A1%80%E6%A8%A1%E5%9E%8B"><span class="nav-number">11.</span> <span class="nav-text">贫血模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%86%E5%9F%9F%E6%A8%A1%E5%9E%8B"><span class="nav-number">12.</span> <span class="nav-text">领域模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E6%94%BE%E4%B8%BB%E6%9C%BA%E6%9C%8D%E5%8A%A1"><span class="nav-number">13.</span> <span class="nav-text">开放主机服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">14.</span> <span class="nav-text">参考</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">noogel</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/noogel" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;noogel" rel="noopener" target="_blank"><i class="github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:noogel@163.com" title="E-Mail → mailto:noogel@163.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2021/01/15/1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="noogel">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知一杂谈">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          领域基本概念字典
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-01-15 00:00:00" itemprop="dateCreated datePublished" datetime="2021-01-15T00:00:00+00:00">2021-01-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">领域驱动设计</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>领域驱动设计中定义了超多的概念，如果不多找几篇资料综合的去看，正确的理解比较困难，下面搜集整理了大部分的领域驱动中的概念，并加以理解描述。</p>
+<p><img src="/resource/img/2021-01-15-01-11-37.png"></p>
+<h2 id="战略设计与战术设计"><a href="#战略设计与战术设计" class="headerlink" title="战略设计与战术设计"></a>战略设计与战术设计</h2><p>战略设计主要从业务视角出发，建立业务领域模型，划分领域边界，建立通用语言的限界上下文，限界上下文可以作为微服务设计的参考边界。它是从高层事业来绅士我们的软件系统。从战略设计角度来看，一套基础的电商业务应该包含如下领域，支付域、交易域、商品域、库存域、履约域。不同领域之间通过界限上下文来划分边界。</p>
+<p><img src="/resource/img/2021-01-15-01-12-07.png"></p>
+<p>战术设计则从技术视角出发，侧重于领域模型的技术实现，完成软件开发和落地，包括：聚合根、实体、值对象、领域服务、应用服务和资源库等代码逻辑的设计和实现。它主要关注的是技术层面的实施，也是对我们程序员最实在的地方。战术设计的具体落地案例在后面的内容中会讲解。</p>
+<h2 id="领域-amp-子领域"><a href="#领域-amp-子领域" class="headerlink" title="领域 &amp; 子领域"></a>领域 &amp; 子领域</h2><p>DDD 的领域就是这个边界内要解决的业务问题域。既然领域是用来限定业务边界和范围的，那么就会有大小之分，领域越大，业务范围就越大，反之则相反。领域可以进一步划分为子领域。我们把划分出来的多个子领域称为子域，每个子域对应一个更小的问题域或更小的业务范围。</p>
+<h2 id="核心域-amp-通用域-amp-支撑域"><a href="#核心域-amp-通用域-amp-支撑域" class="headerlink" title="核心域 &amp; 通用域 &amp; 支撑域"></a>核心域 &amp; 通用域 &amp; 支撑域</h2><p>在领域不断划分的过程中，领域会细分为不同的子域，子域可以根据自身重要性和功能属性划分为三类子域，它们分别是：核心域、通用域和支撑域。决定产品和公司核心竞争力的子域是核心域，它是业务成功的主要因素和公司的核心竞争力。没有太多个性化的诉求，同时被多个子域使用的通用功能子域是通用域。还有一种功能子域是必需的，但既不包含决定产品和公司核心竞争力的功能，也不包含通用功能的子域，它就是支撑域。</p>
+<p>基于以上概念定义，对订单域进行如下的拆分，其中交易子域和算价子域是最关键的核心子域，限购子域、交付子域、报表子域、会员订阅子域是支撑子域，消息子域为沟通各个子域的桥梁分类为通用子域。<strong>注意这里的曲线只是用来区分不同子域类型，不是界限上下文。</strong></p>
+<p><img src="/resource/img/2021-01-15-01-12-29.png"></p>
+<h2 id="事件风暴"><a href="#事件风暴" class="headerlink" title="事件风暴"></a>事件风暴</h2><p>事件风暴是一项团队活动，领域专家与项目团队通过头脑风暴的形式，罗列出领域中所有的领域事件，整合之后形成最终的领域事件集合，然后对每一个事件，标注出导致该事件的命令，再为每一个事件标注出命令发起方的角色。命令可以是用户发起，也可以是第三方系统调用或者定时器触发等，最后对事件进行分类，整理出实体、聚合、聚合根以及限界上下文。而事件风暴正是 DDD 战略设计中经常使用的一种方法，它可以快速分析和分解复杂的业务领域，完成领域建模。</p>
+<h2 id="通用语言-amp-界限上下文"><a href="#通用语言-amp-界限上下文" class="headerlink" title="通用语言 &amp; 界限上下文"></a>通用语言 &amp; 界限上下文</h2><p>在 DDD 领域建模和系统建设过程中，有很多的参与者，包括领域专家、产品经理、项目经理、架构师、开发经理和测试经理等。对同样的领域知识，不同的参与角色可能会有不同的理解，那大家交流起来就会有障碍，怎么办呢？因此，在 DDD 中就出现了“通用语言”和“限界上下文”这两个重要的概念。这两者相辅相成，通用语言定义上下文含义，限界上下文则定义领域边界，以确保每个上下文含义在它特定的边界内都具有唯一的含义，领域模型则存在于这个边界之内。</p>
+<h3 id="通用语言"><a href="#通用语言" class="headerlink" title="通用语言"></a>通用语言</h3><p>团队交流达成共识的能够明确简单清晰的描述业务规则和业务含义的语言就是通用语言。解决各岗位的沟通障碍问题，促进不同岗位的和合作，确保业务需求的正确表达。通用语言贯穿于整个设计过程，基于通用语言可以开发出可读性更好的代码，能准确的把业务需求转化为代码。</p>
+<h3 id="界限上下文"><a href="#界限上下文" class="headerlink" title="界限上下文"></a>界限上下文</h3><p>用来封装通用语言和领域对象，提供上下文环境，保证在领域之内的一些术语、业务相关对象等（通用语言）有一个确切的含义，没有二义性。这个边界定义了模型的适用范围，使团队所有成员能够明确地知道什么应该在模型中实现，什么不应该在模型中实现。</p>
+<h3 id="栗子说明"><a href="#栗子说明" class="headerlink" title="栗子说明"></a>栗子说明</h3><p>在商品域，商品实体则对应着一个具体的 SKU 商品，包含着标题和金额，如现在的课程、会员服务。在订单域中的商品实体并不等同域商品域中的实体，比如可以将优惠券做成可以被售卖的商品，coupon_no 就是 product_key，具有 non-consumable 属性；或者将付费咨询的用户服务打包成商品售卖，那么 member_id 就能映射成 producer_key，并且觉有 consumable 属性。界限上下文就是区分不同领域下的领域对象，划定了领域对象含义的边界。在订单域中，商品实体默认可以是商品系统 SKU，也可以是优惠券和用户服务等。</p>
+<p><img src="/resource/img/2021-01-15-01-14-08.png"></p>
+<h2 id="上下文映射图"><a href="#上下文映射图" class="headerlink" title="上下文映射图"></a>上下文映射图</h2><p>上下文映射图就通过画图的方式展示N（N&gt;&#x3D;2）个上下文之间的映射关系。</p>
+<p><img src="/resource/img/2021-01-15-01-14-22.png"></p>
+<p>ACL表示防腐层，OHS表示开放主机服务，PL表示发布语言，U代表上游，D代表下游。</p>
+<h2 id="领域服务"><a href="#领域服务" class="headerlink" title="领域服务"></a>领域服务</h2><p>你是否遇到过这样的问题：想建模一个领域概念，把它放在实体上不合适，把它放在值对象上也不合适，然后你冥思苦想着自己的建模方式是不是出了问题。恭喜你，祝贺你，你的建模手法完全没有问题，只是你还没有接触到领域服务（Domain Service）这个概念，因为领域服务本来就是来处理这种场景的。比如，要对客户端类型和版本进行判断是否支持某一项功能，我们可以创建一个 <code>ClientVersionService</code> 来负责。<br>值得一提的是，领域服务和上文中提到的应用服务是不同的，领域服务是领域模型的一部分，而应用服务不是。应用服务是领域服务的客户，它将领域模型变成对外界可用的软件系统。</p>
+<h2 id="领域事件"><a href="#领域事件" class="headerlink" title="领域事件"></a>领域事件</h2><p>在DDD中，领域事件便可以用于处理上述问题，此时最终一致性取代了事务一致性，通过领域事件的方式达到各个组件之间的数据一致性。领域事件的命名遵循英语中的“名词+动词过去分词”格式，即表示的是先前发生过的一件事情。比如，购买者提交商品订单之后发布 <code>OrderCreated</code> 事件，用户支付 <code>TradePaid</code> 事件。需要注意的是，既然是领域事件，他们便应该从领域模型中发布。领域事件的最终接收者可以是本限界上下文中的组件，也可以是另一个限界上下文。<br>领域事件的额外好处在于它可以记录发生在软件系统中所有的重要修改，这样可以很好地支持程序调试和商业智能化。另外，在CQRS架构的软件系统中，领域事件还用于写模型和读模型之间的数据同步。再进一步发展，事件驱动架构可以演变成事件源（Event Sourcing），即对聚合的获取并不是通过加载数据库中的瞬时状态，而是通过重放发生在聚合生命周期中的所有领域事件完成。</p>
+<h2 id="实体-amp-值对象-amp-聚合-amp-聚合根"><a href="#实体-amp-值对象-amp-聚合-amp-聚合根" class="headerlink" title="实体 &amp; 值对象 &amp; 聚合 &amp; 聚合根"></a>实体 &amp; 值对象 &amp; 聚合 &amp; 聚合根</h2><h3 id="实体-amp-值对象"><a href="#实体-amp-值对象" class="headerlink" title="实体 &amp; 值对象"></a>实体 &amp; 值对象</h3><p>实体和值对象是组成领域模型的基础单元。<br>在 DDD 中有这样一类对象，它们拥有唯一标识符，且标识符在历经各种状态变更后仍能保持一致。对这些对象而言，重要的不是其属性，而是其延续性和标识，对象的延续性和标识会跨越甚至超出软件的生命周期。我们把这样的对象称为实体。<br>通过对象属性值来识别的对象，它将多个相关属性组合为一个概念整体。在 DDD 中用来描述领域的特定方面，并且是一个没有标识符的对象，叫作值对象。值对象本质就是一个集合，可以保证属性归类的清晰和概念的完整性。</p>
+<p><strong>举例说明</strong></p>
+<p><img src="/resource/img/2021-01-15-01-14-41.png"></p>
+<p>消费者实体原本包括：ID、昵称、注册手机号、姓名以及人员所在的省、市、县和街道等属性。这样显示地址相关的属性就很零碎了对不对？现在，我们可以将“省、市、县和街道等属性”拿出来构成一个“地址属性集合”，这个集合就是值对象了。</p>
+<h3 id="聚合-amp-聚合根"><a href="#聚合-amp-聚合根" class="headerlink" title="聚合 &amp; 聚合根"></a>聚合 &amp; 聚合根</h3><p>聚合是业务和逻辑紧密关联的实体和值对象组合而成，聚合是数据修改和持久化的基本单元，一个聚合对应一个数据的持久化。聚合在DDD分层架构中属于领域层，领域层包含了多个聚合，共同实现核心业务逻辑，聚合内的实体以充血模型实现个体业务能力，以及业务逻辑的高内聚。跨多个实体的业务逻辑通过领域服务来实现，跨多个聚合的业务逻辑通过应用服务来实现。<br>如果把聚合比作组织，聚合根则是组织的负责人，聚合根也叫做根实体，它不仅仅是实体，还是实体的管理者。聚合之间通过聚合根关联引用，如果需要访问其他聚合的实体，先访问聚合根，再导航到聚合内部的实体。即外部对象不能直接访问聚合内的实体。</p>
+<p><strong>举例说明</strong></p>
+<p><img src="/resource/img/2021-01-15-01-14-50.png"></p>
+<p>上图说明聚合与聚合根的关系，交易聚合有一个唯一的聚合根交易单，交易单组织了消费者实体、商品实体、商铺实体、优惠券实体同时消费金额之对象。下面具体对比说明下：</p>
+<p>聚合的特点：高内聚、低耦合，它是领域模型中最底层的边界，可以作为拆分微服务的最小单位，但我不建议你对微服务过度拆分。但在对性能有极致要求的场景中，聚合可以独立作为一个微服务，以满足版本的高频发布和极致的弹性伸缩能力。<br>一个微服务可以包含多个聚合，聚合之间的边界是微服务内天然的逻辑边界。有了这个逻辑边界，在微服务架构演进时就可以以聚合为单位进行拆分和组合了，微服务的架构演进也就不再是一件难事了。<br>聚合根的特点：聚合根是实体，有实体的特点，具有全局唯一标识，有独立的生命周期。一个聚合只有一个聚合根，聚合根在聚合内对实体和值对象采用直接对象引用的方式进行组织和协调，聚合根与聚合根之间通过 ID 关联的方式实现聚合之间的协同。<br>实体的特点：有 ID 标识，通过 ID 判断相等性，ID 在聚合内唯一即可。状态可变，它依附于聚合根，其生命周期由聚合根管理。实体一般会持久化，但与数据库持久化对象不一定是一对一的关系。实体可以引用聚合内的聚合根、实体和值对象。<br>值对象的特点：无 ID，不可变，无生命周期，用完即扔。值对象之间通过属性值判断相等性。它的核心本质是值，是一组概念完整的属性组成的集合，用于描述实体的状态和特征。值对象尽量只引用值对象。</p>
+<h2 id="防腐层"><a href="#防腐层" class="headerlink" title="防腐层"></a>防腐层</h2><p>通过在遗留系统和现代系统之间使用防腐层来隔离它们。该层转换两个系统之间的通信，允许遗留系统保持不变，同时可以避免损害现代应用程序的设计和技术方法。</p>
+<p><img src="/resource/img/2021-01-15-01-15-04.png"></p>
+<p>现代应用与防腐层之间的通信始终使用应用程序的数据模型和架构。从防腐层到遗留系统的调用都符合该系统的数据模型或方法。 防腐层包含两个系统之间转换所需的所有逻辑。该层可以作为应用程序中的组件或作为独立服务来实现。</p>
+<h2 id="贫血模型"><a href="#贫血模型" class="headerlink" title="贫血模型"></a>贫血模型</h2><p>贫血模型就是模型对象之间存在完整的关联(可能存在多余的关联)，但是对象除了get和set方外外几乎就没有其它的方 法，整个对象充当的就是一个数据容器，用C语言的话来说就是一个结构体，所有的业务方法都在一个无状态的Service类中实现，Service类仅仅包 含一些行为。<br>贫血模型的优点是很明显的：</p>
+<ol>
+<li>被许多程序员所掌握，许多教材采用的是这种模型，对于初学者，这种模型很自然，甚至被很多人认为是java中最正统的模型。</li>
+<li>它非常简单，对于并不复杂的业务(转帐业务)，它工作得很好，开发起来非常迅速。它似乎也不需要对领域的充分了解，只要给出要实现功能的每一个步骤，就能实现它。</li>
+<li>事务边界相当清楚，一般来说service的每个方法都可以看成一个事务，因为通常Service的每个方法对应着一个用例。（在这个例子中我使用了facade作为事务边界，后面我要讲这个是多余的)<br>其缺点为也是很明显的：</li>
+<li>所有的业务都在service中处理，当业越来越复杂时，service会变得越来越庞大，最终难以理解和维护。</li>
+<li>将所有的业务放在无状态的service中实际上是一个过程化的设计，它在组织复杂的业务存在天然的劣势，随着业务的复杂，业务会在service中多个方法间重复。</li>
+<li>当添加一个新的UI时，很多业务逻辑得重新写。例如，当要提供Web Service的接口时，原先为Web界面提供的service就很难重用，导致重复的业务逻辑（在贫血模型的分层图中可以看得更清楚），如何保持业务逻辑一致是很大的挑战。</li>
+</ol>
+<h2 id="领域模型"><a href="#领域模型" class="headerlink" title="领域模型"></a>领域模型</h2><p>领域模型是对领域内的概念类或现实世界中对象的可视化表示。又称概念模型、领域对象模型、分析对象模型。它专注于分析问题领域本身，发掘重要的业务领域概念，并建立业务领域概念之间的关系。<br>领域驱动模型，与贫血模型相反，领域模型要承担关键业务逻辑，业务逻辑在多个领域对象之间分配，而Service只是完成一些不适合放在模型中的业务逻辑，它是非常薄的一层，它指挥多个模型对象来完成业务功能。<br>其优点是：</p>
+<ol>
+<li>领域模型采用OO设计，通过将职责分配到相应的模型对象或Service，可以很好的组织业务逻辑，当业务变得复杂时，领域模型显出巨大的优势。</li>
+<li>当需要多个UI接口时，领域模型可以重用，并且业务逻辑只在领域层中出现，这使得很容易对多个UI接口保持业务逻辑的一致(从领域模型的分层图可以看得更清楚)。<br>其缺点是：</li>
+<li>对程序员的要求较高，初学者对这种将职责分配到多个协作对象中的方式感到极不适应。</li>
+<li>领域驱动建模要求对领域模型完整而透彻的了解，只给出一个用例的实现步骤是无法得到领域模型的，这需要和领域专家的充分讨论。错误的领域模型对项目的危害非常之大，而实现一个好的领域模型非常困难。</li>
+<li>对于简单的软件，使用领域模型，显得有些杀鸡用牛刀了。</li>
+</ol>
+<h2 id="开放主机服务"><a href="#开放主机服务" class="headerlink" title="开放主机服务"></a>开放主机服务</h2><p>该模式可以通过REST实现。通常来讲，我们可以将开放主机服务看作是远程过程调用（RPC）的API。同时，也可以通过消息机制实现。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/snidget/p/12995676.html">https://www.cnblogs.com/snidget/p/12995676.html</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/130945830">https://zhuanlan.zhihu.com/p/130945830</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/itfly8/article/details/109554847">https://blog.csdn.net/itfly8/article/details/109554847</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/netfocus/archive/2011/10/10/2204949.html">https://www.cnblogs.com/netfocus/archive/2011/10/10/2204949.html</a><br><a target="_blank" rel="noopener" href="https://iambowen.gitbooks.io/cloud-design-pattern/content/patterns/anti-corruption-layer.html">https://iambowen.gitbooks.io/cloud-design-pattern/content/patterns/anti-corruption-layer.html</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div></div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/resource/file/wechat_mini.jpg" alt="noogel 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/resource/file/alipay_mini.jpg" alt="noogel 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/resource/file/qrcode_for_gh_4223a67f3865_258.jpg">
+          <span class="icon">
+            <i class="fab fa-weixin"></i>
+          </span>
+
+          <span class="label">WeChat</span>
+        </a>
+      </div>
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/atom.xml">
+          <span class="icon">
+            <i class="fa fa-rss"></i>
+          </span>
+
+          <span class="label">RSS</span>
+        </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1/" rel="tag"># 领域驱动设计</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/09/07/1.html" rel="prev" title="小米粥声控音箱总体计划">
+                  <i class="fa fa-chevron-left"></i> 小米粥声控音箱总体计划
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/01/27/1.html" rel="next" title="业务流程模型和标记法（BPMN）">
+                  业务流程模型和标记法（BPMN） <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">noogel</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.13.4/dist/mermaid.min.js","integrity":"sha256-96rwDGMWIQYB0yKGp1sKi1yrjrLPj2oT39IpbCsIrsg="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"noogel","repo":"noogel.github.io","client_id":"41a4e14aca0b3552334a","client_secret":"ebe0f9bfd24824f3d0d0f41bfd88a8736353759b","admin_user":"noogel","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"a754b19365fb7219bf06cf1ea8af47a6"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/resource/img/favicon2018.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/resource/img/favicon2018.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/resource/img/favicon2018.png">
+  <link rel="mask-icon" href="/resource/img/favicon2018.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"noogel.xyz","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="BPMN 有什么优势呢，用了一段时间主要使用在业务流程表达上，表达符号比较多，相比流程图可以更清楚的表达业务流程，同步、异步，异常中断、事件消息等等，如果看图的人都对这些符号有概念，可以比较轻松的看懂业务流程。缺点就是符号太多，学习成本相对高一些。学会了就会对业务表达上有很好的助力。 范围BPMN仅限于支持对业务流程有用的建模概念。这意味着组织所做的非业务目的其他类型建模将排除在BPMN之外。例如">
+<meta property="og:type" content="article">
+<meta property="og:title" content="业务流程模型和标记法（BPMN）">
+<meta property="og:url" content="https://noogel.xyz/2021/01/27/1.html">
+<meta property="og:site_name" content="知一杂谈">
+<meta property="og:description" content="BPMN 有什么优势呢，用了一段时间主要使用在业务流程表达上，表达符号比较多，相比流程图可以更清楚的表达业务流程，同步、异步，异常中断、事件消息等等，如果看图的人都对这些符号有概念，可以比较轻松的看懂业务流程。缺点就是符号太多，学习成本相对高一些。学会了就会对业务表达上有很好的助力。 范围BPMN仅限于支持对业务流程有用的建模概念。这意味着组织所做的非业务目的其他类型建模将排除在BPMN之外。例如">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://noogel.xyz/resource/img/2021-01-31-14-03-31.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/2021-01-31-14-03-36.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/2021-01-31-14-03-43.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/2021-01-31-14-03-48.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/2021-01-31-14-03-54.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/2021-01-31-14-04-00.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/2021-01-31-14-04-07.png">
+<meta property="article:published_time" content="2021-01-27T00:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-23T07:30:58.915Z">
+<meta property="article:author" content="noogel">
+<meta property="article:tag" content="效率">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://noogel.xyz/resource/img/2021-01-31-14-03-31.png">
+
+
+<link rel="canonical" href="https://noogel.xyz/2021/01/27/1.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://noogel.xyz/2021/01/27/1.html","path":"2021/01/27/1.html","title":"业务流程模型和标记法（BPMN）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>业务流程模型和标记法（BPMN） | 知一杂谈</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?9cdc9a11cbd242c6336b07c464d8820c"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="知一杂谈" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">知一杂谈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">我思故我在</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-career"><a href="/career/" rel="section"><i class="sitemap fa-fw"></i>├ 技术</a></li>
+        <li class="menu-item menu-item-life"><a href="/life/" rel="section"><i class="sitemap fa-fw"></i>├ 生活</a></li>
+        <li class="menu-item menu-item-future"><a href="/future/" rel="section"><i class="sitemap fa-fw"></i>└ 未来</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8C%83%E5%9B%B4"><span class="nav-number">1.</span> <span class="nav-text">范围</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A6%81%E7%B4%A0"><span class="nav-number">2.</span> <span class="nav-text">要素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%81%E5%AF%B9%E8%B1%A1%E4%B8%8E%E8%BF%9E%E6%8E%A5%E5%AF%B9%E8%B1%A1"><span class="nav-number">3.</span> <span class="nav-text">流对象与连接对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%B3%E9%81%93%E4%B8%8E%E5%99%A8%E7%89%A9"><span class="nav-number">4.</span> <span class="nav-text">泳道与器物</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%9A%E5%8A%A1%E6%B5%81%E7%A8%8B%E5%9B%BE%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="nav-number">5.</span> <span class="nav-text">业务流程图的类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E7%AC%A6%E5%8F%B7"><span class="nav-number">6.</span> <span class="nav-text">常用符号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%8D%E8%B4%B9%E7%94%BB-BPMN-%E6%B5%81%E7%A8%8B%E5%9B%BE%E7%9A%84%E5%B7%A5%E5%85%B7"><span class="nav-number">7.</span> <span class="nav-text">免费画 BPMN 流程图的工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">8.</span> <span class="nav-text">参考</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">noogel</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/noogel" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;noogel" rel="noopener" target="_blank"><i class="github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:noogel@163.com" title="E-Mail → mailto:noogel@163.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2021/01/27/1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="noogel">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知一杂谈">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          业务流程模型和标记法（BPMN）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-01-27 00:00:00" itemprop="dateCreated datePublished" datetime="2021-01-27T00:00:00+00:00">2021-01-27</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>BPMN 有什么优势呢，用了一段时间主要使用在业务流程表达上，表达符号比较多，相比流程图可以更清楚的表达业务流程，同步、异步，异常中断、事件消息等等，如果看图的人都对这些符号有概念，可以比较轻松的看懂业务流程。缺点就是符号太多，学习成本相对高一些。学会了就会对业务表达上有很好的助力。</p>
+<h2 id="范围"><a href="#范围" class="headerlink" title="范围"></a>范围</h2><p>BPMN仅限于支持对业务流程有用的建模概念。这意味着组织所做的非业务目的其他类型建模将排除在BPMN之外。例如，以下方面的建模不属于BPMN的一部分：</p>
+<ul>
+<li>组织结构</li>
+<li>职能分解</li>
+<li>数据模型</li>
+</ul>
+<p>此外，虽然BPMN会显示数据的流（消息）以及活动与数据器物的关联，但它并非数据流图（data flow diagram）。</p>
+<h2 id="要素"><a href="#要素" class="headerlink" title="要素"></a>要素</h2><p>BPMN用很小一套图形要素做简单的图来建模，这将令业务用户与开发者一样容易理解其中的过程和流。它的四种基本要素如下：</p>
+<ol>
+<li>流对象（Flow Object）：事件（Events），活动（Activities），关口（Gateways）</li>
+<li>连接对象（Connecting Objects）：顺序流（Sequence Flow），消息流（Message Flow），关联（Association）</li>
+<li>泳道（Swimlanes）：池（Pool），道（Lane）</li>
+<li>器物（Artifacts&#x2F;Artefacts）：数据对象（Data Object），组（Group），注释（Annotation）</li>
+</ol>
+<p>这四大类对象令我们有机会做出简单的业务流程图（BPD, business process diagram）。同时，BPMN也允许在BPD中创建你自己的流对象、器物类型，使图更好理解。</p>
+<h2 id="流对象与连接对象"><a href="#流对象与连接对象" class="headerlink" title="流对象与连接对象"></a>流对象与连接对象</h2><p><img src="/resource/img/2021-01-31-14-03-31.png"></p>
+<h2 id="泳道与器物"><a href="#泳道与器物" class="headerlink" title="泳道与器物"></a>泳道与器物</h2><p><img src="/resource/img/2021-01-31-14-03-36.png"></p>
+<h2 id="业务流程图的类型"><a href="#业务流程图的类型" class="headerlink" title="业务流程图的类型"></a>业务流程图的类型</h2><p><img src="/resource/img/2021-01-31-14-03-43.png"></p>
+<h2 id="常用符号"><a href="#常用符号" class="headerlink" title="常用符号"></a>常用符号</h2><p><img src="/resource/img/2021-01-31-14-03-48.png"></p>
+<p><img src="/resource/img/2021-01-31-14-03-54.png"></p>
+<h2 id="免费画-BPMN-流程图的工具"><a href="#免费画-BPMN-流程图的工具" class="headerlink" title="免费画 BPMN 流程图的工具"></a>免费画 BPMN 流程图的工具</h2><p><a target="_blank" rel="noopener" href="https://app.diagrams.net/">https://app.diagrams.net/</a></p>
+<p><img src="/resource/img/2021-01-31-14-04-00.png"></p>
+<p><img src="/resource/img/2021-01-31-14-04-07.png"></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://github.com/Pingren/bpmn-dataflow-diagram-editor">https://github.com/Pingren/bpmn-dataflow-diagram-editor</a><br><a target="_blank" rel="noopener" href="https://github.com/zhangqiangboss/WorkflowAndCamunda/blob/master/docs/camunda/CamundaProEngine.md">https://github.com/zhangqiangboss/WorkflowAndCamunda/blob/master/docs/camunda/CamundaProEngine.md</a><br><a target="_blank" rel="noopener" href="https://www.edrawsoft.cn/bpmn-symbols/">https://www.edrawsoft.cn/bpmn-symbols/</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div></div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/resource/file/wechat_mini.jpg" alt="noogel 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/resource/file/alipay_mini.jpg" alt="noogel 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/resource/file/qrcode_for_gh_4223a67f3865_258.jpg">
+          <span class="icon">
+            <i class="fab fa-weixin"></i>
+          </span>
+
+          <span class="label">WeChat</span>
+        </a>
+      </div>
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/atom.xml">
+          <span class="icon">
+            <i class="fa fa-rss"></i>
+          </span>
+
+          <span class="label">RSS</span>
+        </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%95%88%E7%8E%87/" rel="tag"># 效率</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/01/15/1.html" rel="prev" title="领域基本概念字典">
+                  <i class="fa fa-chevron-left"></i> 领域基本概念字典
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/01/30/1.html" rel="next" title="订单系统建模思考">
+                  订单系统建模思考 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">noogel</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.13.4/dist/mermaid.min.js","integrity":"sha256-96rwDGMWIQYB0yKGp1sKi1yrjrLPj2oT39IpbCsIrsg="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"noogel","repo":"noogel.github.io","client_id":"41a4e14aca0b3552334a","client_secret":"ebe0f9bfd24824f3d0d0f41bfd88a8736353759b","admin_user":"noogel","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"988e7a1b129b477bc6efe2621c847002"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

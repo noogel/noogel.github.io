@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/resource/img/favicon2018.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/resource/img/favicon2018.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/resource/img/favicon2018.png">
+  <link rel="mask-icon" href="/resource/img/favicon2018.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"noogel.xyz","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="谈谈领域驱动设计的落地前文提到了事件风暴产出的领域模型是概念模型，到实际落地还有些距离，而落地的结果也是各不相同，我觉得说落地，要先回顾一下领域驱动设计的两个作用。  通过战略设计拆分子域，指导微服务拆分。 通过事件风暴建立领域概念模型，指导代码设计。  也就是说领域驱动设计产出的结果是指导性的，并不是一个直接可落地的结果。落地的方案则是要通过架构设计和框架选择上来进行。架构是为了控制软件复杂性">
+<meta property="og:type" content="article">
+<meta property="og:title" content="领域驱动设计精粹（下）">
+<meta property="og:url" content="https://noogel.xyz/2021/12/07/1.html">
+<meta property="og:site_name" content="知一杂谈">
+<meta property="og:description" content="谈谈领域驱动设计的落地前文提到了事件风暴产出的领域模型是概念模型，到实际落地还有些距离，而落地的结果也是各不相同，我觉得说落地，要先回顾一下领域驱动设计的两个作用。  通过战略设计拆分子域，指导微服务拆分。 通过事件风暴建立领域概念模型，指导代码设计。  也就是说领域驱动设计产出的结果是指导性的，并不是一个直接可落地的结果。落地的方案则是要通过架构设计和框架选择上来进行。架构是为了控制软件复杂性">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://noogel.xyz/resource/img/2021-12-10-00-27-51.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/2022-01-19-00-07-38.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/2022-01-19-00-07-56.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/2022-01-19-00-08-33.png">
+<meta property="article:published_time" content="2021-12-07T00:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-23T07:30:58.918Z">
+<meta property="article:author" content="noogel">
+<meta property="article:tag" content="架构">
+<meta property="article:tag" content="领域驱动设计">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://noogel.xyz/resource/img/2021-12-10-00-27-51.png">
+
+
+<link rel="canonical" href="https://noogel.xyz/2021/12/07/1.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://noogel.xyz/2021/12/07/1.html","path":"2021/12/07/1.html","title":"领域驱动设计精粹（下）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>领域驱动设计精粹（下） | 知一杂谈</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?9cdc9a11cbd242c6336b07c464d8820c"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="知一杂谈" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">知一杂谈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">我思故我在</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-career"><a href="/career/" rel="section"><i class="sitemap fa-fw"></i>├ 技术</a></li>
+        <li class="menu-item menu-item-life"><a href="/life/" rel="section"><i class="sitemap fa-fw"></i>├ 生活</a></li>
+        <li class="menu-item menu-item-future"><a href="/future/" rel="section"><i class="sitemap fa-fw"></i>└ 未来</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B0%88%E8%B0%88%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%9A%84%E8%90%BD%E5%9C%B0"><span class="nav-number">1.</span> <span class="nav-text">谈谈领域驱动设计的落地</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84%E6%BC%94%E8%BF%9B"><span class="nav-number">1.1.</span> <span class="nav-text">架构演进</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%90%E5%9F%9F%E5%88%92%E5%88%86"><span class="nav-number">1.2.</span> <span class="nav-text">子域划分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%86%E5%9F%9F%E5%AF%B9%E8%B1%A1"><span class="nav-number">1.3.</span> <span class="nav-text">领域对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B5%84%E6%BA%90%E5%BA%93%EF%BC%88%E4%BE%9D%E8%B5%96%E5%80%92%E7%BD%AE%EF%BC%89"><span class="nav-number">1.4.</span> <span class="nav-text">资源库（依赖倒置）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%B2%E8%85%90%E5%B1%82"><span class="nav-number">1.5.</span> <span class="nav-text">防腐层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8A%E4%B8%8B%E6%96%87%E9%9B%86%E6%88%90"><span class="nav-number">1.6.</span> <span class="nav-text">上下文集成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%86%E5%9F%9F%E6%9C%8D%E5%8A%A1"><span class="nav-number">1.7.</span> <span class="nav-text">领域服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%90%BD%E5%9C%B0%E5%BB%B6%E4%BC%B8"><span class="nav-number">1.8.</span> <span class="nav-text">落地延伸</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">2.</span> <span class="nav-text">参考</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E7%AB%A0"><span class="nav-number">2.1.</span> <span class="nav-text">文章</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">noogel</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/noogel" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;noogel" rel="noopener" target="_blank"><i class="github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:noogel@163.com" title="E-Mail → mailto:noogel@163.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2021/12/07/1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="noogel">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知一杂谈">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          领域驱动设计精粹（下）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-12-07 00:00:00" itemprop="dateCreated datePublished" datetime="2021-12-07T00:00:00+00:00">2021-12-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">领域驱动设计</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><img src="/resource/img/2021-12-10-00-27-51.png"></p>
+<h2 id="谈谈领域驱动设计的落地"><a href="#谈谈领域驱动设计的落地" class="headerlink" title="谈谈领域驱动设计的落地"></a>谈谈领域驱动设计的落地</h2><p>前文提到了事件风暴产出的领域模型是概念模型，到实际落地还有些距离，而落地的结果也是各不相同，我觉得说落地，要先回顾一下领域驱动设计的两个作用。</p>
+<ol>
+<li>通过战略设计拆分子域，指导微服务拆分。</li>
+<li>通过事件风暴建立领域概念模型，指导代码设计。</li>
+</ol>
+<p>也就是说领域驱动设计产出的结果是指导性的，并不是一个直接可落地的结果。落地的方案则是要通过架构设计和框架选择上来进行。架构是为了控制软件复杂性而做，就好像『一千个读者心中有一千个哈姆雷特』，不同人做架构不尽相同。下面说说我的落地方式。</p>
+<span id="more"></span>
+
+<h3 id="架构演进"><a href="#架构演进" class="headerlink" title="架构演进"></a>架构演进</h3><p>我们最初接触和使用的分层架构是三层的，三层架构解决了程序内部代码调用复杂和职责不清的问题，在 DDD 分层架构中的关于对象和服务被重新归类到不同分层中，确定了层与层之间的职责边界。DDD 提出了四层架构，其中最主要的变化是提出领域层的概念，需要领域专家对于业务知识的精准把握之上，根据领域设计方法建立领域模型，把变动较少的领域模型放入领域层，而多变的业务场景代码放入应用层。如下图对应三层到四层的演进过程。</p>
+<p><img src="/resource/img/2022-01-19-00-07-38.png"></p>
+<p>分层架构的一个重要原则是每层只能与位于其下方的层发生耦合，可以简单分为以下两种：</p>
+<ul>
+<li>严格分层架构，某层只能与位于其直接下方的层发生耦合。</li>
+<li>松散分层架构，允许某层与它的任意下方层发生耦合。</li>
+</ul>
+<p>这两种分层架构的耦合方式是各有利弊，在网络上对于他们也是各有各的见解。结合实际情况在开发中，更倾向于采用松散分层架构，但是要禁止用户接口层直接访问基础设施层，防止一些潜在的安全问题。</p>
+<p><img src="/resource/img/2022-01-19-00-07-56.png"></p>
+<h3 id="子域划分"><a href="#子域划分" class="headerlink" title="子域划分"></a>子域划分</h3><p>基于现有三层架构，在其中增加 domain 包的形式增加领域服务层。不同的子域通过包来划分如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">package noogel.xyz.domain.deal;  // 交易子域</span><br><span class="line">package noogel.xyz.domain.quote;  // 算价子域</span><br><span class="line">package noogel.xyz.domain.promotion;  // 促销子域</span><br></pre></td></tr></table></figure>
+
+<p>同一个领域服务下面再按照领域对象、领域服务、领域资源库、防腐层等方式组织。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">package noogel.xyz.domain.xxx.repository;  // 资源库接口定义</span><br><span class="line">package noogel.xyz.domain.xxx.entity;  // 领域对象</span><br><span class="line">package noogel.xyz.domain.xxx.facade;  // 防腐层</span><br><span class="line">package noogel.xyz.domain.xxx.service;  // 领域服务</span><br></pre></td></tr></table></figure>
+
+<h3 id="领域对象"><a href="#领域对象" class="headerlink" title="领域对象"></a>领域对象</h3><p>领域驱动解决的一个问题就是对象的贫血问题。通过如下促销领域对象来说明，对于当前购买商品组合能否满足购买规则的检查逻辑不是放在服务层或者工具类中，而是由领域对象提供方法支持。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">@Getter</span><br><span class="line">@ToString</span><br><span class="line">@...</span><br><span class="line">public class PromotionDo &#123;</span><br><span class="line">    /**</span><br><span class="line">     * 业务幂等</span><br><span class="line">     */</span><br><span class="line">    private String bizNo;</span><br><span class="line">	  // 省略字段...</span><br><span class="line">    private Long beginTime;</span><br><span class="line">    private Long endTime;</span><br><span class="line">    private String desc;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 计算生效数据</span><br><span class="line">     * @param items</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    public List&lt;PromotionDo&gt; calculateValid(List&lt;ItemDo&gt; items) &#123;</span><br><span class="line">        switch (rule.getKind()) &#123;</span><br><span class="line">            // ...</span><br><span class="line">        &#125;</span><br><span class="line">        List&lt;PromotionDo&gt; promoDataList = new ArrayList&lt;&gt;();</span><br><span class="line">        // do sth ...</span><br><span class="line">        return promoDataList;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="资源库（依赖倒置）"><a href="#资源库（依赖倒置）" class="headerlink" title="资源库（依赖倒置）"></a>资源库（依赖倒置）</h3><p>资源库对外的整体访问由 Repository 提供，它聚合了各个资源库的数据信息，同时也承担了资源存储的逻辑。我们将资源库的接口定义放在领域层，而具体实现放在基础设施层。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">package noogel.xyz.domain.xxx.repository;  // 资源库接口定义</span><br><span class="line">package noogel.xyz.infrastructure.repository;  // 资源库实现</span><br><span class="line">package noogel.xyz.infrastructure.rpc;  // RPC 服务</span><br><span class="line">package noogel.xyz.infrastructure.dao;  // 数据库访问对象</span><br></pre></td></tr></table></figure>
+
+<p>资源库接口定义，提供必要的入参，并且以领域对象的形式作为结果返回。至于组织返回的领域对象，交由具体实现类来实现，可以通过调用数据库、缓存系统、RPC 接口等形式来组织生成领域对象。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">public interface PromotionRepository &#123;</span><br><span class="line">    /**</span><br><span class="line">     * 保存 xx</span><br><span class="line">     * @param data 领域对象</span><br><span class="line">     * @return 唯一 key</span><br><span class="line">     */</span><br><span class="line">    String create(PromotionDo data);</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 批量更新状态</span><br><span class="line">     * @param key</span><br><span class="line">     * @param state</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    boolean batchUpdateState(List&lt;String&gt; key, PromoState state);</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 批量查询</span><br><span class="line">     * @param promoIds</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    Map&lt;String, PromotionDo&gt; batchGetOnlineById(List&lt;Long&gt; ids);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="防腐层"><a href="#防腐层" class="headerlink" title="防腐层"></a>防腐层</h3><p>用来消除外部上下文结构差异的作用，也叫适配层。比如在算价上下文中需要调用促销上下文数据，不同的促销数据源提供了不同的接口和数据，这时就需要引入防腐层来屏蔽差异，防止外部上下文侵入领域内部影响代码模型。首先定义需要的数据接口规范。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public interface PromotionFacade &#123;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 计算促销数据</span><br><span class="line">     *</span><br><span class="line">     * @param ctx</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    List&lt;PromotionData&gt; calculatePromotion(PromotionContext ctx);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>实现类来用处理外部数据的差异，按照接口要求封装数据，简化模型的复杂性。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">public class Promotion1Facade implements PromotionFacade &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public List&lt;PromotionData&gt; calculatePromotion(PromotionContext ctx) &#123;</span><br><span class="line">        PromotionData promoData = PromotionData.of(...);</span><br><span class="line">        return Collections.singletonList(promoData);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">public class Promotion2Facade implements PromotionFacade &#123;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private RpcService rpcService;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public List&lt;PromotionData&gt; calculatePromotion(PromotionContext ctx) &#123;</span><br><span class="line">        PromotionData data = new PromotionData();</span><br><span class="line">        // do sth ...</span><br><span class="line">        return data;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="上下文集成"><a href="#上下文集成" class="headerlink" title="上下文集成"></a>上下文集成</h3><p>对于上下文集成的手段可以通过 RPC 服务、HTTP 服务、MQ 消息订阅。</p>
+<h3 id="领域服务"><a href="#领域服务" class="headerlink" title="领域服务"></a>领域服务</h3><p>上面我们讲述了各个要素对于资源和行为的封装，业务逻辑的实现代码应该尽量放在聚合根边界内。但是总会遇到不适合放在聚合根上的业务逻辑，而此时领域服务就需要承载编排组合领域对象、资源库和防腐接口等一系列要素，提供对其它上下文的交互接口。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">public interface PromotionService &#123;</span><br><span class="line">    /**</span><br><span class="line">     * 创建促销</span><br><span class="line">     *</span><br><span class="line">     * @param item</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    String createPromotion(CreatePromotionDto item);</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 批量更新状态</span><br><span class="line">     *</span><br><span class="line">     * @param req</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    boolean batchUpdatePromotion(BatchUpdatePromotionReqDto req);</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 计算有效的促销</span><br><span class="line">     *</span><br><span class="line">     * @param req</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    List&lt;PromoResultDto&gt; calculateValidPromotion(CalculateValidPromotionReqDto req);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="落地延伸"><a href="#落地延伸" class="headerlink" title="落地延伸"></a>落地延伸</h3><p>DDD 的设计概念很多，学习成本比较高，于是我们组织了《实现领域驱动设计》的读书分享会，通过共读分享交流理解的方式，让大家对于 DDD 的设计方法和概念有了比较统一的认知。同时发现在做设计分享时，组内的认知比较一致，而对外的理解成本则会比较高。</p>
+<p>不论我们怎样称呼应用层和领域层，但是四层架构的优势已经显而易见，对于电商交易这样一类相对复杂的系统而言。DDD 教会我们怎么拆分领域，如何沉淀领域模型，而如何组织领域服务提供业务功能上是匮乏的，下面是基于系统问题和业界资料总结的一个抽象框架，描述的是如何组合核心能力与业务场景，并提供一个配置化的灵活系统。</p>
+<p><strong>能力单元</strong></p>
+<p>提供基础能力的独立单元，只单纯依赖下游数据提供能力，职责比较单一，对应领域驱动设计的领域服务。</p>
+<p><strong>场景单元</strong></p>
+<p>通过编排不同能力单元，形成一个预定义的执行流程，叫做场景单元。场景单元有以下关键要素：</p>
+<ol>
+<li>执行节点：执行节点负责转换出入参并调用能力单元或场景单元，返回结果给下一个节点。</li>
+<li>条件控制：根据执行节点结果进行简单逻辑判断选择不同的执行路径。</li>
+<li>干预策略：干预策略是场景的扩展点，通过预留的扩展点可以干预执行流程。</li>
+</ol>
+<p>所以一个场景单元的实际处理通路由条件控制和干预策略决定。</p>
+<p><strong>策略配置服务</strong></p>
+<ol>
+<li>提供静态或动态的策略配置给场景单元使用。</li>
+<li>基于节点维度的简单风控策略支持，比如限流、熔断等。</li>
+</ol>
+<p><strong>框架图</strong></p>
+<p><img src="/resource/img/2022-01-19-00-08-33.png"></p>
+<p><strong>核心能力</strong>封装数据和行为，职责要单一且通用，对外提供完善的接口供场景调用，核心能力内部是高内聚的，能力外不能与其它能力模块发生直接耦合，只能通过场景进行间接耦合，要保证核心能力的职责单一性。</p>
+<p><strong>能力模型</strong>是指对于复杂场景进行归类和抽象得出的一个模型，可以用来解决某一类通用问题。能力模型既可以是由订单系统内部提供的，也可能是由外部系统通过 RPC 形式提供的一整套能力接口包装而得。</p>
+<p><strong>内部事件</strong>，由于能力之间不允许直接耦合，所以内部事件不允许在能力模块内部发送，只能由场景中进行控制发送，并且能力内部不允许直接监听，而应该把监听事件作为场景的一种入口，实现场景之间的依赖调用。</p>
+<p><strong>场景单元</strong>偏流程数据编排，需要组织和协调资源的代码被定义为流程。场景单元与策略服务耦合更重，通过策略服务控制场景流程图的走向，以此来实现系统配置化。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>《复杂软件设计之道：领域驱动设计全面解析与实战》 - 彭晨阳<br>《实现领域驱动设计》 - 沃恩·弗农<br>《解构领域驱动设计》 - 张逸<br>《DDD实战课》 - 极客时间</p>
+<h3 id="文章"><a href="#文章" class="headerlink" title="文章"></a>文章</h3><p><a target="_blank" rel="noopener" href="https://insights.thoughtworks.cn/backend-development-ddd/">https://insights.thoughtworks.cn/backend-development-ddd/</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/383427771">https://zhuanlan.zhihu.com/p/383427771</a><br><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1549817">https://cloud.tencent.com/developer/article/1549817</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div></div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/resource/file/wechat_mini.jpg" alt="noogel 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/resource/file/alipay_mini.jpg" alt="noogel 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/resource/file/qrcode_for_gh_4223a67f3865_258.jpg">
+          <span class="icon">
+            <i class="fab fa-weixin"></i>
+          </span>
+
+          <span class="label">WeChat</span>
+        </a>
+      </div>
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/atom.xml">
+          <span class="icon">
+            <i class="fa fa-rss"></i>
+          </span>
+
+          <span class="label">RSS</span>
+        </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag"># 架构</a>
+              <a href="/tags/%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1/" rel="tag"># 领域驱动设计</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/12/05/1.html" rel="prev" title="领域驱动设计精粹（中）">
+                  <i class="fa fa-chevron-left"></i> 领域驱动设计精粹（中）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/01/21/1.html" rel="next" title="知一的 2021 已读书单">
+                  知一的 2021 已读书单 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">noogel</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.13.4/dist/mermaid.min.js","integrity":"sha256-96rwDGMWIQYB0yKGp1sKi1yrjrLPj2oT39IpbCsIrsg="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"noogel","repo":"noogel.github.io","client_id":"41a4e14aca0b3552334a","client_secret":"ebe0f9bfd24824f3d0d0f41bfd88a8736353759b","admin_user":"noogel","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"1907eb452173576413bbcc05527e6ba7"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

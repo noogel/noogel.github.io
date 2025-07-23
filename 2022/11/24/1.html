@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/resource/img/favicon2018.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/resource/img/favicon2018.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/resource/img/favicon2018.png">
+  <link rel="mask-icon" href="/resource/img/favicon2018.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"noogel.xyz","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="场景说明目标是需要拆分出内部服务 Y 为独立的系统，且暂时不改变系统 A 的被依赖关系，拆分前的情况如下图。 这里假定两个接口层处理模块只会调用只会调用内部服务 Y，并且其中存在着业务逻辑，也许你会疑惑接口层为什么会有业务逻辑，事实上你大多数情况下会遇到。更具体的说，接口层的业务接口 1 中包含业务逻辑，于是会产生对内部服务 Y 的两个及以上接口的调用。  处理思路那么你会遇到以下几种情况需要处理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="服务拆分的几种处理思路">
+<meta property="og:url" content="https://noogel.xyz/2022/11/24/1.html">
+<meta property="og:site_name" content="知一杂谈">
+<meta property="og:description" content="场景说明目标是需要拆分出内部服务 Y 为独立的系统，且暂时不改变系统 A 的被依赖关系，拆分前的情况如下图。 这里假定两个接口层处理模块只会调用只会调用内部服务 Y，并且其中存在着业务逻辑，也许你会疑惑接口层为什么会有业务逻辑，事实上你大多数情况下会遇到。更具体的说，接口层的业务接口 1 中包含业务逻辑，于是会产生对内部服务 Y 的两个及以上接口的调用。  处理思路那么你会遇到以下几种情况需要处理">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://noogel.xyz/resource/img/2022-11-24-01-56-42.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/2022-11-24-01-56-59.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/2022-11-24-01-57-09.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/2022-11-24-01-57-20.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/2022-11-24-01-57-28.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/2022-11-24-01-57-38.png">
+<meta property="article:published_time" content="2022-11-24T00:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-23T07:30:58.916Z">
+<meta property="article:author" content="noogel">
+<meta property="article:tag" content="架构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://noogel.xyz/resource/img/2022-11-24-01-56-42.png">
+
+
+<link rel="canonical" href="https://noogel.xyz/2022/11/24/1.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://noogel.xyz/2022/11/24/1.html","path":"2022/11/24/1.html","title":"服务拆分的几种处理思路"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>服务拆分的几种处理思路 | 知一杂谈</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?9cdc9a11cbd242c6336b07c464d8820c"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="知一杂谈" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">知一杂谈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">我思故我在</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-career"><a href="/career/" rel="section"><i class="sitemap fa-fw"></i>├ 技术</a></li>
+        <li class="menu-item menu-item-life"><a href="/life/" rel="section"><i class="sitemap fa-fw"></i>├ 生活</a></li>
+        <li class="menu-item menu-item-future"><a href="/future/" rel="section"><i class="sitemap fa-fw"></i>└ 未来</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF%E8%AF%B4%E6%98%8E"><span class="nav-number">1.</span> <span class="nav-text">场景说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E6%80%9D%E8%B7%AF"><span class="nav-number">2.</span> <span class="nav-text">处理思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E4%BC%98%E8%A7%A3"><span class="nav-number">3.</span> <span class="nav-text">更优解</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">noogel</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/noogel" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;noogel" rel="noopener" target="_blank"><i class="github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:noogel@163.com" title="E-Mail → mailto:noogel@163.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2022/11/24/1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="noogel">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知一杂谈">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          服务拆分的几种处理思路
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-11-24 00:00:00" itemprop="dateCreated datePublished" datetime="2022-11-24T00:00:00+00:00">2022-11-24</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="场景说明"><a href="#场景说明" class="headerlink" title="场景说明"></a>场景说明</h2><p>目标是需要拆分出内部服务 Y 为独立的系统，且暂时不改变系统 A 的被依赖关系，拆分前的情况如下图。</p>
+<p>这里假定两个接口层处理模块只会调用只会调用内部服务 Y，并且其中存在着业务逻辑，也许你会疑惑接口层为什么会有业务逻辑，事实上你大多数情况下会遇到。更具体的说，接口层的业务接口 1 中包含业务逻辑，于是会产生对内部服务 Y 的两个及以上接口的调用。</p>
+<p><img src="/resource/img/2022-11-24-01-56-42.png"></p>
+<h2 id="处理思路"><a href="#处理思路" class="headerlink" title="处理思路"></a>处理思路</h2><p>那么你会遇到以下几种情况需要处理。</p>
+<span id="more"></span>
+
+<p><strong>针对 case 1 的 RPC 接口逻辑两种处理方式：</strong></p>
+<ol>
+<li>左图：拷贝 rpc 协议在系统 B 实现逻辑搬迁，系统 A 只有接口层，且只有对象转换，无任何逻辑。</li>
+<li>右图：基于内部服务 Y 接口定义，迁移服务层逻辑到系统 B ，实现基于 BizDto  定义的 rpc 接口，系统 A 在接口层保留业务逻辑，只需要增加 BizDto  到 BizThriftVo2 对象的转换。</li>
+</ol>
+<p><img src="/resource/img/2022-11-24-01-56-59.png"></p>
+<p><strong>针对 case2 的 HTTP 接口逻辑也有两种处理方式：</strong></p>
+<ol>
+<li>左图：同样，基于内部服务 Y 接口定义，迁移服务层逻辑到系统 B ，实现基于 BizDto  定义的 rpc 接口，系统 A 在接口层保留业务逻辑，只需要增加 BizDto  到 BizThriftVo2 对象的转换。</li>
+<li>右图：拷贝 http 协议在系统 B 实现逻辑搬迁，BizThriftVo3 基于 BizHttpVo  定义，系统 A 只有接口层，且只有对象转换，无任何逻辑。</li>
+</ol>
+<p><img src="/resource/img/2022-11-24-01-57-09.png"></p>
+<p><strong>针对 case 3 的内部服务调用：</strong></p>
+<p>对于内部服务调用，基于内部服务 Y 接口定义，迁移服务层逻辑到系统 B ，实现基于 BizDto  定义的 rpc 接口，系统 A 只需要增加 BizDto  到 BizThriftVo2 对象的转换。</p>
+<p>对 内部服务 X 调 Y 的场景下，需要注意其中是否包含事务型依赖关系。因为如果从本地调用改为远程调用可能会破坏整个事务的完整性，产生数据不一致。</p>
+<p><img src="/resource/img/2022-11-24-01-57-20.png"></p>
+<h2 id="更优解"><a href="#更优解" class="headerlink" title="更优解"></a>更优解</h2><p>如果我们要拆分内部服务 Y，从上游的依赖来看，有系统 A 和手机客户端的依赖关系（通过虚线表示）。</p>
+<p><img src="/resource/img/2022-11-24-01-57-28.png"></p>
+<p>如果我们不考虑上下游依赖关系，就会和上面说的几种情况一样处理，这时候系统 B 的 RPC 接口层就只是一层很薄的代理，存在的问题是资源的浪费和服务稳定性的打折扣，而且你还要写比较多的胶水代码。而更优的一种方式是消除这种传递依赖，使系统 A 和系统 B 解耦，使系统 C 的功能更内聚，每个系统只负责自己对象和 BizThriftVo  对象的转换。</p>
+<p><img src="/resource/img/2022-11-24-01-57-38.png"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div></div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/resource/file/wechat_mini.jpg" alt="noogel 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/resource/file/alipay_mini.jpg" alt="noogel 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/resource/file/qrcode_for_gh_4223a67f3865_258.jpg">
+          <span class="icon">
+            <i class="fab fa-weixin"></i>
+          </span>
+
+          <span class="label">WeChat</span>
+        </a>
+      </div>
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/atom.xml">
+          <span class="icon">
+            <i class="fa fa-rss"></i>
+          </span>
+
+          <span class="label">RSS</span>
+        </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag"># 架构</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/04/12/1.html" rel="prev" title="关于读写分离架构的思考">
+                  <i class="fa fa-chevron-left"></i> 关于读写分离架构的思考
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/02/13/1.html" rel="next" title="软件系统复杂性治理方法">
+                  软件系统复杂性治理方法 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">noogel</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.13.4/dist/mermaid.min.js","integrity":"sha256-96rwDGMWIQYB0yKGp1sKi1yrjrLPj2oT39IpbCsIrsg="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"noogel","repo":"noogel.github.io","client_id":"41a4e14aca0b3552334a","client_secret":"ebe0f9bfd24824f3d0d0f41bfd88a8736353759b","admin_user":"noogel","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"680dbc3ccd8aa3e173f3ed141136dede"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

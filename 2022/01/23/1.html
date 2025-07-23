@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/resource/img/favicon2018.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/resource/img/favicon2018.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/resource/img/favicon2018.png">
+  <link rel="mask-icon" href="/resource/img/favicon2018.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"noogel.xyz","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="前言今天要说的是 macOS 下的一款效率软件 —— Alfred，想必大家就算没用过也耳闻过，老实说用好它带来的效率提升绝对不止 10 倍。博主已经安利给很多同事使用，他们普遍觉得上手有些困难，主要是配置复杂，今天的文章会一步步地介绍这款神器的高效之处。 有的人可能会说系统自带的 Spotlight 就很好用，确实是这样。在之前我会用 Spotlight 搜应用、文件、进行计算等，而 Alfre">
+<meta property="og:type" content="article">
+<meta property="og:title" content="macOS 系统 10 倍高效工具">
+<meta property="og:url" content="https://noogel.xyz/2022/01/23/1.html">
+<meta property="og:site_name" content="知一杂谈">
+<meta property="og:description" content="前言今天要说的是 macOS 下的一款效率软件 —— Alfred，想必大家就算没用过也耳闻过，老实说用好它带来的效率提升绝对不止 10 倍。博主已经安利给很多同事使用，他们普遍觉得上手有些困难，主要是配置复杂，今天的文章会一步步地介绍这款神器的高效之处。 有的人可能会说系统自带的 Spotlight 就很好用，确实是这样。在之前我会用 Spotlight 搜应用、文件、进行计算等，而 Alfre">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://noogel.xyz/resource/img/af03e406816350333a1b09b467b089b3.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/05af8ea7a69242ebf855f05649affc74.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/d3bed623187b74071557d9f145306589.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/0e5d409dabc29977e3b422883ff6a6b1.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/c84b02b4a70d2cac50d33b48862ae1cc.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/1a11065ff2160c3e142b512046634954.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/bdd58b4ad92a9ce1d59b3960ac5365a2.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/5ae9d5343fac84059689056428abcf23.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/7ae07b25b70d57e481aee104e52aa45a.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/83877ebbbea93acc0dd1ef96e906bdad.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/941cc4312f9f716b0adf78284457d777.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/5de42ea85a16e3782c97cbaaea99f3f9.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/52c5cd1a8c7ffacb14ff342b074bacf1.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/81fa4415d6583b5fa4abdf4b8dd3cf40.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/16d37919cb0f223f17c5f28f04bef7e4.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/2b6629322b5e75acc0262d839153f2bf.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/349dbf7f2c01c7dcd2812eddb390253a.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/905d051ae874c534cc012976e6e1c9fb.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/0a2def0cd3bb614fa892914a1e0981d1.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/ac4d4f5f5eab15f3dc137eda02f87a0c.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/3eb5b84115ef3b516235fcf24d08bb80.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/39dd4230a2e908df5fcbeda8d4f3ced0.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/b759437ca8aa0bf4dc3c7de8185314ee.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/c187b55ba8adc49510bf20602204a16e.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/44e3dbddb40c6a9b22c7055aee8cd824.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/7de0e80bbf5d7c0afc5c24d2b6950bd3.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/316837aeaf66c7918aa9a0391fbd0f73.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/4d0d461ba444ad426fbef97de168b5f4.png">
+<meta property="article:published_time" content="2022-01-23T00:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-23T07:30:58.915Z">
+<meta property="article:author" content="noogel">
+<meta property="article:tag" content="效率">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://noogel.xyz/resource/img/af03e406816350333a1b09b467b089b3.png">
+
+
+<link rel="canonical" href="https://noogel.xyz/2022/01/23/1.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://noogel.xyz/2022/01/23/1.html","path":"2022/01/23/1.html","title":"macOS 系统 10 倍高效工具"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>macOS 系统 10 倍高效工具 | 知一杂谈</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?9cdc9a11cbd242c6336b07c464d8820c"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="知一杂谈" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">知一杂谈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">我思故我在</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-career"><a href="/career/" rel="section"><i class="sitemap fa-fw"></i>├ 技术</a></li>
+        <li class="menu-item menu-item-life"><a href="/life/" rel="section"><i class="sitemap fa-fw"></i>├ 生活</a></li>
+        <li class="menu-item menu-item-future"><a href="/future/" rel="section"><i class="sitemap fa-fw"></i>└ 未来</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E6%96%B9%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">获取方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%8A%9F%E8%83%BD"><span class="nav-number">3.</span> <span class="nav-text">基本功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%AA%E8%B4%B4%E6%9D%BF%E5%8E%86%E5%8F%B2"><span class="nav-number">3.1.</span> <span class="nav-text">剪贴板历史</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%90%9C%E7%B4%A2"><span class="nav-number">3.2.</span> <span class="nav-text">文件搜索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E7%BD%91%E9%A1%B5%E6%90%9C%E7%B4%A2"><span class="nav-number">3.3.</span> <span class="nav-text">快速网页搜索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E6%89%93%E5%BC%80%E6%8E%A7%E5%88%B6%E5%8F%B0%E5%B9%B6%E6%89%A7%E8%A1%8C%E5%91%BD%E4%BB%A4"><span class="nav-number">3.4.</span> <span class="nav-text">快速打开控制台并执行命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Workflow-%E5%8A%9F%E8%83%BD"><span class="nav-number">4.</span> <span class="nav-text">Workflow 功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B0%B7%E6%AD%8C%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E5%99%A8"><span class="nav-number">4.1.</span> <span class="nav-text">谷歌身份验证器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9F%A5%E4%B8%80%E7%9A%84%E5%BC%80%E5%8F%91%E8%80%85%E5%B7%A5%E5%85%B7%E7%AE%B1"><span class="nav-number">4.2.</span> <span class="nav-text">知一的开发者工具箱</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%89%E9%81%93%E7%BF%BB%E8%AF%91"><span class="nav-number">4.3.</span> <span class="nav-text">有道翻译</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E5%90%8E"><span class="nav-number">5.</span> <span class="nav-text">最后</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">noogel</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/noogel" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;noogel" rel="noopener" target="_blank"><i class="github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:noogel@163.com" title="E-Mail → mailto:noogel@163.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2022/01/23/1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="noogel">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知一杂谈">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          macOS 系统 10 倍高效工具
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-01-23 00:00:00" itemprop="dateCreated datePublished" datetime="2022-01-23T00:00:00+00:00">2022-01-23</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>今天要说的是 macOS 下的一款效率软件 —— Alfred，想必大家就算没用过也耳闻过，老实说用好它带来的效率提升绝对不止 10 倍。博主已经安利给很多同事使用，他们普遍觉得上手有些困难，主要是配置复杂，今天的文章会一步步地介绍这款神器的高效之处。</p>
+<p>有的人可能会说系统自带的 Spotlight 就很好用，确实是这样。在之前我会用 Spotlight 搜应用、文件、进行计算等，而 Alfred 的功能更强大，是一款可以更加 All in 的效率工具，里面还有我最常用的剪贴板历史、快速网页搜索、谷歌二次口令扩展等功能，接下来我会逐一介绍。</p>
+<span id="more"></span>
+
+<h2 id="获取方式"><a href="#获取方式" class="headerlink" title="获取方式"></a>获取方式</h2><ol>
+<li>从 Alfred 官网中下载并安装使用即可。<ul>
+<li>免费用户只能使用其 Features 中的功能；若要使用 Workflows，则需要购买 Powerpack 才能激活此功能。</li>
+</ul>
+</li>
+<li>若要试用 Workflows，可以自行搜索破解版，不过还是建议购买正版。</li>
+</ol>
+<h2 id="基本功能"><a href="#基本功能" class="headerlink" title="基本功能"></a>基本功能</h2><p>先说一说如何调出命令面板，在 General 中配置的 Alfred Hotkey 就是使用快捷键。如下图我配置的是 Command + Space。</p>
+<p><img src="/resource/img/af03e406816350333a1b09b467b089b3.png" alt="af03e406816350333a1b09b467b089b3.png"></p>
+<p>调出的样子是下面这样的，在框中输入内容即可，输入内容后就会展示响应结果，选中后回车执行对应的操作。执行的操作一般是打开浏览器网址，或者将结果复制到剪贴板。</p>
+<p><img src="/resource/img/05af8ea7a69242ebf855f05649affc74.png" alt="05af8ea7a69242ebf855f05649affc74.png"></p>
+<p><img src="/resource/img/d3bed623187b74071557d9f145306589.png" alt="d3bed623187b74071557d9f145306589.png"></p>
+<p>然后说一说最常用的几个功能</p>
+<h3 id="剪贴板历史"><a href="#剪贴板历史" class="headerlink" title="剪贴板历史"></a>剪贴板历史</h3><p>在 Windows 上对应的是 Ditto，macOS 上也试过几个都不太好用。Alfred 自带这个还能搜索内容，可以自定义保存时间和查看快捷键，选中回车就能保存到剪贴板。如下图我配置 Option + Command + C 是调出历史面板。</p>
+<p><strong>配置面板</strong></p>
+<p><img src="/resource/img/0e5d409dabc29977e3b422883ff6a6b1.png" alt="0e5d409dabc29977e3b422883ff6a6b1.png"></p>
+<p><strong>查看历史面板</strong></p>
+<p><img src="/resource/img/c84b02b4a70d2cac50d33b48862ae1cc.png" alt="c84b02b4a70d2cac50d33b48862ae1cc.png"></p>
+<p><strong>搜索功能</strong></p>
+<p><img src="/resource/img/1a11065ff2160c3e142b512046634954.png" alt="1a11065ff2160c3e142b512046634954.png"></p>
+<p>主要有两个使用场景，一个是在需要多次复制粘贴的场景下，可以一次性复制完，再到新页面按顺序选择性粘贴。另一个是快速搜索某天复制过的片段。</p>
+<h3 id="文件搜索"><a href="#文件搜索" class="headerlink" title="文件搜索"></a>文件搜索</h3><p>输入 find 命令和文件名就能找到，回车会自动在 Finder 中打开所在目录。</p>
+<p><img src="/resource/img/bdd58b4ad92a9ce1d59b3960ac5365a2.png" alt="bdd58b4ad92a9ce1d59b3960ac5365a2.png"></p>
+<h3 id="快速网页搜索"><a href="#快速网页搜索" class="headerlink" title="快速网页搜索"></a>快速网页搜索</h3><p>快速搜索网页的输入结构是『关键字 搜索内容』，关键字就是下图中的 Keyword，然后空格再输入搜索内容。</p>
+<p><img src="/resource/img/5ae9d5343fac84059689056428abcf23.png" alt="5ae9d5343fac84059689056428abcf23.png"></p>
+<p>关键字是可以自定义配置的，只要有有规律的页面就能进行配置。比如我下面的配置是在谷歌搜索时过滤某网站内容。其中的『{query}』是被替换的搜索内容，『gog』是搜索指令。</p>
+<p><img src="/resource/img/7ae07b25b70d57e481aee104e52aa45a.png" alt="7ae07b25b70d57e481aee104e52aa45a.png"></p>
+<p>以下两张图描述了如下两个动作，一个是输入搜索指令，另一个是回车操作后的浏览器页面。</p>
+<p><img src="/resource/img/83877ebbbea93acc0dd1ef96e906bdad.png" alt="83877ebbbea93acc0dd1ef96e906bdad.png"></p>
+<p><img src="/resource/img/941cc4312f9f716b0adf78284457d777.png" alt="941cc4312f9f716b0adf78284457d777.png"></p>
+<p>再比如我要配置自动搜索知乎，我会先去看下知乎搜索页面的结构，如下图。</p>
+<p><img src="/resource/img/5de42ea85a16e3782c97cbaaea99f3f9.png" alt="5de42ea85a16e3782c97cbaaea99f3f9.png"></p>
+<p>网址是：<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?type=content&q=%E9%85%8D%E7%BD%AE">https://www.zhihu.com/search?type=content&amp;q=%E9%85%8D%E7%BD%AE</a></p>
+<p>于是在 Alfred 上就可以进行如下配置。</p>
+<p><img src="/resource/img/52c5cd1a8c7ffacb14ff342b074bacf1.png" alt="52c5cd1a8c7ffacb14ff342b074bacf1.png"></p>
+<p><img src="/resource/img/81fa4415d6583b5fa4abdf4b8dd3cf40.png" alt="81fa4415d6583b5fa4abdf4b8dd3cf40.png"></p>
+<p>一般公司内部网址的规律性会更强一些，于是可以做很多的快捷操作。比如快速打开某个内部网址、在 Gitlab 快速发起 Merge Request 申请、快速打开联调环境、快速在 Sentry 搜索内容等。</p>
+<p>附上一些常用自定义配置：</p>
+<ul>
+<li>百度：<a target="_blank" rel="noopener" href="https://www.baidu.com/s?ie=utf-8&f=8&wd=%7Bquery%7D">https://www.baidu.com/s?ie=utf-8&amp;f=8&amp;wd={query}</a></li>
+<li>简书：<a target="_blank" rel="noopener" href="http://www.jianshu.com/search?utf8=%E2%9C%93&q=%7Bquery%7D">http://www.jianshu.com/search?utf8=%E2%9C%93&amp;q={query}</a></li>
+<li>淘宝：<a target="_blank" rel="noopener" href="http://s.taobao.com/search?oe=utf-8&f=8&q=%7Bquery%7D">http://s.taobao.com/search?oe=utf-8&amp;f=8&amp;q={query}</a></li>
+<li>京东：<a target="_blank" rel="noopener" href="https://search.jd.com/Search?keyword=%7Bquery%7D&enc=utf-8&wq=%7Bquery%7D">https://search.jd.com/Search?keyword={query}&amp;enc=utf-8&amp;wq={query}</a></li>
+<li>微信文章：<a target="_blank" rel="noopener" href="http://weixin.sogou.com/weixin?type=2&query=%7Bquery%7D">http://weixin.sogou.com/weixin?type=2&amp;query={query}</a></li>
+<li>stackoverflow：<a target="_blank" rel="noopener" href="http://www.stackoverflow.com/search?q=%7Bquery%7D">http://www.stackoverflow.com/search?q={query}</a></li>
+<li>github：<a target="_blank" rel="noopener" href="https://github.com/search?utf8=%E2%9C%93&q=%7Bquery%7D">https://github.com/search?utf8=%E2%9C%93&amp;q={query}</a></li>
+<li>maven：<a target="_blank" rel="noopener" href="http://mvnrepository.com/search?q=%7Bquery%7D">http://mvnrepository.com/search?q={query}</a></li>
+<li>Android API Search：<a target="_blank" rel="noopener" href="https://developer.android.com/reference/classes.html#q={query}">https://developer.android.com/reference/classes.html#q={query}</a></li>
+</ul>
+<h3 id="快速打开控制台并执行命令"><a href="#快速打开控制台并执行命令" class="headerlink" title="快速打开控制台并执行命令"></a>快速打开控制台并执行命令</h3><p>这个功能用的不多，但也要提一下，默认会打开系统自带终端并执行，我这里的配置是结合 iTerm 启动执行。</p>
+<p><img src="/resource/img/16d37919cb0f223f17c5f28f04bef7e4.png" alt="16d37919cb0f223f17c5f28f04bef7e4.png"></p>
+<p><img src="/resource/img/2b6629322b5e75acc0262d839153f2bf.png" alt="2b6629322b5e75acc0262d839153f2bf.png"></p>
+<p><img src="/resource/img/349dbf7f2c01c7dcd2812eddb390253a.png" alt="349dbf7f2c01c7dcd2812eddb390253a.png"></p>
+<h2 id="Workflow-功能"><a href="#Workflow-功能" class="headerlink" title="Workflow 功能"></a>Workflow 功能</h2><p>Workflow 才是这款软件的灵魂所在，可以通过开发插件的形式扩展软件功能。</p>
+<p><img src="/resource/img/905d051ae874c534cc012976e6e1c9fb.png" alt="905d051ae874c534cc012976e6e1c9fb.png"></p>
+<p>我举三个最常用的扩展吧。</p>
+<h3 id="谷歌身份验证器"><a href="#谷歌身份验证器" class="headerlink" title="谷歌身份验证器"></a>谷歌身份验证器</h3><p>谷歌身份验证器是在做某些危险操作时进行二次确认的一个机制，在第一次初始化时根据账户绑定一个 key，然后每次使用都需要根据当前时间算出一个数字输入，来增强安全性保障，这个原理跟游戏的令牌是一样的。有了这个插件我就可以只输入一个 ok 关键字就可以获得验证口令，回车粘贴，只需要 2 秒。</p>
+<p><img src="/resource/img/0a2def0cd3bb614fa892914a1e0981d1.png" alt="0a2def0cd3bb614fa892914a1e0981d1.png"></p>
+<p>与此同时，而别人的操作流程是</p>
+<ol>
+<li>掏出手机解锁。</li>
+<li>找到 Authy App 打开。</li>
+<li>看到数字口令，手动输入。</li>
+<li>输入超时，口令换新，重新输入。</li>
+</ol>
+<p>以上四步的操作时间平均在 20 秒以上，除非手机时刻在 Authy 界面。</p>
+<h3 id="知一的开发者工具箱"><a href="#知一的开发者工具箱" class="headerlink" title="知一的开发者工具箱"></a>知一的开发者工具箱</h3><p>这个是博主自己开发的一个扩展，目前已在 Github 开源，<a target="_blank" rel="noopener" href="https://github.com/noogel/Alfred-Workflow%EF%BC%8C%E6%AC%A2%E8%BF%8E">https://github.com/noogel/Alfred-Workflow，欢迎</a> Star、Fork、提 Feature ~</p>
+<p><img src="/resource/img/ac4d4f5f5eab15f3dc137eda02f87a0c.png" alt="ac4d4f5f5eab15f3dc137eda02f87a0c.png"></p>
+<p>具体的使用教程欢迎查看 <a target="_blank" rel="noopener" href="https://github.com/noogel/Alfred-Workflow">https://github.com/noogel/Alfred-Workflow</a></p>
+<p>初衷就是提高平时的开发效率，将一些常用的重复性操作给命令化，以此来节省时间。比如我最常用的 ntm 命令，可以获取当前时间戳或者标准时间，也可以将标准时间和时间戳互转。整个操作 2 秒完成。</p>
+<p><img src="/resource/img/3eb5b84115ef3b516235fcf24d08bb80.png" alt="3eb5b84115ef3b516235fcf24d08bb80.png"></p>
+<p><img src="/resource/img/39dd4230a2e908df5fcbeda8d4f3ced0.png" alt="39dd4230a2e908df5fcbeda8d4f3ced0.png"></p>
+<p><img src="/resource/img/b759437ca8aa0bf4dc3c7de8185314ee.png" alt="b759437ca8aa0bf4dc3c7de8185314ee.png"></p>
+<p><img src="/resource/img/c187b55ba8adc49510bf20602204a16e.png" alt="c187b55ba8adc49510bf20602204a16e.png"></p>
+<p>而别人的操作则分为以下几步。</p>
+<ol>
+<li>打开浏览器搜索时间戳转换工具。</li>
+<li>打开工具网页，等待加载完成。</li>
+<li>输入时间戳或标准时间，点击转换。</li>
+</ol>
+<p>工具箱中的内容不仅这个，还有很多实用的工具，可以大大的提高效率。</p>
+<h3 id="有道翻译"><a href="#有道翻译" class="headerlink" title="有道翻译"></a>有道翻译</h3><p><img src="/resource/img/44e3dbddb40c6a9b22c7055aee8cd824.png" alt="44e3dbddb40c6a9b22c7055aee8cd824.png"></p>
+<p>最后一个常用的插件是有道翻译扩展，输入关键字 yd 就能自动转换中英文。</p>
+<p><img src="/resource/img/7de0e80bbf5d7c0afc5c24d2b6950bd3.png" alt="7de0e80bbf5d7c0afc5c24d2b6950bd3.png"></p>
+<p><img src="/resource/img/316837aeaf66c7918aa9a0391fbd0f73.png" alt="316837aeaf66c7918aa9a0391fbd0f73.png"></p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>平时工作的使用频率还是蛮高的，节省下来的时间可以做更多的事情。</p>
+<p><img src="/resource/img/4d0d461ba444ad426fbef97de168b5f4.png" alt="4d0d461ba444ad426fbef97de168b5f4.png"></p>
+<p>Alfred 的功能不止于此，在其官网有更详尽的描述，感兴趣的可以试用一下，有什么问题也可以咨询我。<strong>我是知一，如果这篇文章对你有益，欢迎一键三连~</strong></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div></div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/resource/file/wechat_mini.jpg" alt="noogel 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/resource/file/alipay_mini.jpg" alt="noogel 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/resource/file/qrcode_for_gh_4223a67f3865_258.jpg">
+          <span class="icon">
+            <i class="fab fa-weixin"></i>
+          </span>
+
+          <span class="label">WeChat</span>
+        </a>
+      </div>
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/atom.xml">
+          <span class="icon">
+            <i class="fa fa-rss"></i>
+          </span>
+
+          <span class="label">RSS</span>
+        </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%95%88%E7%8E%87/" rel="tag"># 效率</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/01/21/1.html" rel="prev" title="知一的 2021 已读书单">
+                  <i class="fa fa-chevron-left"></i> 知一的 2021 已读书单
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/03/05/1.html" rel="next" title="技术面试的一点经验">
+                  技术面试的一点经验 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">noogel</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.13.4/dist/mermaid.min.js","integrity":"sha256-96rwDGMWIQYB0yKGp1sKi1yrjrLPj2oT39IpbCsIrsg="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"noogel","repo":"noogel.github.io","client_id":"41a4e14aca0b3552334a","client_secret":"ebe0f9bfd24824f3d0d0f41bfd88a8736353759b","admin_user":"noogel","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"10bb026f941b7c1a2f308814c3fef27a"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

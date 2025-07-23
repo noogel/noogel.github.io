@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/resource/img/favicon2018.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/resource/img/favicon2018.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/resource/img/favicon2018.png">
+  <link rel="mask-icon" href="/resource/img/favicon2018.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"noogel.xyz","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="调研环境说明 etcd –versionetcd Version: 3.5.1Git SHA: d42e8589eGo Version: go1.17.2Go OS&#x2F;Arch: darwin&#x2F;amd64  参数说明启动参数 1234567891011121314--name etcd-1 &#x2F;&#x2F; 节点名称--data-dir &#x2F;Users&#x2F;noogel&#x2F;Debug&#x2F;data&#x2F;e">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ETCD 运维笔记">
+<meta property="og:url" content="https://noogel.xyz/2021/11/16/1.html">
+<meta property="og:site_name" content="知一杂谈">
+<meta property="og:description" content="调研环境说明 etcd –versionetcd Version: 3.5.1Git SHA: d42e8589eGo Version: go1.17.2Go OS&#x2F;Arch: darwin&#x2F;amd64  参数说明启动参数 1234567891011121314--name etcd-1 &#x2F;&#x2F; 节点名称--data-dir &#x2F;Users&#x2F;noogel&#x2F;Debug&#x2F;data&#x2F;e">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://noogel.xyz/resource/img/2021-12-10-02-19-32.png">
+<meta property="article:published_time" content="2021-11-16T00:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-23T07:30:58.914Z">
+<meta property="article:author" content="noogel">
+<meta property="article:tag" content="中间件">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://noogel.xyz/resource/img/2021-12-10-02-19-32.png">
+
+
+<link rel="canonical" href="https://noogel.xyz/2021/11/16/1.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://noogel.xyz/2021/11/16/1.html","path":"2021/11/16/1.html","title":"ETCD 运维笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>ETCD 运维笔记 | 知一杂谈</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?9cdc9a11cbd242c6336b07c464d8820c"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="知一杂谈" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">知一杂谈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">我思故我在</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-career"><a href="/career/" rel="section"><i class="sitemap fa-fw"></i>├ 技术</a></li>
+        <li class="menu-item menu-item-life"><a href="/life/" rel="section"><i class="sitemap fa-fw"></i>├ 生活</a></li>
+        <li class="menu-item menu-item-future"><a href="/future/" rel="section"><i class="sitemap fa-fw"></i>└ 未来</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E8%AF%B4%E6%98%8E"><span class="nav-number">1.</span> <span class="nav-text">参数说明</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="nav-number">1.1.</span> <span class="nav-text">最佳实践</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E6%A8%A1%E6%8B%9F"><span class="nav-number">2.</span> <span class="nav-text">环境模拟</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84"><span class="nav-number">2.1.</span> <span class="nav-text">端口映射</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">2.2.</span> <span class="nav-text">启动命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%86%E5%8F%B2%E6%95%B0%E6%8D%AE%E6%B8%85%E7%90%86%E5%91%BD%E4%BB%A4"><span class="nav-number">2.3.</span> <span class="nav-text">历史数据清理命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A5%E5%B8%B8%E8%BF%90%E7%BB%B4"><span class="nav-number">3.</span> <span class="nav-text">日常运维</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%84%E5%91%BD%E4%BB%A4"><span class="nav-number">3.1.</span> <span class="nav-text">常规命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E5%90%AF%E9%89%B4%E6%9D%83"><span class="nav-number">3.2.</span> <span class="nav-text">开启鉴权</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E4%BA%A7%E9%9B%86%E7%BE%A4%E8%8A%82%E7%82%B9%E5%90%AF%E5%8A%A8%E6%96%B9%E5%BC%8F"><span class="nav-number">3.3.</span> <span class="nav-text">生产集群节点启动方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86"><span class="nav-number">3.4.</span> <span class="nav-text">问题处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Etcd-%E7%9A%84-compact-%E6%9C%BA%E5%88%B6"><span class="nav-number">3.4.1.</span> <span class="nav-text">Etcd 的 compact 机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A2%8E%E7%89%87%E6%95%B4%E7%90%86"><span class="nav-number">3.4.2.</span> <span class="nav-text">碎片整理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%8A%82%E7%82%B9%E5%A2%9E%E5%87%8F"><span class="nav-number">3.4.3.</span> <span class="nav-text">节点增减</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="nav-number">4.</span> <span class="nav-text">参考链接</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">noogel</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/noogel" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;noogel" rel="noopener" target="_blank"><i class="github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:noogel@163.com" title="E-Mail → mailto:noogel@163.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2021/11/16/1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="noogel">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知一杂谈">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ETCD 运维笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-11-16 00:00:00" itemprop="dateCreated datePublished" datetime="2021-11-16T00:00:00+00:00">2021-11-16</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <blockquote>
+<p><strong>调研环境说明</strong></p>
+<p>etcd –version<br>etcd Version: 3.5.1<br>Git SHA: d42e8589e<br>Go Version: go1.17.2<br>Go OS&#x2F;Arch: darwin&#x2F;amd64</p>
+</blockquote>
+<h2 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明"></a>参数说明</h2><p>启动参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">--name etcd-1 // 节点名称</span><br><span class="line">--data-dir /Users/noogel/Debug/data/etcd1 // 数据目录</span><br><span class="line">--initial-advertise-peer-urls http://127.0.0.1:238</span><br><span class="line">--listen-peer-urls http://127.0.0.1:2381</span><br><span class="line">--listen-client-urls http://127.0.0.1:2379</span><br><span class="line">--advertise-client-urls http://127.0.0.1:2379</span><br><span class="line">--initial-cluster-token etcd-lock-cluster-1 // 集群 token</span><br><span class="line">--initial-cluster etcd-1=http://127.0.0.1:2381,etcd-2=http://127.0.0.1:2382,etcd-3=http://127.0.0.1:2383 // 集群节点信息</span><br><span class="line">--initial-cluster-state new // 初始化的集群状态</span><br><span class="line">--heartbeat-interval 1000 // 心跳间隔</span><br><span class="line">--auto-compaction-retention 1 // 开启自动压缩，间隔 1h 执行</span><br><span class="line">--auto-compaction-mode periodic</span><br><span class="line">--quota-backend-bytes 8589934592 // 后端存储大小</span><br><span class="line">--election-timeout 5000 // 选举超时时间</span><br></pre></td></tr></table></figure>
+
+<p><strong>关于自动压缩</strong><br><a target="_blank" rel="noopener" href="https://etcd.io/docs/v3.4/op-guide/maintenance/#defragmentation">https://etcd.io/docs/v3.4/op-guide/maintenance/#defragmentation</a></p>
+<ul>
+<li><code>--auto-compaction-mode=revision --auto-compaction-retention=1000</code> 每5分钟自动压缩”latest revision” - 1000</li>
+<li><code>--auto-compaction-mode=periodic --auto-compaction-retention=12h</code> 每1小时自动压缩并保留12小时窗口。</li>
+</ul>
+<p>自动压缩碎片后还需要单独再清理占用的系统存储空间，<code>etcdctl defrag</code>。</p>
+<h3 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h3><ol>
+<li>heartbeat timeout 默认为 100ms,推荐配置为 1s;</li>
+<li>election timeout 默认为 1000ms,推荐为 5s(election timeout &gt;&#x3D; 5 * heartbeat timeout);</li>
+<li>quota-backend-bytes 默认为 2G(最大值8G),推荐根据集群容量预估调整;</li>
+<li>配置 auto-compaction-retention&#x3D;1 和 auto-compaction-mode&#x3D;periodic 参数，定期压缩历史数据;</li>
+<li>推荐通过 cronjob 定期执行 etcdctl defrag（如果 defrag 执行时间 &gt; election timeout，则集群会进入重新选主模式）</li>
+</ol>
+<h2 id="环境模拟"><a href="#环境模拟" class="headerlink" title="环境模拟"></a>环境模拟</h2><h3 id="端口映射"><a href="#端口映射" class="headerlink" title="端口映射"></a>端口映射</h3><p>单机环境写集群搭建，以下是端口映射</p>
+<p>etcd1 2379 -&gt; 2391 2380 -&gt; 2381</p>
+<p>etcd2 2379 -&gt; 2392 2380 -&gt; 2382</p>
+<p>etcd3 2379 -&gt; 2393 2380 -&gt; 2383</p>
+<h3 id="启动命令"><a href="#启动命令" class="headerlink" title="启动命令"></a>启动命令</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ETCDCTL_API=3 etcd --name etcd-1 --data-dir /Users/noogel/Debug/data/etcd1 --initial-advertise-peer-urls http://127.0.0.1:2381 --listen-peer-urls http://127.0.0.1:2381 --listen-client-urls http://127.0.0.1:2379 --advertise-client-urls http://127.0.0.1:2379 --initial-cluster-token etcd-lock-cluster-1 --initial-cluster etcd-1=http://127.0.0.1:2381,etcd-2=http://127.0.0.1:2382,etcd-3=http://127.0.0.1:2383 --initial-cluster-state new --heartbeat-interval 1000 --auto-compaction-mode=revision --auto-compaction-retention=1000 --quota-backend-bytes 8589934592 --election-timeout 5000 &gt; /Users/noogel/Debug/data/etcd1/run.log 2&gt;&amp;1 &amp;</span><br><span class="line"></span><br><span class="line">ETCDCTL_API=3 etcd --name etcd-2 --data-dir /Users/noogel/Debug/data/etcd2 --initial-advertise-peer-urls http://127.0.0.1:2382 --listen-peer-urls http://127.0.0.1:2382 --listen-client-urls http://127.0.0.1:2378 --advertise-client-urls http://127.0.0.1:2378 --initial-cluster-token etcd-lock-cluster-1 --initial-cluster etcd-1=http://127.0.0.1:2381,etcd-2=http://127.0.0.1:2382,etcd-3=http://127.0.0.1:2383 --initial-cluster-state new --heartbeat-interval 1000 --auto-compaction-mode=revision --auto-compaction-retention=1000 --quota-backend-bytes 8589934592 --election-timeout 5000 &gt; /Users/noogel/Debug/data/etcd2/run.log 2&gt;&amp;1 &amp;</span><br><span class="line"></span><br><span class="line">ETCDCTL_API=3 etcd --name etcd-3 --data-dir /Users/noogel/Debug/data/etcd3 --initial-advertise-peer-urls http://127.0.0.1:2383 --listen-peer-urls http://127.0.0.1:2383 --listen-client-urls http://127.0.0.1:2377 --advertise-client-urls http://127.0.0.1:2377 --initial-cluster-token etcd-lock-cluster-1 --initial-cluster etcd-1=http://127.0.0.1:2381,etcd-2=http://127.0.0.1:2382,etcd-3=http://127.0.0.1:2383 --initial-cluster-state new --heartbeat-interval 1000 --auto-compaction-mode=revision --auto-compaction-retention=1000 --quota-backend-bytes 8589934592 --election-timeout 5000 &gt; /Users/noogel/Debug/data/etcd3/run.log 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure>
+
+<h3 id="历史数据清理命令"><a href="#历史数据清理命令" class="headerlink" title="历史数据清理命令"></a>历史数据清理命令</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rm -rf /Users/noogel/Debug/data/etcd1</span><br><span class="line">rm -rf /Users/noogel/Debug/data/etcd2</span><br><span class="line">rm -rf /Users/noogel/Debug/data/etcd3</span><br><span class="line">mkdir etcd1 etcd2 etcd3</span><br></pre></td></tr></table></figure>
+
+<h2 id="日常运维"><a href="#日常运维" class="headerlink" title="日常运维"></a>日常运维</h2><h3 id="常规命令"><a href="#常规命令" class="headerlink" title="常规命令"></a>常规命令</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">export ETCDCTL_API=3</span><br><span class="line">// 节点列表查询</span><br><span class="line">etcdctl member list</span><br><span class="line">// 节点状态</span><br><span class="line">etcdctl --endpoints=127.0.0.1:2381,127.0.0.1:2382,127.0.0.1:2383 endpoint status --write-out=table</span><br><span class="line">// 整理磁盘碎片</span><br><span class="line">etcdctl --endpoints=127.0.0.1:2381,127.0.0.1:2382,127.0.0.1:2383 --user root:123456 defrag</span><br></pre></td></tr></table></figure>
+
+<h3 id="开启鉴权"><a href="#开启鉴权" class="headerlink" title="开启鉴权"></a>开启鉴权</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 添加 root 用户</span><br><span class="line">etcdctl --endpoints=127.0.0.1:2381,127.0.0.1:2382,127.0.0.1:2383 user add root</span><br><span class="line">// 授权 root 角色</span><br><span class="line">etcdctl --endpoints=127.0.0.1:2381,127.0.0.1:2382,127.0.0.1:2383 user grant-role root root</span><br><span class="line">// 查看用户列表</span><br><span class="line">etcdctl --endpoints=127.0.0.1:2381,127.0.0.1:2382,127.0.0.1:2383 --user=root:123456 user list</span><br><span class="line">// 开启鉴权</span><br><span class="line">etcdctl --endpoints=127.0.0.1:2381,127.0.0.1:2382,127.0.0.1:2383 auth enable</span><br></pre></td></tr></table></figure>
+
+<h3 id="生产集群节点启动方式"><a href="#生产集群节点启动方式" class="headerlink" title="生产集群节点启动方式"></a>生产集群节点启动方式</h3><p>在生产机通过 <code>systemd</code> 启动。第一次启动命令<code>--initial-cluster-state new</code>，后续节点的增加需要修改为 <code>--initial-cluster-state existing</code>，不明白看节点增加部分。</p>
+<p><strong>修改配置</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 编辑配置</span><br><span class="line">vim /lib/systemd/system/etcd.service</span><br><span class="line">// 重新加载配置</span><br><span class="line">systemctl daemon-reload</span><br><span class="line">// 启动服务</span><br><span class="line">systemctl start etcd.service</span><br><span class="line">// 查看服务状态</span><br><span class="line">systemctl status etcd.service</span><br></pre></td></tr></table></figure>
+
+<h3 id="问题处理"><a href="#问题处理" class="headerlink" title="问题处理"></a>问题处理</h3><h4 id="Etcd-的-compact-机制"><a href="#Etcd-的-compact-机制" class="headerlink" title="Etcd 的 compact 机制"></a>Etcd 的 compact 机制</h4><p>Etcd 默认不会自动 compact，需要设置启动参数，或者通过命令进行compact，如果变更频繁建议设置，否则会导致空间和内存的浪费以及错误。Etcd v3 的默认的 backend quota 2GB，如果不 compact，boltdb 文件大小超过这个限制后，就会报错：”Error: etcdserver: mvcc: database space exceeded”，导致数据无法写入。</p>
+<p>要从空间不足配额警报中恢复：</p>
+<ol>
+<li>Compact etcd的历史。</li>
+<li>对每个etcd端点进行碎片整理。</li>
+<li>解除警报。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 1、获取当前的版本</span><br><span class="line">$ rev=$(ETCDCTL_API=3 etcdctl --endpoints=:2379 endpoint status --write-out=&quot;json&quot; | egrep -o &#x27;&quot;revision&quot;:[0-9]*&#x27; | egrep -o &#x27;[0-9].*&#x27;)</span><br><span class="line"># 2、压缩当前版本之前的所有记录</span><br><span class="line">$ ETCDCTL_API=3 etcdctl compact $rev</span><br><span class="line">compacted revision 1516</span><br><span class="line"># 3、清理多余的碎片空间</span><br><span class="line">$ ETCDCTL_API=3 etcdctl defrag</span><br><span class="line">Finished defragmenting etcd member[127.0.0.1:2381]</span><br><span class="line"># 4、解除警告</span><br><span class="line">$ ETCDCTL_API=3 etcdctl alarm disarm</span><br><span class="line">memberID:13803658152347727308 alarm:NOSPACE</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>需要注意的是整理碎片释放空间，要一个一个节点执行，因为在执行期间节点是无响应的，直到处理完。防止因为全部节点无响应导致的服务不可用</strong></p>
+</blockquote>
+<h4 id="碎片整理"><a href="#碎片整理" class="headerlink" title="碎片整理"></a>碎片整理</h4><p>压缩key空间后，会出现内部碎片，这些压缩出来的碎片空间可以被etcd使用，但是不会真正的释放物理空间，需要进行碎片整理，如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ etcdctl defrag</span><br><span class="line">Finished defragmenting etcd member[127.0.0.1:2379]以上指令只作用于当前所在的主机，不会在集群</span><br></pre></td></tr></table></figure>
+
+<p>环境中复刻。可以使用–cluster标记指定所有成员以自动查找所有集群成员。如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ etcdctl defrag --cluster</span><br><span class="line">Finished defragmenting etcd member[http://127.0.0.1:2381]</span><br><span class="line">Finished defragmenting etcd member[http://127.0.0.1:2382]</span><br><span class="line">Finished defragmenting etcd member[http://127.0.0.1:2383]</span><br></pre></td></tr></table></figure>
+
+<h4 id="节点增减"><a href="#节点增减" class="headerlink" title="节点增减"></a>节点增减</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 查看成员信息</span><br><span class="line">ETCDCTL_API=3 etcdctl member list</span><br><span class="line"># 移除节点</span><br><span class="line">ETCDCTL_API=3 etcdctl member remove wallet0x</span><br><span class="line"># 添加节点</span><br><span class="line">ETCDCTL_API=3 etcdctl member add wallet0x --peer-urls=&quot;http://10.137.158.119:2380&quot;</span><br><span class="line"># 最后再启动服务</span><br><span class="line"># 其中启动命令 --initial-cluster-state 需要设置为 existing。</span><br></pre></td></tr></table></figure>
+
+<p>需要先移除故障节点成员，再添加进去成员列表。然后清理掉故障节点的工作目录内容，之后再启动服务，启动后服务会自动同步数据。</p>
+<p>其中启动命令需要设置为 <code>--initial-cluster-state existing</code>。</p>
+<p><img src="/resource/img/2021-12-10-02-19-32.png"></p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a target="_blank" rel="noopener" href="http://www.zhaowenyu.com/etcd-doc/ops/data-space-manage.html">http://www.zhaowenyu.com/etcd-doc/ops/data-space-manage.html</a><br><a target="_blank" rel="noopener" href="https://xieys.club/etcd-backup-restore">https://xieys.club/etcd-backup-restore</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/lowezheng/p/10307592.html">https://www.cnblogs.com/lowezheng/p/10307592.html</a><br><a target="_blank" rel="noopener" href="https://bbotte.github.io/service_config/etcd-cluster-troubleshooting.html">https://bbotte.github.io/service_config/etcd-cluster-troubleshooting.html</a><br><a target="_blank" rel="noopener" href="https://www.mytecdb.com/blogDetail.php?id=211">https://www.mytecdb.com/blogDetail.php?id=211</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/tencent-cloud-native/p/14893209.html">https://www.cnblogs.com/tencent-cloud-native/p/14893209.html</a><br><a target="_blank" rel="noopener" href="http://www.dockone.io/article/2955">http://www.dockone.io/article/2955</a><br><a target="_blank" rel="noopener" href="https://mytecdb.com/blogDetail.php?id=199">https://mytecdb.com/blogDetail.php?id=199</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div></div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/resource/file/wechat_mini.jpg" alt="noogel 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/resource/file/alipay_mini.jpg" alt="noogel 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/resource/file/qrcode_for_gh_4223a67f3865_258.jpg">
+          <span class="icon">
+            <i class="fab fa-weixin"></i>
+          </span>
+
+          <span class="label">WeChat</span>
+        </a>
+      </div>
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/atom.xml">
+          <span class="icon">
+            <i class="fa fa-rss"></i>
+          </span>
+
+          <span class="label">RSS</span>
+        </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/" rel="tag"># 中间件</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/10/31/1.html" rel="prev" title="周末在厨房的一些思考">
+                  <i class="fa fa-chevron-left"></i> 周末在厨房的一些思考
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/11/25/1.html" rel="next" title="云之彼端，生活的另一种打开方式">
+                  云之彼端，生活的另一种打开方式 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">noogel</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.13.4/dist/mermaid.min.js","integrity":"sha256-96rwDGMWIQYB0yKGp1sKi1yrjrLPj2oT39IpbCsIrsg="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"noogel","repo":"noogel.github.io","client_id":"41a4e14aca0b3552334a","client_secret":"ebe0f9bfd24824f3d0d0f41bfd88a8736353759b","admin_user":"noogel","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"66214b1c48df5d7336875f769dba2167"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>
