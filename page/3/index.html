@@ -192,6 +192,154 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2021/10/31/1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="noogel">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知一杂谈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/10/31/1.html" class="post-title-link" itemprop="url">周末在厨房的一些思考</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-10-31 00:00:00" itemprop="dateCreated datePublished" datetime="2021-10-31T00:00:00+00:00">2021-10-31</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><img src="/resource/img/2021-12-10-01-41-35.png"></p>
+<h2 id="概况"><a href="#概况" class="headerlink" title="概况"></a>概况</h2><p>作为一个北方汉子对于面食真的是十分热爱的，尤其是发面后的。从小在家兜包子都是只能看不让参与的，长大后在外面都是买现成的，如今也想自己做一做。也许是从小在家耳濡目染，第一次做整体的效果还不错。<br>宋丹丹老师曾经说过把大象装进冰箱总共要分三步，那么蒸包子总共需要分为如下五步：</p>
+<ol>
+<li>准备原材料</li>
+<li>发面</li>
+<li>调馅</li>
+<li>擀面片</li>
+<li>蒸包子</li>
+</ol>
+<p>可是，真的就是只蒸了包子吗？</p>
+<h2 id="关于蒸包子的一些思考"><a href="#关于蒸包子的一些思考" class="headerlink" title="关于蒸包子的一些思考"></a>关于蒸包子的一些思考</h2><h3 id="分治法"><a href="#分治法" class="headerlink" title="分治法"></a>分治法</h3><p>就像我之前聊到过的，复杂的东西是由许多简单的东西组成的。就像蒸包子这件事不一定多么复杂，但也不那么简单，要想做好也是要拆分成上面五个相对简单的步骤执行。作为一个后端工程师，现在做事情总是会带入一些思维模型去看，这个例子是<strong>分治法</strong>来将蒸包子这件事简单化，只要我们把其中简单的每一步做好就可以最终把包子蒸好。</p>
+<h3 id="批处理"><a href="#批处理" class="headerlink" title="批处理"></a>批处理</h3><p>当我把包子蒸好以后，发现耗时很长，那么怎么提高效率呢。刨除在网上买菜等菜的时间，大致的时间线如下：</p>
+<p>发面准备：15:00 -&gt; 15:30<br>发面期间：15:30 -&gt; 17:00<br>做、调馅：16:30 -&gt; 17:30<br>擀皮       ：17:30 -&gt; 18:00<br>包、蒸    ：18:00 -&gt; 19:00</p>
+<p>总计人力耗时 3 小时，出锅 18 个包子。如果我要是蒸 36 个包子就要消耗 6 小时的时间吗？答案是要小于 6 小时的，主要原因有以下几点：</p>
+<ol>
+<li>蒸笼仍有一半的空间未用，可以节省掉一次烧水蒸包子的时间。</li>
+<li>每个环节都可以节省准备工具，收拾工具的时间。</li>
+</ol>
+<p>但是我要再多蒸一倍的包子是不是平均耗时会更短，这个就不一定了，如果蒸锅的承载上限就是 36 个包子，那平均耗时就不会再减少。<br><strong>批处理的方案在一定程度上会提高我们的效率，但不会无限提高，而是有一个最优解，这个最优解取决于外在条件。</strong></p>
+<h3 id="并发思维"><a href="#并发思维" class="headerlink" title="并发思维"></a>并发思维</h3><p>以上情况分析的是单人力情况下，如果再有一个人一起做。可以有以下方面提升：</p>
+<ol>
+<li>我们发现面团在 17:00 发好的，擀皮在 17:30 才开始的，中间阻塞的时间在弄馅。把弄馅的时间交给第二个人做，可以减少 30 分钟阻塞。</li>
+<li>发面准备分两个人做可以大致减少 15 分钟耗时。</li>
+<li>两个人一起包包子可以大致减少15分钟耗时。</li>
+<li>额外损耗，例如工具准备上因为多加了一套工具会产生额外耗时。</li>
+</ol>
+<p>最后大致的总人力耗时会大于 3 小时，平均人力耗时在 1.5 到 2小时之间。<strong>并发思维又是我们另外一个手段。</strong></p>
+<h3 id="流水线模型"><a href="#流水线模型" class="headerlink" title="流水线模型"></a>流水线模型</h3><p>上面需要人操作的蒸包子需要四步，其中每一步都会有一些内耗是在每步切换时都需要思考下一步该怎么做，以及准备对应步骤的工具撤掉上一步骤的工具。如果我们厨房能供四人同时使用，并且每人只做一步的事，那么每一步的耗时就会因为熟能生巧而使时间大大缩短。如果这是一家包子店的厨房，那么这四个人就可以源源不断的高效生产包子。<strong>通过流水线模型来提高效率，这也是并发的一种。</strong></p>
+<h3 id="工具化思维"><a href="#工具化思维" class="headerlink" title="工具化思维"></a>工具化思维</h3><p>再假如，北京所有的人早餐都要来这家店吃包子，那么任凭这四个人怎么日夜生产，也不能满足整个北京的需求。如果还是这四个人怎么做？如果恰好其中有一个人学过机械相关的知识并且动手能力又很强，这时候他可以和其他三个人一起交流蒸包子的心得，然后结合整个知识，设计出蒸包子机器，然后找工厂生产出几十台日夜生产，我想北京的包子供应应该就没问题了。他们四个人只需要盯盯机器，坏了修一修就好了。<strong>这里面就用到了工具化思维，可以极大的提高我们的生产效率。工业革命的意义之一就是创造了巨大的生产力。</strong></p>
+<p>说了这么多，下面附上我的蒸包子攻略~</p>
+<h2 id="蒸包子攻略"><a href="#蒸包子攻略" class="headerlink" title="蒸包子攻略"></a>蒸包子攻略</h2><h3 id="准备原材料"><a href="#准备原材料" class="headerlink" title="准备原材料"></a>准备原材料</h3><ul>
+<li>准备面皮<ul>
+<li>面粉 1 kg</li>
+<li>酵母粉 5g</li>
+<li>温水</li>
+</ul>
+</li>
+<li>准备馅（猪肉大葱）<ul>
+<li>猪肉馅 500g</li>
+<li>大葱 500g</li>
+<li>姜、料酒、胡椒粉</li>
+<li>耗油、鸡精、生抽</li>
+<li>香油</li>
+<li>老抽</li>
+</ul>
+</li>
+</ul>
+<h3 id="发面"><a href="#发面" class="headerlink" title="发面"></a>发面</h3><ol>
+<li>用温水冲开酵母粉，混合均匀后加入面粉中和面。</li>
+</ol>
+<p><img src="/resource/img/2021-10-31-12-10-22.png"></p>
+<ol start="2">
+<li>慢慢慢慢~加水，搅拌成絮状。</li>
+</ol>
+<p><img src="/resource/img/2021-10-31-12-10-29.png"></p>
+<ol start="3">
+<li>最后柔成光滑的圆面团。</li>
+</ol>
+<p><img src="/resource/img/2021-10-31-12-10-36.png"></p>
+<ol start="4">
+<li>放到温暖的地方发酵，一小时左右吧，面团最后会放大一倍左右。</li>
+</ol>
+<p>加水的时候需要慢慢加慢慢抓，慢慢会形成一个光滑的圆团，面团的软硬跟水的多少有关，如果面硬的话可以适当加一些水调整软硬程度。</p>
+<h3 id="调馅"><a href="#调馅" class="headerlink" title="调馅"></a>调馅</h3><p><img src="/resource/img/2021-10-31-12-10-48.png"></p>
+<ol>
+<li>趁着面团发酵期间，可以开始准备调馅了。买的是绞好的猪肉馅，然后就是把两颗大葱切碎，切点姜碎进去。</li>
+<li>加入上述的各种调料调整肉馅的口味。由于放了老抽和生抽，盐可以少放或者不放，根据个人口味来看。</li>
+<li>加好以后搅拌均匀就行了。</li>
+</ol>
+<p>其中老抽用来调色，生抽、鸡精、耗油用来调味，胡椒粉、姜碎、料酒用来去腥，加一些香油可以让肉馅变得超级香。</p>
+<h3 id="擀面片"><a href="#擀面片" class="headerlink" title="擀面片"></a>擀面片</h3><p><img src="/resource/img/2021-10-31-12-10-57.png"></p>
+<ol>
+<li>调好馅可以休息一会，待发好面取出来继续揉捏，直到里面没有气泡了。</li>
+<li>然后揉成一个细条状，用刀切成一段一段的。用手掌按成扁圆的。</li>
+<li>用擀面杖一点点擀成扁片，厚度比饺子皮厚一些，标准的面片是边缘较薄中心较厚的圆形。</li>
+</ol>
+<h3 id="蒸包子"><a href="#蒸包子" class="headerlink" title="蒸包子"></a>蒸包子</h3><p><img src="/resource/img/2021-10-31-12-11-05.png"></p>
+<ol>
+<li>准备一个篦子，上面放好屉布，待包子包好放上去。至于兜包子的手法直接网上查吧。</li>
+<li>准备好蒸锅，放上包子开火后蒸20分钟左右即可，关火后放 5分钟。</li>
+<li>最后的出锅，因为包子会变大导致互相黏连，可以准备一些清水滴到屉布和包子连接处湿润，这样包子就可以完好的取下了。</li>
+</ol>
+<p>最后来一张出锅照，年轻人的第一锅包子就这样做好了。</p>
+<p><img src="/resource/img/2021-10-31-12-11-13.png"></p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>工作和生活中我们会遇到很多事和物，事事物物之间有很多共通之处，包括问题的产生和解决办法。不同表象的背后相同的本质的东西是思维方式还是抽象模型？看清它们，能带给我的是做出好吃的包子，不仅仅是这些，还有更多。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2021/10/22/1.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1298,190 +1446,6 @@
 </ol>
 <h2 id="开放主机服务"><a href="#开放主机服务" class="headerlink" title="开放主机服务"></a>开放主机服务</h2><p>该模式可以通过REST实现。通常来讲，我们可以将开放主机服务看作是远程过程调用（RPC）的API。同时，也可以通过消息机制实现。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/snidget/p/12995676.html">https://www.cnblogs.com/snidget/p/12995676.html</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/130945830">https://zhuanlan.zhihu.com/p/130945830</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/itfly8/article/details/109554847">https://blog.csdn.net/itfly8/article/details/109554847</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/netfocus/archive/2011/10/10/2204949.html">https://www.cnblogs.com/netfocus/archive/2011/10/10/2204949.html</a><br><a target="_blank" rel="noopener" href="https://iambowen.gitbooks.io/cloud-design-pattern/content/patterns/anti-corruption-layer.html">https://iambowen.gitbooks.io/cloud-design-pattern/content/patterns/anti-corruption-layer.html</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2020/09/07/1.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="noogel">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="知一杂谈">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/09/07/1.html" class="post-title-link" itemprop="url">小米粥声控音箱总体计划</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-09-07 00:00:00" itemprop="dateCreated datePublished" datetime="2020-09-07T00:00:00+00:00">2020-09-07</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><img src="/resource/img/2020-09-07-12-51-24.png"></p>
-<p>关注树莓派很久了，只是没有很感兴趣的应用场景，就没有买来玩。几个月前偶然得到一个小度音箱，发现了新大陆，各种语音控制功能，便捷性不言而喻，还买了一些外部设备可以通过小度控制，发现有红外遥控器可以控制家里的大部分红外家电，奈何码库不是很全，有些设备还是不能控制的，而且不支持定制功能。恰好在知乎看到了一些 geek 视频，想着自己也做一个，可以支持红外数据的定制，做到自由遥控。于是乎说干就干，从一个什么硬件都不懂的小白一步步的了解了点硬件知识，软件部分相对好实现一些。主要计划的功能是通过语音来控制红外家电、温湿度监控以及智能提醒等功能，先完成主体框架然后再不断开发插件形式来增强可玩性。</p>
-<p><strong>计划主要分为两个子系统</strong>：</p>
-<ol>
-<li>软件子系统，主要实现语音到文字和文字到语音的转换，逻辑功能的处理等。</li>
-<li>硬件子系统提供收音、音箱、温湿度传感器、红外收发、系统供电等能力的支持。</li>
-</ol>
-<p><strong>总体功能点进度如下</strong>：</p>
-<ul>
-<li>ok 显示，信息简单展示界面，计划采用 OLED12832 屏。</li>
-<li>ok 收音，收集外接语音信息。</li>
-<li>ok 音响，输出系统响应结果。</li>
-<li>温湿度，收集设备所处环境的温度和湿度。</li>
-<li>ok 风扇，硬件系统散热。</li>
-<li>ok 红外收&#x2F;发，红外设备系统的录入和红外信号的发射，用于控制红外家电。</li>
-<li>供电模块，给音响和树莓派硬件供电。</li>
-<li>ok pcb 电路版设计，传感器集成。</li>
-<li>3d 打印外壳，最后根据硬件的排列情况定制一个简洁的外壳。</li>
-<li>ok 语音汉字互转，计划采用讯飞 API 接口实现，后面尝试做简单的语音识别模型。</li>
-<li>ok 逻辑控制和输出输入设备控制模块，基于硬件传感器数据的采集和信息的归纳整理能力。</li>
-</ul>
-<h2 id="硬件部分"><a href="#硬件部分" class="headerlink" title="硬件部分"></a>硬件部分</h2><p>一直以来都是做的软件，这次从 0 到 1 一点点学的硬件，到 PCB 打样，焊板。没有遵循设计规范，只是按照能用的级别做的。</p>
-<p><img src="/resource/img/2020-09-07-12-51-36.png"></p>
-<p><img src="/resource/img/2020-09-07-12-51-46.png"></p>
-<p>v0.2</p>
-<p><img src="/resource/img/2020-10-06-00-56-24.png"></p>
-<p><img src="/resource/img/2020-10-06-00-56-04.png"></p>
-<h2 id="实验数据收集"><a href="#实验数据收集" class="headerlink" title="实验数据收集"></a>实验数据收集</h2><p><img src="/resource/img/2020-09-07-12-51-54.png"></p>
-<h3 id="树莓派4-GPIO-引脚"><a href="#树莓派4-GPIO-引脚" class="headerlink" title="树莓派4 GPIO 引脚"></a>树莓派4 GPIO 引脚</h3><p><img src="/resource/img/2020-09-07-12-52-05.png"></p>
-<p>一、电源输出引脚</p>
-<p>3v3、5v代表：3.3伏特和5伏特，是输出供电的正极，也就是我们常说的Vcc</p>
-<p>GND代表接地和输出供电的负极</p>
-<blockquote>
-<p>特别注意：每个引脚最大输出电流为16毫安(mA)，且同一时刻所有引脚的总输出电流不超过51毫安</p>
-</blockquote>
-<p>二、GPIO</p>
-<p>GPIO（General Purpose I&#x2F;O Ports）意思为通用输入&#x2F;输出端口，通俗地说，就是一些引脚，可以通过它们输出高低电平或者通过它们读入引脚的状态-是高电平或是低电平。GPIO是个比较重要的概念，用户可以通过GPIO口和硬件进行数据交互（如UART），控制硬件工作（如LED、蜂鸣器等），读取硬件的工作状态信号（如中断信号）等。GPIO口的使用非常广泛。掌握了GPIO，差不多相当于掌握了操作硬件的能力。树莓派有26个GPIO接口，其中有一部分是复用接口。</p>
-<ol>
-<li>引脚3、5为IC总线复用接口</li>
-<li>引脚7为（GCLK）全局时钟引脚复用接口</li>
-<li>引脚19、21、23为SPI总线复用接口</li>
-<li>引脚8、10为串口复用接口，TX发送，RX接收</li>
-<li>引脚12、32、33、35为PWM复用接口</li>
-</ol>
-<p>三、IC总线</p>
-<p>IC是内部整合电路的称呼，是一种串行通讯总线，使用多主从架构，由飞利浦公司在1980年代为了让主板、嵌入式系统或手机用以连接低速周边装置而发展。IC的正确读法为”Inter－Integrated Circuit” 。</p>
-<ul>
-<li>SDA：数据线</li>
-<li>SCL：时钟线</li>
-</ul>
-<p>四、SPI总线</p>
-<p>SPI是串行外设接口（Serial Peripheral Interface）的缩写，是一种高速的，全双工，同步的通信总线，并且在芯片的管脚上只占用四根线，节约了芯片的管脚，同时为PCB的布局上节省空间，提供方便，正是出于这种简单易用的特性，如今越来越多的芯片集成了这种通信协议。</p>
-<ul>
-<li>MISO：数据输入</li>
-<li>MOSI：数据输出</li>
-<li>SCLK：时钟信号</li>
-<li>SS：使能信号</li>
-</ul>
-<p>五、UART总线</p>
-<p>UART是一种通用串行数据总线，用于异步通信。该总线双向通信，可以实现全双工传输和接收。在嵌入式设计中，UART用于主机与辅助设备通信，如汽车音响与外接AP之间的通信，与PC机通信包括与监控调试器和其它器件，如EEPROM通信。<br>可以理解为计算机的串口。RS232、TTL。</p>
-<ul>
-<li>RX是接收</li>
-<li>TX是发送</li>
-</ul>
-<p>六、PWM脉冲宽度调制</p>
-<p>脉冲宽度调制是一种模拟控制方式，其根据相应载荷的变化来调制晶体管基极或MOS管栅极的偏置，来实现晶体管或MOS管导通时间的改变，从而实现开关稳压电源输出的改变。这种方式能使电源的输出电压在工作条件变化时保持恒定，是利用微处理器的数字信号对模拟电路进行控制的一种非常有效的技术。脉冲宽度调制是利用微处理器的数字输出来对模拟电路进行控制的一种非常有效的技术，广泛应用在从测量、通信到功率控制与变换的许多领域中。</p>
-<h3 id="AD-教程"><a href="#AD-教程" class="headerlink" title="AD 教程"></a>AD 教程</h3><p>AD 使用与硬件电路图画图和PCB图设计使用的。主要是看了B站的一个入门视频教程，然后再不断搜搜改改来实现的。</p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/wxh0000mm/article/details/70237722">https://blog.csdn.net/wxh0000mm/article/details/70237722</a><br><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av94518044?p=1">https://www.bilibili.com/video/av94518044?p=1</a><br><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/32069273">https://www.zhihu.com/question/32069273</a></p>
-<p><strong>单位转换</strong></p>
-<ul>
-<li>1.0mil &#x3D; 0.025mm</li>
-<li>1.2mil &#x3D; 0.030mm</li>
-<li>1.25mil &#x3D; 0.032mm</li>
-</ul>
-<h3 id="DHT11-温湿度传感器"><a href="#DHT11-温湿度传感器" class="headerlink" title="DHT11 温湿度传感器"></a>DHT11 温湿度传感器</h3><p>下面是温湿度传感器的基本电路图，这里本来是3pin方案到树莓派的，板子上也画好了，只不过在焊接的时候没有处理好，现在系统始终无法正确读数，只是在测试期间能正常读。</p>
-<p><img src="/resource/img/2020-09-07-13-30-40.png"></p>
-<p><a target="_blank" rel="noopener" href="https://shumeipai.nxez.com/2019/10/06/reading-temperature-and-humidity-from-dht11-with-raspberry-pi.html">https://shumeipai.nxez.com/2019/10/06/reading-temperature-and-humidity-from-dht11-with-raspberry-pi.html</a></p>
-<h3 id="OLED-12832"><a href="#OLED-12832" class="headerlink" title="OLED 12832"></a>OLED 12832</h3><p>这里使用了 Adafruit_Python_SSD1306 库来驱动液晶屏显示。</p>
-<p><a target="_blank" rel="noopener" href="https://shumeipai.nxez.com/2019/04/29/use-the-ssd1306-oled-display-on-the-raspberry-pi.html">https://shumeipai.nxez.com/2019/04/29/use-the-ssd1306-oled-display-on-the-raspberry-pi.html</a></p>
-<h3 id="IR-收发"><a href="#IR-收发" class="headerlink" title="IR 收发"></a>IR 收发</h3><p>红外发射图，这里只画了两个，实际我是配置了4个红外发射二极管，限流电阻调整成 100R。</p>
-<p><img src="/resource/img/2020-09-07-12-53-03.png"></p>
-<p>红外接收图，这里直接使用已经简单封装的传感器</p>
-<p><img src="/resource/img/2020-09-07-12-53-11.png"></p>
-<p>IR的收发是主要调试的功能：</p>
-<p>红外录入功能使用：<br>安装 Linux 下的红外控制库：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install lirc</span><br></pre></td></tr></table></figure>
-<p>更新 <code>/boot/config.txt</code> 文件来开启红外收发接口：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># Uncomment this to enable the lirc-rpi module</span><br><span class="line">dtoverlay=lirc-rpi,gpio_out_pin=17,gpio_in_pin=18,gpio_in_pull=up</span><br></pre></td></tr></table></figure>
-<p>更新 <code>/etc/lirc/lirc_options.conf</code> 文件来控制当前是接收模式还是发射模式，修改完重启服务生效：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">device=/dev/lirc0</span><br></pre></td></tr></table></figure>
-<p>测试能否正常接收到红外信号：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mode2 -d /dev/lirc0</span><br><span class="line"></span><br><span class="line">space 16777215</span><br><span class="line">pulse 8999</span><br><span class="line">space 4457</span><br><span class="line">pulse 680</span><br><span class="line">space 1627</span><br><span class="line">......</span><br></pre></td></tr></table></figure>
-
-<p>可以通过 lirc 录制简单的红外设备生成遥控文件，如果空调这种比较复杂的不太好弄。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 查看按键名称，这里一个红外码是绑定到一个按键上的，你需要找一些你录制的按键然后记下来。</span><br><span class="line">irrecord -l</span><br><span class="line"># 开启录制命令，这个录制过程比较复杂，需要先判断环境噪音，然后随机按键，最后才是录制按键，而我的有些红外设备按键无法录上有点奇怪，目前只有台灯的录进去了。</span><br><span class="line">irrecord ~/lircd.conf</span><br><span class="line"># 如果有问题可以录制 raw code</span><br><span class="line">irrecord -f ~/lircd.conf</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>录制好的文件内容像下面这样，如果没有内容则说明没有录制上。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">begin remote</span><br><span class="line">  name myir</span><br><span class="line">  flags RAW_CODES|CONST_LENGTH</span><br><span class="line">  eps 30</span><br><span class="line">  aeps 100</span><br><span class="line">  gap 108055</span><br><span class="line">      begin raw_codes</span><br><span class="line">          name KEY_1</span><br><span class="line">            9062 4462 621 531 627 532</span><br><span class="line">              626 531 626 532 629 531</span><br><span class="line">              601 556 627 531 628 530</span><br><span class="line">              628 1610 629 1611 603 1636</span><br><span class="line">              603 1636 629 1612 629 1609</span><br><span class="line">              631 1609 630 1610 627 1612</span><br><span class="line">              630 530 629 1608 629 532</span><br><span class="line">              626 534 625 532 628 1609</span><br><span class="line">              629 532 628 529 630 1609</span><br><span class="line">              629 530 626 1612 629 1610</span><br><span class="line">              629 1610 629 540 633 1596</span><br><span class="line">              629</span><br><span class="line">          name KEY_2</span><br><span class="line">            9067 4455 632 528 630 528</span><br><span class="line">              633 524 631 529 630 529</span><br><span class="line">              630 528 630 530 630 528</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>最后要把录制的文件内容复制到对应目录，重启，让 lirc 服务能加载上：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo cp ~/xx.lircd.conf /etc/lirc/lircd.d/xx.lircd.conf</span><br></pre></td></tr></table></figure>
-
-<p>实际上发送按键需要执行的命令包含你复制的文件名（device-name）以及按键名（KEY_1）：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">irsend SEND_ONCE &lt;device-name&gt; KEY_1</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>红外输入输出参考</p>
-</blockquote>
-<p><a target="_blank" rel="noopener" href="https://www.pythonheidong.com/blog/article/191812/">https://www.pythonheidong.com/blog/article/191812/</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/96f16846dfa3">https://www.jianshu.com/p/96f16846dfa3</a><br><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000014135418">https://segmentfault.com/a/1190000014135418</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/9cfb0bf02006">https://www.jianshu.com/p/9cfb0bf02006</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/huanglufei/articles/5562330.html">https://www.cnblogs.com/huanglufei/articles/5562330.html</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/abdcd3e06726">https://www.jianshu.com/p/abdcd3e06726</a></p>
-<h2 id="软件部分"><a href="#软件部分" class="headerlink" title="软件部分"></a>软件部分</h2><p>简单的将软件部分分为前台功能和后台功能，前台功能主要是面向用户使用层面，后台功能主要是配置相关功能。</p>
-<p><img src="/resource/img/2020-09-07-13-31-45.png"></p>
-<p>前台功能分为三个模块，输入模块、逻辑处理模块和输出模块。</p>
-<p><img src="/resource/img/2020-09-07-13-32-03.png"></p>
-<p>其中热词唤醒方案使用的 snowboy ，语音文字互转采用的讯飞免费接口，后面可以考虑实现一些简单的部分。</p>
-<p>按照这个方案，后续只要不断配置和扩展功能即可，主要处理流程不会有太大变化产生。</p>
-<blockquote>
-<p>语音部分参考</p>
-</blockquote>
-<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/a1c06020f5fd">https://www.jianshu.com/p/a1c06020f5fd</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/lovesKey/p/11080448.html">https://www.cnblogs.com/lovesKey/p/11080448.html</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/DragonFire/p/9212935.html">https://www.cnblogs.com/DragonFire/p/9212935.html</a><br><a target="_blank" rel="noopener" href="https://www.xfyun.cn/doc/asr/voicedictation/API.html">https://www.xfyun.cn/doc/asr/voicedictation/API.html</a><br><a target="_blank" rel="noopener" href="https://www.xfyun.cn/doc/tts/online_tts/API.html">https://www.xfyun.cn/doc/tts/online_tts/API.html</a><br><a target="_blank" rel="noopener" href="https://www.xfyun.cn/doc/asr/voicedictation/Audio.html">https://www.xfyun.cn/doc/asr/voicedictation/Audio.html</a></p>
-<p>软件部分目前不打算公开，主要写的太烂。等优化后再放出来。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>目前一期实现了核心部分的功能，可以语音控制普通红外家电，耗时有两周（晚上），目前的时间精力上也只能做到这样，毕竟工作和生活还要占据绝大部分时间的。使用上流程比较简单，插电开机自启动后就可以了，只是语音和音箱部分还没有很方便的集成到整个项目里面。下一期做的时候计划优化电路，支持更多的传感器，然后把麦和音箱集成进去，再做一个外壳。<br>整个项目从计划到实施还是学到了一些，主要是硬件方面上的了解，电路原理图、PCB画图打样、硬件电路 IO 接口标准等，软件部分并没有太多的实践，准备放到三期做软件层面的优化，把外部 API 调用改成自己训练的语音模型。</p>
 
       
     </div>
