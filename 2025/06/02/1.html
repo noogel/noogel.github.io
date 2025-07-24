@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://noogel.xyz/resource/img/2025-07-24-15-31-32.png">
 <meta property="og:image" content="https://noogel.xyz/resource/img/2025-07-24-15-47-55.png">
 <meta property="article:published_time" content="2025-06-02T00:00:00.000Z">
-<meta property="article:modified_time" content="2025-07-24T07:48:25.440Z">
+<meta property="article:modified_time" content="2025-07-24T08:04:14.760Z">
 <meta property="article:author" content="noogel">
 <meta property="article:tag" content="项目">
 <meta name="twitter:card" content="summary">
@@ -242,6 +242,8 @@
         <p>说起来，玩 Docker 的朋友估计都有同样的感受：这玩意儿好用是好用，但管起来真有点头疼。市面上不是没有工具，像 Portainer 这种，功能是强大，可总觉得有点“重”。对于我这种只想简单管理几个服务、又不想折腾太多配置的人来说，它就像是开着一辆大卡车去买菜，有点过了。而且，它那套数据备份机制，说实话，我一直觉得不太顺手，总担心哪天数据丢了咋办。</p>
 <p>正是因为这些小烦恼，心里就一直琢磨着，能不能自己搞一个更轻便、更好用的 Docker 管理工具呢？毕竟，自己的需求自己最清楚。加上这几年 AI 编程发展得挺快，就想着是不是能借力 AI，把这个想法落地。说干就干，断断续续地折腾了一阵子，还真捣鼓出来一个“Docker in Docker”的维护工具。为啥是 Docker in Docker 呢？因为我觉得这样管理起来更方便，整个工具本身也是一个 Docker 容器，便于部署和迁移，而且特别符合我对“轻量”的追求。</p>
 <p><img src="/resource/img/2025-07-24-15-31-32.png"></p>
+<span id="more"></span>
+
 <hr>
 <h3 id="从“麻烦”到“方便”：这工具到底解决了啥？"><a href="#从“麻烦”到“方便”：这工具到底解决了啥？" class="headerlink" title="从“麻烦”到“方便”：这工具到底解决了啥？"></a>从“麻烦”到“方便”：这工具到底解决了啥？</h3><p>一开始，我的出发点就很简单：让管理 Docker 容器变得像管理文件一样方便。所以，这个工具的核心思想就是基于 <strong>Docker Compose</strong> 来维护服务。Compose 文件嘛，大家都知道，就是用 YAML 格式描述你的服务栈，简单明了。把管理重点放在 Compose 文件上，就天然地实现了像文件系统一样的管理方式。</p>
 <p><img src="/resource/img/2025-07-24-15-47-55.png"></p>
