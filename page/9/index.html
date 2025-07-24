@@ -134,7 +134,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">81</span>
+          <span class="site-state-item-count">82</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -183,6 +183,89 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2014/04/22/1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="noogel">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知一杂谈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2014/04/22/1.html" class="post-title-link" itemprop="url">伪彩色处理</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2014-04-22 00:00:00" itemprop="dateCreated datePublished" datetime="2014-04-22T00:00:00+00:00">2014-04-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">数据结构与算法</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>伪彩色处理是指将灰度图像转换成彩色图象。因为人眼对于彩色的分辨能力远高于对灰度图像的分辨能力，所以将灰度图像转换成彩色可以提高人眼对图像细节的辨别能力。伪彩色并不能真实的反映图像像的彩色情况。</p>
+<p>效果图：<br><img src="/resource/img/15455544332499.jpg"></p>
+<p>强度分层法和灰度级-彩色变换法：<br>（1）强度分层法是伪彩色处理技术中最简单的一种。<br>在某个灰度级Li上设置一个平行于x-y平面的切割平面，切割平面下面的，即灰度级小于Li的像素分配给一种颜色，相应的切割平面上大于灰度级Li的像素分配给另一种颜色。这样切割结果可以分成两层的伪彩色。可以使用M个平面去切割，就会得到M个不同灰度级的区域，这样就是具有M种颜色的为彩色图像。这种方法虽然简单，但是视觉效果不理想。<br>（2）灰度级-彩色变换法可以将灰度图像变为具有多种颜色渐变的连续彩色图像。<br>主要就是将图像通过不同变换特性的红、绿、蓝3个变换器，然后将三个颜色通道的输出合成某种颜色。由于三种颜色变换的不同，使得不同大小灰度级可以合成不同的颜色。一组典型的变换传递函数如下图。<br><img src="/resource/img/15455544967422.jpg"></p>
+<p>这里面需要注意的地方，代码只能是处理JPG格式的灰度图像，因为JPG图像的颜色深度是24位表示（R,G,B），每像素由3个字节表示即可，然而PNG图像的颜色深度是32位表示（R,G,B,A）。</p>
+<p>下面的代码是测试代码，以处理24位深度的图像为例，同像素不同通道的颜色值要相同，组合表示出是具有一定灰度的颜色。在实际应用中需要修改下面的代码依据要处理的图像格式。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line">#region 伪彩色图像处理</span><br><span class="line"></span><br><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// 伪彩色图像处理</span><br><span class="line">/// 博客园-初行 http://www.cnblogs.com/zxlovenet</span><br><span class="line">/// 日期：2014.2.14</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">/// &lt;param name=&quot;bmp&quot;&gt;传入的灰度图像&lt;/param&gt;</span><br><span class="line">/// &lt;param name=&quot;method&quot;&gt;使用何种方法，false强度分层法,true灰度级-彩色变换法&lt;/param&gt;</span><br><span class="line">/// &lt;param name=&quot;seg&quot;&gt;强度分层中的分层数&lt;/param&gt;</span><br><span class="line">/// &lt;returns&gt;返回伪彩色图像&lt;/returns&gt;</span><br><span class="line">private Bitmap gcTrans(Bitmap bmp, bool method, byte seg)</span><br><span class="line">&#123;</span><br><span class="line">    if (bmp != null)</span><br><span class="line">    &#123;</span><br><span class="line">        if (System.Drawing.Imaging.PixelFormat.Format24bppRgb == bmp.PixelFormat)</span><br><span class="line">        &#123;</span><br><span class="line">            Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);</span><br><span class="line">            System.Drawing.Imaging.BitmapData bmpData = bmp.LockBits(rect, System.Drawing.Imaging.ImageLockMode.ReadWrite, bmp.PixelFormat);</span><br><span class="line">            IntPtr ptr = bmpData.Scan0;</span><br><span class="line">            int bytes = bmp.Width * bmp.Height * 3;</span><br><span class="line">            byte[] grayValues = new byte[bytes];</span><br><span class="line">            System.Runtime.InteropServices.Marshal.Copy(ptr, grayValues, 0, bytes);</span><br><span class="line">            bmp.UnlockBits(bmpData);</span><br><span class="line"></span><br><span class="line">            byte[] rgbValues = new byte[bytes];</span><br><span class="line">            //清零</span><br><span class="line">            Array.Clear(rgbValues, 0, bytes);</span><br><span class="line">            byte tempB;</span><br><span class="line"></span><br><span class="line">            if (method == false)</span><br><span class="line">            &#123;</span><br><span class="line">                //强度分层法</span><br><span class="line">                for (int i = 0; i &lt; bytes; i += 3)</span><br><span class="line">                &#123;</span><br><span class="line">                    byte ser = (byte)(256 / seg);</span><br><span class="line">                    tempB = (byte)(grayValues[i] / ser);</span><br><span class="line">                    //分配任意一种颜色</span><br><span class="line">                    rgbValues[i + 1] = (byte)(tempB * ser);</span><br><span class="line">                    rgbValues[i] = (byte)((seg - 1 - tempB) * ser);</span><br><span class="line">                    rgbValues[i + 2] = 0;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            else</span><br><span class="line">            &#123;</span><br><span class="line">                //灰度级-彩色变换法</span><br><span class="line">                for (int i = 0; i &lt; bytes; i += 3)</span><br><span class="line">                &#123;</span><br><span class="line">                    if (grayValues[i] &lt; 64)</span><br><span class="line">                    &#123;</span><br><span class="line">                        rgbValues[i + 2] = 0;</span><br><span class="line">                        rgbValues[i + 1] = (byte)(4 * grayValues[i]);</span><br><span class="line">                        rgbValues[i] = 255;</span><br><span class="line">                    &#125;</span><br><span class="line">                    else if (grayValues[i] &lt; 128)</span><br><span class="line">                    &#123;</span><br><span class="line">                        rgbValues[i + 2] = 0;</span><br><span class="line">                        rgbValues[i + 1] = 255;</span><br><span class="line">                        rgbValues[i] = (byte)(-4 * grayValues[i] + 2 * 255);</span><br><span class="line">                    &#125;</span><br><span class="line">                    else if (grayValues[i] &lt; 192)</span><br><span class="line">                    &#123;</span><br><span class="line">                        rgbValues[i + 2] = (byte)(4 * grayValues[i] - 2 * 255);</span><br><span class="line">                        rgbValues[i + 1] = 255;</span><br><span class="line">                        rgbValues[i] = 0;</span><br><span class="line">                    &#125;</span><br><span class="line">                    else</span><br><span class="line">                    &#123;</span><br><span class="line">                        rgbValues[i + 2] = 255;</span><br><span class="line">                        rgbValues[i + 1] = (byte)(-4 * grayValues[i] + 4 * 255);</span><br><span class="line">                        rgbValues[i] = 0;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            bmp = new Bitmap(bmp.Width, bmp.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);</span><br><span class="line">            bmpData = bmp.LockBits(rect, System.Drawing.Imaging.ImageLockMode.ReadWrite, bmp.PixelFormat);</span><br><span class="line">            ptr = bmpData.Scan0;</span><br><span class="line"></span><br><span class="line">            System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr, bytes);</span><br><span class="line">            bmp.UnlockBits(bmpData);</span><br><span class="line"></span><br><span class="line">            return bmp;</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            return null;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    else</span><br><span class="line">    &#123;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">#endregion</span><br></pre></td></tr></table></figure>
+
+<p>颜色映射：<br><img src="/resource/img/15455545098350.jpg"></p>
+<p>颜色映射的方法需要做一个颜色映射表，不同灰度级都会有对应的颜色。这个跟强度分层法相似，可以分成不同的层次，对应的颜色可以根据实际情况做映射。<br>在实际应用中，热成像测温系统所产生的红外图像为黑白灰度级图像，灰度值动态范围不大，人眼很难从这些灰度级中获得丰富的信息。为了更直观地增强显示图像的层次，提高人眼分辨能力，对系统所摄取的图像进行伪彩色处理，从而达到图像增强的效果，使图像信息更加丰富。例如对受热物体所成的像进行伪彩色时，将灰度低的区域设置在蓝色附近(或蓝灰、黑等)，而灰度级高的区域设置在红色附近(或棕红、白等)，以方便人们对物体的观察。</p>
+<p>下面几张图片是在实际应用中的情况（图片来源网络，侵删）：<br><img src="/resource/img/15455545220346.jpg"><br><img src="/resource/img/15455545275803.jpg"><br><img src="/resource/img/15455545323031.jpg"></p>
+<p><a href="/resource/file/GreyColor-Convert.rar">xmind文件</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 

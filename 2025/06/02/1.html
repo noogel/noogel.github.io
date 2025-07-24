@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 7.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/resource/img/favicon2018.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/resource/img/favicon2018.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/resource/img/favicon2018.png">
+  <link rel="mask-icon" href="/resource/img/favicon2018.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"noogel.xyz","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="说起来，玩 Docker 的朋友估计都有同样的感受：这玩意儿好用是好用，但管起来真有点头疼。市面上不是没有工具，像 Portainer 这种，功能是强大，可总觉得有点“重”。对于我这种只想简单管理几个服务、又不想折腾太多配置的人来说，它就像是开着一辆大卡车去买菜，有点过了。而且，它那套数据备份机制，说实话，我一直觉得不太顺手，总担心哪天数据丢了咋办。 正是因为这些小烦恼，心里就一直琢磨着，能不能自">
+<meta property="og:type" content="article">
+<meta property="og:title" content="折腾 Docker 管理：一个自力更生的 DinD 工具是怎么来的">
+<meta property="og:url" content="https://noogel.xyz/2025/06/02/1.html">
+<meta property="og:site_name" content="知一杂谈">
+<meta property="og:description" content="说起来，玩 Docker 的朋友估计都有同样的感受：这玩意儿好用是好用，但管起来真有点头疼。市面上不是没有工具，像 Portainer 这种，功能是强大，可总觉得有点“重”。对于我这种只想简单管理几个服务、又不想折腾太多配置的人来说，它就像是开着一辆大卡车去买菜，有点过了。而且，它那套数据备份机制，说实话，我一直觉得不太顺手，总担心哪天数据丢了咋办。 正是因为这些小烦恼，心里就一直琢磨着，能不能自">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://noogel.xyz/resource/img/2025-07-24-15-31-32.png">
+<meta property="og:image" content="https://noogel.xyz/resource/img/2025-07-24-15-47-55.png">
+<meta property="article:published_time" content="2025-06-02T00:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-24T07:48:25.440Z">
+<meta property="article:author" content="noogel">
+<meta property="article:tag" content="项目">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://noogel.xyz/resource/img/2025-07-24-15-31-32.png">
+
+
+<link rel="canonical" href="https://noogel.xyz/2025/06/02/1.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://noogel.xyz/2025/06/02/1.html","path":"2025/06/02/1.html","title":"折腾 Docker 管理：一个自力更生的 DinD 工具是怎么来的"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>折腾 Docker 管理：一个自力更生的 DinD 工具是怎么来的 | 知一杂谈</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?9cdc9a11cbd242c6336b07c464d8820c"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="知一杂谈" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">知一杂谈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">我思故我在</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-career"><a href="/career/" rel="section"><i class="sitemap fa-fw"></i>├ 技术</a></li>
+        <li class="menu-item menu-item-life"><a href="/life/" rel="section"><i class="sitemap fa-fw"></i>├ 生活</a></li>
+        <li class="menu-item menu-item-future"><a href="/future/" rel="section"><i class="sitemap fa-fw"></i>└ 未来</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8E%E2%80%9C%E9%BA%BB%E7%83%A6%E2%80%9D%E5%88%B0%E2%80%9C%E6%96%B9%E4%BE%BF%E2%80%9D%EF%BC%9A%E8%BF%99%E5%B7%A5%E5%85%B7%E5%88%B0%E5%BA%95%E8%A7%A3%E5%86%B3%E4%BA%86%E5%95%A5%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">从“麻烦”到“方便”：这工具到底解决了啥？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Compose-%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86%EF%BC%9A%E5%B0%B1%E5%83%8F%E7%AE%A1%E7%90%86%E6%99%AE%E9%80%9A%E6%96%87%E4%BB%B6%E4%B8%80%E6%A0%B7"><span class="nav-number">1.1.</span> <span class="nav-text">1. Compose 文件管理：就像管理普通文件一样</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%AE%B9%E5%99%A8%E6%97%A5%E5%BF%97%E6%A3%80%E6%9F%A5%EF%BC%9A%E4%B8%80%E7%9C%BC%E7%9C%8B%E7%A9%BF%E9%97%AE%E9%A2%98%E6%89%80%E5%9C%A8"><span class="nav-number">1.2.</span> <span class="nav-text">2. 容器日志检查：一眼看穿问题所在</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E9%95%9C%E5%83%8F%E7%AE%A1%E7%90%86%EF%BC%9A%E7%98%A6%E8%BA%AB%E5%92%8C%E5%8A%A0%E9%80%9F%E4%B8%8B%E8%BD%BD%E4%B8%A4%E4%B8%8D%E8%AF%AF"><span class="nav-number">1.3.</span> <span class="nav-text">3. 镜像管理：瘦身和加速下载两不误</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E8%BF%90%E8%A1%8C%E7%BB%9F%E8%AE%A1%EF%BC%9A%E5%AF%B9%E8%B5%84%E6%BA%90%E4%BD%BF%E7%94%A8%E6%83%85%E5%86%B5%E5%BF%83%E9%87%8C%E6%9C%89%E6%95%B0"><span class="nav-number">1.4.</span> <span class="nav-text">4. 运行统计：对资源使用情况心里有数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E6%9C%80%E8%BF%91%E6%B4%BB%E5%8A%A8%EF%BC%9A%E4%B8%80%E7%9B%AE%E4%BA%86%E7%84%B6%E7%9A%84%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95"><span class="nav-number">1.5.</span> <span class="nav-text">5. 最近活动：一目了然的操作记录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-%E6%8E%A5%E5%85%A5%E7%BE%A4%E6%99%96-SSO-%E7%99%BB%E5%BD%95%EF%BC%9A%E4%B8%BA%E4%BA%86%E6%96%B9%E4%BE%BF%EF%BC%8C%E4%B9%9F%E4%B8%BA%E4%BA%86%E5%AE%89%E5%85%A8"><span class="nav-number">1.6.</span> <span class="nav-text">6. 接入群晖 SSO 登录：为了方便，也为了安全</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-%E8%BE%85%E5%8A%A9%E7%BC%96%E7%A8%8B%EF%BC%9A%E8%BF%99%E5%B7%A5%E5%85%B7%E5%92%8B%E6%9D%A5%E7%9A%84%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">AI 辅助编程：这工具咋来的？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%AA%E6%9D%A5%E5%B1%95%E6%9C%9B%EF%BC%9A%E8%BF%98%E6%9C%89%E5%93%AA%E4%BA%9B%E5%8F%AF%E4%BB%A5%E6%8A%98%E8%85%BE%E7%9A%84%EF%BC%9F"><span class="nav-number">3.</span> <span class="nav-text">未来展望：还有哪些可以折腾的？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">4.</span> <span class="nav-text">结语</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">noogel</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">82</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/noogel" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;noogel" rel="noopener" target="_blank"><i class="github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:noogel@163.com" title="E-Mail → mailto:noogel@163.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2025/06/02/1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="noogel">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知一杂谈">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          折腾 Docker 管理：一个自力更生的 DinD 工具是怎么来的
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-06-02 00:00:00" itemprop="dateCreated datePublished" datetime="2025-06-02T00:00:00+00:00">2025-06-02</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>说起来，玩 Docker 的朋友估计都有同样的感受：这玩意儿好用是好用，但管起来真有点头疼。市面上不是没有工具，像 Portainer 这种，功能是强大，可总觉得有点“重”。对于我这种只想简单管理几个服务、又不想折腾太多配置的人来说，它就像是开着一辆大卡车去买菜，有点过了。而且，它那套数据备份机制，说实话，我一直觉得不太顺手，总担心哪天数据丢了咋办。</p>
+<p>正是因为这些小烦恼，心里就一直琢磨着，能不能自己搞一个更轻便、更好用的 Docker 管理工具呢？毕竟，自己的需求自己最清楚。加上这几年 AI 编程发展得挺快，就想着是不是能借力 AI，把这个想法落地。说干就干，断断续续地折腾了一阵子，还真捣鼓出来一个“Docker in Docker”的维护工具。为啥是 Docker in Docker 呢？因为我觉得这样管理起来更方便，整个工具本身也是一个 Docker 容器，便于部署和迁移，而且特别符合我对“轻量”的追求。</p>
+<p><img src="/resource/img/2025-07-24-15-31-32.png"></p>
+<hr>
+<h3 id="从“麻烦”到“方便”：这工具到底解决了啥？"><a href="#从“麻烦”到“方便”：这工具到底解决了啥？" class="headerlink" title="从“麻烦”到“方便”：这工具到底解决了啥？"></a>从“麻烦”到“方便”：这工具到底解决了啥？</h3><p>一开始，我的出发点就很简单：让管理 Docker 容器变得像管理文件一样方便。所以，这个工具的核心思想就是基于 <strong>Docker Compose</strong> 来维护服务。Compose 文件嘛，大家都知道，就是用 YAML 格式描述你的服务栈，简单明了。把管理重点放在 Compose 文件上，就天然地实现了像文件系统一样的管理方式。</p>
+<p><img src="/resource/img/2025-07-24-15-47-55.png"></p>
+<p>下面，我跟大家聊聊，这个工具目前都能干点啥，解决了我的哪些痛点：</p>
+<h4 id="1-Compose-文件管理：就像管理普通文件一样"><a href="#1-Compose-文件管理：就像管理普通文件一样" class="headerlink" title="1. Compose 文件管理：就像管理普通文件一样"></a>1. Compose 文件管理：就像管理普通文件一样</h4><p>这是我觉得最核心的功能。以前，Compose 文件散落在各个地方，管理起来比较乱。现在，我把所有的 Compose 文件都集中管理起来。</p>
+<ul>
+<li><strong>编辑、启动、停止：</strong> 你可以直接在界面上看到你的所有 Compose 项目，点一点就能编辑 YAML 文件，保存后直接启动、停止。再也不用每次都敲 <code>docker-compose up -d</code> 或者 <code>docker-compose down</code> 了。特别是修改配置后，直接在界面上改，保存即生效，这效率一下就上来了。</li>
+<li><strong>版本控制和备份：</strong> 因为是基于文件系统来管理 Compose 文件，所以这个工具和 NAS（网络附加存储）简直是绝配。NAS 通常都有非常成熟的快照和备份功能。这意味着，我的所有 Docker 服务配置，都像普通文件一样，可以轻松地做快照，做增量备份。就算哪天不小心改错了 Compose 文件，或者机器硬盘挂了，也能非常方便地恢复到之前的状态。这点对数据安全来说，简直是福音。想想以前，如果 Portainer 的数据损坏了，那种抓狂的感觉……现在完全不用担心了。</li>
+</ul>
+<h4 id="2-容器日志检查：一眼看穿问题所在"><a href="#2-容器日志检查：一眼看穿问题所在" class="headerlink" title="2. 容器日志检查：一眼看穿问题所在"></a>2. 容器日志检查：一眼看穿问题所在</h4><p>服务跑起来了，最怕的就是出问题。出问题了，第一个想到的就是看日志。</p>
+<ul>
+<li><strong>实时查看日志：</strong> 这个工具可以直接查看运行中容器的实时日志。你不需要 SSH 登录服务器，也不用敲 <code>docker logs</code> 命令，直接在网页上就能看到日志输出。这对于快速排查问题来说，简直是太方便了。特别是有些服务日志刷得飞快，能实时看到，效率高很多。</li>
+<li><strong>筛选和搜索：</strong> 当然，日志多了也容易眼花。我还在考虑加上一些日志筛选和搜索功能，比如按关键词搜索、按时间段过滤，这样就能更快地定位到关键信息。目前虽然还比较基础，但已经比没有好太多了。</li>
+</ul>
+<h4 id="3-镜像管理：瘦身和加速下载两不误"><a href="#3-镜像管理：瘦身和加速下载两不误" class="headerlink" title="3. 镜像管理：瘦身和加速下载两不误"></a>3. 镜像管理：瘦身和加速下载两不误</h4><p>Docker 玩久了，镜像会越来越多，硬盘空间也会越来越紧张。</p>
+<ul>
+<li><strong>拉取和删除镜像：</strong> 这个工具可以很方便地拉取新的镜像，也能删除不再需要的镜像。界面上能清晰地看到本地有哪些镜像，占用了多少空间。定期清理一下，保持系统“身材”，挺重要的。</li>
+<li><strong>代理设置：</strong> 这个功能真是解决了一个大痛点！在国内，大家拉取 Docker 镜像经常会遇到网络问题，慢得让人抓狂，甚至直接超时。我把代理设置功能集成进来了，你可以直接配置 Docker Daemon 的代理，这样以后拉取镜像就快多了，再也不用眼巴巴地看着进度条了。对于经常需要拉取新镜像的朋友来说，这简直是救星。</li>
+</ul>
+<h4 id="4-运行统计：对资源使用情况心里有数"><a href="#4-运行统计：对资源使用情况心里有数" class="headerlink" title="4. 运行统计：对资源使用情况心里有数"></a>4. 运行统计：对资源使用情况心里有数</h4><p>虽然是个轻量工具，但对系统资源的监控也不能少。</p>
+<ul>
+<li><strong>CPU、内存、网络使用：</strong> 工具能显示各个容器的 CPU、内存占用情况，以及网络流量。这样你就能大致了解哪些服务是“耗电大户”，哪些服务跑得比较轻。对于优化资源分配，或者判断服务是否正常运行，都有很大帮助。虽然不是专业的监控工具，但对于个人使用来说，足够了。</li>
+</ul>
+<h4 id="5-最近活动：一目了然的操作记录"><a href="#5-最近活动：一目了然的操作记录" class="headerlink" title="5. 最近活动：一目了然的操作记录"></a>5. 最近活动：一目了然的操作记录</h4><p>谁操作了什么，什么时候操作的，这些信息有时候挺重要的。</p>
+<ul>
+<li><strong>操作日志：</strong> 工具会记录一些最近的操作，比如哪个 Compose 项目被启动了，哪个镜像被删除了等等。这样你就能知道系统最近发生了什么，也方便追溯一些异常操作。</li>
+</ul>
+<h4 id="6-接入群晖-SSO-登录：为了方便，也为了安全"><a href="#6-接入群晖-SSO-登录：为了方便，也为了安全" class="headerlink" title="6. 接入群晖 SSO 登录：为了方便，也为了安全"></a>6. 接入群晖 SSO 登录：为了方便，也为了安全</h4><p>因为我自己是群晖 NAS 用户，经常会用到群晖的 SSO（单点登录）功能。为了方便，也为了安全性，我把这个工具接入了群晖 SSO。</p>
+<ul>
+<li><strong>无缝登录：</strong> 这样一来，我可以直接用群晖账号登录这个 Docker 管理工具，不用再单独记住一套账号密码。方便不说，安全性也提高了不少，毕竟群晖的账号通常都会设置两步验证。</li>
+</ul>
+<hr>
+<h3 id="AI-辅助编程：这工具咋来的？"><a href="#AI-辅助编程：这工具咋来的？" class="headerlink" title="AI 辅助编程：这工具咋来的？"></a>AI 辅助编程：这工具咋来的？</h3><p>讲到这里，估计有朋友会好奇，这些功能都是怎么实现的？老实说，我不是专业的全栈开发者，很多技术点我之前都不是很熟悉。这次能够把这个工具落地，<strong>AI 辅助编程</strong>功不可没。</p>
+<p>可以说，这个工具 90% 以上的代码，都是在 AI 的帮助下完成的。一开始，我只是把我的想法和需求告诉 AI，比如“我需要一个网页界面，可以上传 Docker Compose 文件”，“我需要能实时查看容器日志”。AI 会根据我的描述，生成一些代码片段，或者提供一些实现思路。</p>
+<p>在开发过程中，可以直接截图沟通，粘贴错误代码、错误运行日志，或者进行功能沟通、页面拆分等，尽量不要直接手动修改代码。实际发现手动修改后会影响 AI 对代码库的理解。有时候，AI 提供的代码可能不是最完美的，甚至会有一些小错误，但它提供了一个非常好的起点。</p>
+<p>这种开发模式，让一个本来对前端都不算精通的人，也能独立开发出一些实用的工具。它大大降低了开发的门槛，让更多有想法的人有机会把想法变成现实。让 AI 根据我的需求来创建，先上一个万能模板，后续可以直接修改关键信息让 AI 生成不同的项目。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">你是一位产品经理+UI设计师+全栈工程师，同时精通UI设计，基于当前 docker compose html 页面进行全面修改：</span><br><span class="line">1、使用FontAwesome等开源图标库，让原型显得更精美和接近真实i0S/Android设计规范的界面； </span><br><span class="line">2、引入tailwind css来完成，而不是变成style样式，图片使用unsplash；</span><br><span class="line">3、结合现有页面功能，美化界面展示样式，对于按钮弹窗和列表进行优化，考虑后端接口响应速度慢优化操作体验；</span><br><span class="line">4、以设计师的视角去输出完整的UI/UX，以产品经理的视角去规划APP的功能、页面和交互,要求移动设备自适应；</span><br><span class="line">5、使用 flask 模板 + Python，输出 index.html，可以通过多个模板页面，内容完整。</span><br></pre></td></tr></table></figure>
+
+<h3 id="未来展望：还有哪些可以折腾的？"><a href="#未来展望：还有哪些可以折腾的？" class="headerlink" title="未来展望：还有哪些可以折腾的？"></a>未来展望：还有哪些可以折腾的？</h3><p>虽然这个工具已经解决了我的不少痛点，但肯定还有很多可以改进和扩展的地方。</p>
+<ul>
+<li><strong>更完善的监控：</strong> 比如可以加入更多的容器性能指标，做成图表展示，让资源使用情况更直观。</li>
+<li><strong>模板功能：</strong> 可以预设一些常用的 Compose 模板，这样创建新服务的时候就更快了。</li>
+<li><strong>Web Shell：</strong> 如果能直接在网页上提供一个容器的 Shell 界面，那排查问题就更方便了。</li>
+</ul>
+<p>当然，所有这些，都会继续秉承“轻量”、“易用”的原则。我还是希望它能保持简洁，而不是变成一个大而全、功能臃肿的工具。</p>
+<hr>
+<h3 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h3><p>折腾这个 Docker 管理工具，从最开始的一个小念头，到现在能基本满足我的日常需求，整个过程还是挺有意思的。它让我体会到了“自己动手，丰衣足食”的乐趣，也让我看到了 AI 辅助编程的巨大潜力。目前这个工具仅仅应用在我的 NAS 上管理众多的 docker 服务，后续优化后再考虑开源出来。</p>
+<p>这个工具可能不像那些专业的商业产品那么光鲜亮丽，但它是我根据自己的实际需求，一点点打磨出来的。它简单、实用，对我来说，这就够了。如果你也有类似的烦恼，或者对这种“轻量级”的 Docker 管理方式感兴趣，也许我的这些折腾能给你一些启发。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div></div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/resource/file/wechat_mini.jpg" alt="noogel 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/resource/file/alipay_mini.jpg" alt="noogel 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/resource/file/qrcode_for_gh_4223a67f3865_258.jpg">
+          <span class="icon">
+            <i class="fab fa-weixin"></i>
+          </span>
+
+          <span class="label">WeChat</span>
+        </a>
+      </div>
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/atom.xml">
+          <span class="icon">
+            <i class="fa fa-rss"></i>
+          </span>
+
+          <span class="label">RSS</span>
+        </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E9%A1%B9%E7%9B%AE/" rel="tag"># 项目</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/04/18/1.html" rel="prev" title="畅文全索：文档检索系统的探索与实践">
+                  <i class="fa fa-chevron-left"></i> 畅文全索：文档检索系统的探索与实践
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/07/23/1.html" rel="next" title="从淘宝看促销：解析电商促销模型">
+                  从淘宝看促销：解析电商促销模型 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">noogel</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.13.4/dist/mermaid.min.js","integrity":"sha256-96rwDGMWIQYB0yKGp1sKi1yrjrLPj2oT39IpbCsIrsg="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"noogel","repo":"noogel.github.io","client_id":"41a4e14aca0b3552334a","client_secret":"ebe0f9bfd24824f3d0d0f41bfd88a8736353759b","admin_user":"noogel","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"78802d976e7fcb850df20c7acefbf58e"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

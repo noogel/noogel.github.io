@@ -134,7 +134,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">81</span>
+          <span class="site-state-item-count">82</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -183,6 +183,102 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2022/03/14/1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="noogel">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知一杂谈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/03/14/1.html" class="post-title-link" itemprop="url">技术项目复盘经验</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-14 00:00:00" itemprop="dateCreated datePublished" datetime="2022-03-14T00:00:00+00:00">2022-03-14</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>基于多次复盘的经验汇总，仅以当前工作环境做汇总，供参考。</p>
+<ol>
+<li>系统问题定位和解决<ul>
+<li>需要抓住足够多的证据链，不能臆测代码和运行机制。常用手段有 curl，日志，sentry。</li>
+<li>能在本地复现不要跑到联调，降低定位成本。</li>
+<li>排查超过两小时并且无清晰路径下需要扩大问题知晓范围，找人协助。</li>
+<li>排查过程需要有详尽的记录，记录要字符串，减少截图数据。</li>
+</ul>
+</li>
+<li>RFC 设计<ul>
+<li>跨系统交互需要补充系统交互图，明确系统边界。</li>
+<li>需要数据备份和回滚方案，做好预案。</li>
+<li>设计文档需要同步小组群。</li>
+<li>评审会需要拉上 leader 知晓。</li>
+<li>系统设计需要考虑兼容性和可观测性。</li>
+<li>需求项目要建立人员 backup 机制。</li>
+</ul>
+</li>
+<li>系统开发<ul>
+<li>迁移是迁移，不要做重构，保证功能原样，同时也会降低测试成本。</li>
+<li>警惕复制代码的行为，必须知晓你提交代码的逻辑和背后含义。</li>
+<li>对于复杂逻辑和接口需要有详尽的注释，或者粘贴 wiki 链接说明设计。</li>
+<li>新系统设计需要维护起测试用例，保证单测覆盖度，降低测试成本。</li>
+</ul>
+</li>
+<li>联调和沟通效率<ul>
+<li>重大项目和长耗时，需要考虑拉站会或者小黑屋。</li>
+<li>能群聊的不要私聊，扩大内容的知晓范围。</li>
+<li>并行工作需要分时间块，避免碎片化时间并行。</li>
+<li>遇到人力合作问题，需要及时升级到 leader 支持。</li>
+</ul>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1005,107 +1101,6 @@
 <p>最后来一张出锅照，年轻人的第一锅包子就这样做好了。</p>
 <p><img src="/resource/img/2021-10-31-12-11-13.png"></p>
 <h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>工作和生活中我们会遇到很多事和物，事事物物之间有很多共通之处，包括问题的产生和解决办法。不同表象的背后相同的本质的东西是思维方式还是抽象模型？看清它们，能带给我的是做出好吃的包子，不仅仅是这些，还有更多。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2021/10/22/1.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="noogel">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="知一杂谈">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/22/1.html" class="post-title-link" itemprop="url">软件架构与系统复杂性</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-10-22 00:00:00" itemprop="dateCreated datePublished" datetime="2021-10-22T00:00:00+00:00">2021-10-22</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><img src="/resource/img/2021-10-29-02-16-30.png"></p>
-<h2 id="什么是复杂性"><a href="#什么是复杂性" class="headerlink" title="什么是复杂性"></a>什么是复杂性</h2><p>复杂或复杂性与简单相对立，那么复杂是什么？它是我们大脑中的一个概念，但是我在网上找不到一个给复杂恰当的定义描述，它会有不同的解释。<br>其中洛克在《人类理解论》中说道：『一些思想是由简单的思想组合而成，我称此为复杂；比如美、感激、人、军队、宇宙等。』<br>作为研究复杂系统的专家 Melanie Mitchell，也没有给出一个明确的公认的定义。她在《复杂》一书中给出了复杂系统加以定义：『复杂系统是由大量组分组成的网络，不存在中央控制，通过简单运作规则产生出复杂的集体行为和复杂的信息处理，并通过学习和进化产生适应性。』<br>上述复杂系统中的组分对应软件系统中的组成部分，基于不同粒度可以是对象、函数、类、包、模块、组件和服务等。每一部分都应该是相对单一的职责，细粒度部分之间耦合提供更粗粒度功能，不同组分之间相互协作来提供系统功能，继而组合成我们复杂的软件系统。</p>
-<h2 id="软件系统复杂性由何而来"><a href="#软件系统复杂性由何而来" class="headerlink" title="软件系统复杂性由何而来"></a>软件系统复杂性由何而来</h2><p>计算机的产生对我们生产生活产生的影响不言而喻，其中软件系统的功能是随着我们实际生活需求的变化而变化的。人有七情六欲带来的各种需求，接收信息的方式主要是视觉、听觉。而机器擅长的只是简单的逻辑处理和数值计算，两者之间有着巨大的鸿沟。如何让机器提供视觉和听觉的手段来满足人们的需求，这里抛开硬件不谈，软件层面有操作系统提供基本的软件运行环境。<br>软件系统则只需要专注于如何组织和管理数据来满足人们的工作生活娱乐需求，一方面要关注人的需求和需求变化，另一方面要关注机器层面能提供的计算能力。<br>软件系统的复杂性来自于两个方面，一方面是需求侧复杂，导致大多数系统的功能都难以理解；另一方面是难以把控需求的变化，虽然我们遵循一些设计原则可以对未来进行一些预判，但还是存在不可预测的风险。</p>
-<h2 id="如何度量复杂度"><a href="#如何度量复杂度" class="headerlink" title="如何度量复杂度"></a>如何度量复杂度</h2><p>在《复杂》一书中作者列举了不同角度可能度量复杂性的方法。</p>
-<ul>
-<li>生物学上尝试通过基因组的规模来度量。</li>
-<li>信息学上尝试通过熵、信息量、交互信息来度量。</li>
-<li>用算法信息量度量复杂性（能够产生对事物完整描述的最短计算机程序的长度。）</li>
-<li>此外还有逻辑深度、热力学深度、分形维度等方面。</li>
-</ul>
-<p>复杂度并没有一个统一明确的度量方式，我们可以站在一个角度上对具体的某类或粒度提供一个可供参考的度量方法。不论我们如何度量，我们在开发软件系统中的一个重要目标就是控制和降低系统复杂度。在巨著《人月神话》中提出了两个重要概念：</p>
-<ul>
-<li>本质复杂度：指由于一问题的本质不适合简单的求解方式，所有可行的求解方式都很复杂的情形。</li>
-<li>偶然复杂度：指电脑软件开发过程中所引入不必要的复杂度。</li>
-</ul>
-<p>偶然复杂度不是待求解问题的本质，相对而言， 本质复杂度和待求解问题的本质有关，是无法避免的。偶然复杂度一般是因为选用求解问题的方法时所引入的。</p>
-<p>在源代码层面为了描述工程质量有以下两个方面衡量：</p>
-<ul>
-<li>圈复杂度：根据代码中的路径数量计算的循环复杂性。每当一个函数的控制流发生分裂时，复杂度计数器就会增加1。每个函数的最小复杂度为1。由于关键字和功能的不同，这种计算方法在语言上略有不同。以 Java 为例增加复杂度的关键字有：if, for, while, case, catch, throw, &amp;&amp;。</li>
-<li>认知复杂度：是由sonarQube设计的一个算法，算法将一段程序代码被理解的复杂程度，估算成一个整数——可以等同于代码的理解成本。作为指导程序员编写“既可测试又可维护”的方法。</li>
-</ul>
-<p>在认知复杂度的计算方法中主要基于以下三条规则：</p>
-<ol>
-<li>忽略那些允许将多个语句可读性地速记为一个的结构。</li>
-<li>在代码的线性流程中，每中断一次就累加 1。</li>
-<li>当断流结构被嵌套时难度累加 1。</li>
-</ol>
-<p>下面实例对比两种复杂度度量方法的差异，在不同写法上圈复杂度的统计和认知复杂度的统计有何差异。</p>
-<p><img src="/resource/img/2021-10-29-02-16-53.png"></p>
-<p>上图是两种写法在圈复杂度的统计方法，得出的值都是 4，也就是从逻辑上来说是相同的。但是在可读性上来说，明显右侧的 switch 代码更高。认知复杂度就是为了度量人的易于理解性上存在的。</p>
-<p><img src="/resource/img/2021-10-29-02-17-00.png"></p>
-<p>以上是认知复杂度算法给这两种方法打出了明显不同的分数，这些分数更能反映出它们的相对可理解性。更具体的内容可以查看 <a target="_blank" rel="noopener" href="https://www.sonarsource.com/docs/CognitiveComplexity.pdf">CognitiveComplexity</a> 。</p>
-<h2 id="如何管理系统复杂度"><a href="#如何管理系统复杂度" class="headerlink" title="如何管理系统复杂度"></a>如何管理系统复杂度</h2><p>架构的本质目标就是管理复杂度，而管理复杂度有以下三种有效的手段：</p>
-<ul>
-<li>抽象：从众多的具体事物当中抽取共同的、本质的属性，摒弃差异的非本质属性，简化描述形成概念。<br><img src="/resource/img/2021-10-29-02-17-13.png"></li>
-<li>分治：把一个复杂的问题分成两个或更多的相同或相似的子问题，再把子问题分成更小的子问题……直到最后子问题可以简单的直接求解，原问题的解即子问题的解的合并。<br><img src="/resource/img/2021-10-29-02-17-22.png"></li>
-<li>领域知识：是指一组有内在联系的知识的集合，它往往与特定的职业、研究方向、兴趣、社群或文化圈层等相关联。</li>
-</ul>
 
       
     </div>
