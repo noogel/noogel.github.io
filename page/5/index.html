@@ -134,7 +134,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">80</span>
+          <span class="site-state-item-count">81</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -145,7 +145,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-count">37</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -183,6 +183,159 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2019/12/01/1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="noogel">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知一杂谈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/12/01/1.html" class="post-title-link" itemprop="url">语言栈转型经验谈</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-12-01 00:00:00" itemprop="dateCreated datePublished" datetime="2019-12-01T00:00:00+00:00">2019-12-01</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p><img src="/resource/img/15751828389282.jpg"></p>
+<p>近一年都在做语言栈的转型，也注意到周围很多公司都在做相似的事情，大概的路径是 Python -&gt; Go -&gt; Java，转型的起因也是有诸多的因素，像 Python 这种开发速度快，执行相对慢的语言更适合中小型项目，加上国内语言生态不够成熟，项目做大了会发现大家一刀切的转到其它语言上，当然这些说的是在做 web 后端方向上，Python 在数据分析和人工智能方向上还是势头很猛的。Go 可能还是因为它能承载的并发更高，性能更好而逐渐流行起来。在并发模型上 Java 原生 API 使用上确实做得不好驾驭，Go 则要相对好用很多。还有在某些垂直领域上，Java 的生态已经很成熟，其它语言栈上则需要自己造轮子，相应对于开发人员的水平要求就会低很多了。</p>
+<p>在当前互联网领域，后端研发做 web 主要谈的还是通过抽象和建模来提高项目的可迭代性与可维护性，另一方面谈的是工程实现上的优化和性能上的优化。在这些后面依赖的则是中台来保证的基础服务综合稳定性。</p>
+<p>在语言栈转型中也踩过一些坑，遇到过一些小问题，当然这些也得益于一个相对靠谱的方案来保证迁移的安全，基于这些经验总结一下，在以后的迁移中使问题可预见和避免采坑。</p>
+<h2 id="转型流程"><a href="#转型流程" class="headerlink" title="转型流程"></a>转型流程</h2><p>首先要明确转型的三个开发流程 MRO (Migration, Reconstruction, Optimization)</p>
+<ul>
+<li>迁移 就是把原语言代码照着抄一遍到新语言项目上，按照新语言的工程实现风格来做就可以。</li>
+<li>重构 的目的是来提高项目代码的可维护性和可迭代性，让代码更加优雅和好读懂，可以放到迁移完成来做。</li>
+<li>优化 则可以是在模块依赖、调用关系、接口字段等方面调整来降低项目的复杂性和提高合理性。</li>
+</ul>
+<p>然后看我们人力和时间是否充足，我想大部分情况下是不充足的，按照最短时间交付的原则，我们应该只做迁移流程，也就是说先对原有代码进行语言上的迁移，这样我们可以快速实现交付。在人力充沛的情况下可以配备两个小组，一个维护现有系统，一个主力开发新系统，或者说锁定需求全力开发新系统。在对快速交付更看中的行业里前一个方案更合适一些。</p>
+<h2 id="交付流程"><a href="#交付流程" class="headerlink" title="交付流程"></a>交付流程</h2><p>在交付过程中的验证流程 <code>单测验证 -&gt; 测试环境功能验证 -&gt; QA生产回测 -&gt; 灰度验证 -&gt; 完全上线</code>。<br>只有功能和单测代码都迁移完才能算代码部分完成，需要优先保证单测行数覆盖率再去保证分支覆盖率，测试环境的功能验证需要覆盖所有 case 来保证大部分问题都被发现，然后进入小范围的灰度验证，之后逐步提高灰度比率直至完全上线。如果是纯读接口则可以直接进行异步校验，就是请求两遍，然后对比差异来不断的发现和修复 bug，直至问题收敛完全解决。<br>如果明确只做迁移，那么期间如果有发现旧逻辑的 bug 也不要管，这样才好去对比验证，验证通过上线后再去修复。只有通过明确目的和流程并且遵循这个流程做，才能更快的去交付。</p>
+<h2 id="验证方案"><a href="#验证方案" class="headerlink" title="验证方案"></a>验证方案</h2><p><img src="/resource/img/15751818260554.jpg"></p>
+<p>针对新代码的验证方案分为别为读写接口做不同的验证方案：</p>
+<ul>
+<li>读接口：异步请求到新接口做接口响应值校验，打印出差异数据，然后不断修正逻辑。这样可以避免在线上灰度造成数据的不一致。</li>
+<li>写接口：测试用例覆盖，然后测试环境验证，灰度回测，灰度验证，修复问题，继续灰度验证。</li>
+</ul>
+<h3 id="平稳交付"><a href="#平稳交付" class="headerlink" title="平稳交付"></a>平稳交付</h3><p>在整个交付的过程中，转型前后对 SLA 要提供一致的保证，可以看看下面的几个衡量标准：</p>
+<table>
+<thead>
+<tr>
+<th>服务可用性级别</th>
+<th>服务正常运行时间</th>
+<th>年宕机时间</th>
+<th>日宕机时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>90%</td>
+<td>36.5day</td>
+<td>2.4hour</td>
+</tr>
+<tr>
+<td>2</td>
+<td>99%</td>
+<td>3.65day</td>
+<td>14min</td>
+</tr>
+<tr>
+<td>3</td>
+<td>99.9%</td>
+<td>8.76hour</td>
+<td>86sec</td>
+</tr>
+<tr>
+<td>4</td>
+<td>99.99%</td>
+<td>52.6min</td>
+<td>8.6sec</td>
+</tr>
+<tr>
+<td>5</td>
+<td>99.999%</td>
+<td>5.26min</td>
+<td>0.86sec</td>
+</tr>
+<tr>
+<td>6</td>
+<td>99.9999%</td>
+<td>31.5sec</td>
+<td>8.6msec</td>
+</tr>
+</tbody></table>
+<p><a target="_blank" rel="noopener" href="https://tool.lu/tables/">在线 MD 表格生成</a></p>
+<p>一般 3 个 9 的可用性全年宕机时间约为 8.76 小时，针对不同系统不同用户规模对于系统可用性的要求不一样，边缘业务的要求可能会低一些，但是对于核心支付链路场景 TPS 可能不高，但是必须要求保证高可用级别。如何保证或者提升服务的 SLA 是我们接下来要探讨的目标，一般有下面两个影响因素：</p>
+<ul>
+<li>MTBF (Mean Time Between Failures) 系统服务平均故障时间间隔</li>
+<li>MTTR (Mean Time To Recover) 系统服务平均故障恢复时长</li>
+</ul>
+<p>也就是说我们系统要尽可能的降低故障频率以及出现故障时能尽快的恢复。基于这两点我们在做系统平稳过渡时，要充分测试所有 case ，并且进行内部灰度方案和异步重试对比，发现异常立即回滚查找结局问题后再重新灰度。这里需要做到一键开关，数据可监控和追溯。</p>
+<p>持续监控，感知系统稳定性的第一步就是监控，通过监控和系统日志来排查问题和及时响应处理。监控有两个层面，一个是基础设施提供的机器监控以及接口级别的响应稳定性监控，另一个是业务数据层面的多维度监控。系统日志按照等级大致分为 INFO 日志以及 ERROR 日志。</p>
+<h3 id="快速交付"><a href="#快速交付" class="headerlink" title="快速交付"></a>快速交付</h3><p>关于快速交付，可以了解 下敏捷开发，及早和持续不断的交付有价值的软件。关于 Scrum 开发的介绍可以看： <a target="_blank" rel="noopener" href="http://www.scrumcn.com/agile/scrum-knowledge-library/agile101.html">什么是敏捷</a></p>
+<h2 id="现状及未来"><a href="#现状及未来" class="headerlink" title="现状及未来"></a>现状及未来</h2><p><img src="/resource/img/15751828229085.jpg"></p>
+<p>基于公司现状考虑 nginx 不支持长时间和自定义灰度，所以 http 接口层没做改动，只是在内部逻辑上通过 rpc 服务转到新的系统中。基于以上要点可以做到功能的快速交付。截止此文撰写时间，语言栈转型已经将系统核心接口逻辑 100% 迁移到新的系统上，对于日常系统需求已经可以做到在新系统开发和接入了。后面要做的有以下几点：</p>
+<ol>
+<li>将系统外围逻辑迁移到新系统；</li>
+<li>不断监控降噪，细化监控粒度，继续提高服务的稳定性；</li>
+<li>当前对于Python的花式“魔法” 硬翻译还需要不断重构和优化。</li>
+<li>完善监控大盘，通过数据驱动来运营优化我们的流程；</li>
+<li>项目复盘总结以及业务普及宣讲，提升人员对于业务细节的认知。</li>
+</ol>
+<h3 id="转型痛点"><a href="#转型痛点" class="headerlink" title="转型痛点"></a>转型痛点</h3><p>迁移后再做重构和优化过程。在迁移过程中有一个痛点是新需求过来了，要么锁定需求只做迁移，要么写两遍。基于人力情况可以选择一个小组同时写新旧系统或者一个小组维护新的一个小组维护旧的。<br>在转型过程中新需求过来有时要写两边，或者要把旧系统流量打到新系统接口上，常常在排查问题时遇到流量忘记转移的情况，所以在迁移过程要尽可能的快速交付上线。</p>
+<h3 id="反思"><a href="#反思" class="headerlink" title="反思"></a>反思</h3><ol>
+<li>对于每一位工程师来说语言栈的转型既是挑战也是机遇，只有保持开放学习心态，及时调整和提升才能更好应对，同时增强自身软素质。</li>
+<li>当前互联网环境下分布式是必经之地，而系统绝非 100% 可靠，每一个环节可能的异常在上线后必定遇到，所以针对不同场景我们要在 AP 与 CP 之间做出选择。</li>
+<li>对于支付交易核心链路，一条柱子肯定是不稳的，双链路也未必可靠，但至少更稳一些。曾经遇到过相隔几公里的两条光纤被施工队挖断的情况，双机房访问直接 gg 了，但总归是少见的。</li>
+<li>提系统可用性要避免出问题，除了问题要快快快速响应恢复，有问题先回滚。</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1405,124 +1558,8 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2019/05/19/1.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="noogel">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="知一杂谈">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2019/05/19/1.html" class="post-title-link" itemprop="url">我的极简主义尝试</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2019-05-19 00:00:00" itemprop="dateCreated datePublished" datetime="2019-05-19T00:00:00+00:00">2019-05-19</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><img src="/resource/img/15584582961685.jpg"></p>
-<p>夏天来了，大半夜热的睡不着，最近看过一本书《极简主义》，罗列一下其中的观点，以及作用到生活中的尝试。</p>
-<p>首先来引述原文介绍下什么是极简主义：</p>
-<blockquote>
-<p>极简主义是一个工具，我们用它来获得人生的满足感。极简主义中没有规则。确切的说，极简主义只是去除生活中那些无关紧要的事物，从而使我们能够专注于最重要的东西——而它们事实上根本就不是实物。</p>
-</blockquote>
-<p>这并不是它的定义，而是说明了从极简主义带给我们什么，让我们从杂乱的生活中抽离出来，让我们舍弃对于我们不那么重要却又不想割舍的人际关系或事物，专注于重要的事情中去。读这本书的起因是前一段时间对于工作和生活感到很沉重，工作一天带着疲惫身体回家后，面对堆满杂物的宿舍，心情更加烦躁，每天纷繁不断的微信消息偷走了大量的时间。每天都很忙，却又觉得并没做什么事情，睡觉的时间也越来越少。<br><img src="/resource/img/15584584339214.jpg"></p>
-<p>当我意识到现在的问题，恰好在豆瓣看到这样一本书，下载下来读了一遍，对于书中的部分观点还是比较认可的，便有意识的改变自己的生活方式。这里作出改变只是在生活上，对于工作还是那样，甚至我认为工作是反极简主义的，就像书中的作者是辞去工作开始的极简主义实践。其中有很多讨论我并没有太在意，也是不适合我当下去作出改变，下面只是按照一条实践过的线去聊。</p>
-<p>首先，是什么让我们感到不够快乐，让我们感到压力呢？作者确定了一个叫做『锚』的概念，代指我们想要的得到的大房子、高薪、物质财产、公司奖励等，这些欲望占据着我们，给我们带来压力。试想一下如果我们已经拥有或者舍弃掉这些，也许会轻松很多，可以有更多的时间精力专注于我们喜欢的事情上，让人生过得更有意义？好像我现在也无法做到舍弃。如果这个⚓️给你带来太多负担，那你是要舍弃了，而这里我所能做的不是上面那些，下面慢慢说。</p>
-<p>首先我们要使人生有意义的五大价值明确：</p>
-<ol>
-<li>健康</li>
-<li>人际关系</li>
-<li>热情</li>
-<li>成长</li>
-<li>奉献</li>
-</ol>
-<p><img src="/resource/img/15584585009545.jpg"></p>
-<p>这本书后面的章节也是在围绕着五个主题来开展说明的。这本书有个特点就是并不想书名那样极简，而是在不断赘述一些观点，以加强这些观点在读者心中的印象吧。</p>
-<p><strong>作出改变</strong>，如果你只是一味在想而没有实际付出行动的话并没有任何作用。首先是必须要作出改变，改变永远不会太迟，你需要的只是在知道该怎么做了之后付诸行动。这点很重要，所以作者也是提前说明。这里推荐去看拖延症相关的知识。</p>
-<blockquote>
-<p>下决心总是困难的。而拖延却很简单——至少拖延一时很简单。但拖延得不到任何回报。</p>
-</blockquote>
-<p><strong>打包派对</strong>，打包你大量的闲置物品，保留生活中常用的，然后扔掉、转卖或捐赠。对于闲置物品不仅占用了你的空间，还浪费你的精力，平时你也想不起来用它，然后又要找半天，在生活如此便利的今天，你可以舍弃很多无用的东西了。还有注意不要囤货，日用品很容易买到，你就把楼下的便利店当做你的免费仓库好了。东西要少而精。推荐看一下《怦然心动的人生整理魔法》、《断舍离》还有日剧《我的家里空无一物》。看完书的当周我便清理出了几大袋子暗藏在屋里角落的无用物品，实际上在之前看书的时候就有意识的清理丢弃无用的东西，只是后来没做好，看来要周期性清理一番。</p>
-<p><strong>健康</strong>，这个老生常谈，却总被人忽视，没有健康，你连生活中最简单快乐都无法享受。这里我一直做不好的就是没能去改变熬夜的习惯。健康的从广义上来讲有以下几种：情绪健康、心理健康、精神健康、财务健康、身体健康等。这里只针对身体健康来讲，分为两个方面，饮食和锻炼。饮食上并没有去尝试改变，因为自己本身很瘦。而锻炼作出了一些，在这之前总是说要去健身房健身，却总是懒的去，读完这本书后努力去作出改变，从跑步开始，因为我觉得跑步是最容易开始的锻炼，现代科技带给人们很多的便利性，借着小米手环的帮助开始了每周三次的夜跑，精神状态也慢慢好转。另外说一句是跑步要是一件技术活，推荐看一下《运动改造大脑》、《跑步圣经》这两本书。平时多看看书还是有好处的，当你尝试作出改变的时候也是能知道如果改变。</p>
-<blockquote>
-<p>讽刺的是，锻炼实际上给了你更多时间，而不是把时间夺走了。它不光能延长寿命，对我个人而言，它还让我跟我最好的朋友建立了更紧密的联系。当我一个人锻炼时，它又给了我独处的时间，留给自己的时间，而我们都知道这是很重要的。锻炼是一种意想不到的帮你重获时间的方式。</p>
-</blockquote>
-<p><strong>人际关系</strong>，你的人际关系有你的亲人、朋友、同事、配偶、恋人、室友等。人际关系处理这块是弱项，需要认真🤔一下。</p>
-<p>建立关系的三种办法：</p>
-<ol>
-<li>寻找超棒的新人际关系；</li>
-<li>改造你现有的人际关系；</li>
-<li>改变你自己。</li>
-</ol>
-<blockquote>
-<p>必须要牢记的是：你的人际关系在你往后的人生中并不是固定不变的。随着年龄的增长，会有不同的人走入或走出你的生活，而他们与你的关系的重要程度也会改变。许多十年前与你关系紧密的人现在已经不再亲密了，对吧？同样，你未来的人际关系也会继续变化、成长。因此，在这个过程中积极行动就很重要。你主动选择自己的人际关系，而关于前两档人际关系的调整，往往要作出很艰难的抉择。<br>你唯一能改变的人是你自己。当你以身作则时，与你走得最近的人，往往也会跟着效仿。</p>
-</blockquote>
-<p><strong>断掉网络</strong>，这点对我的改变应该说是关键性的。每天下班回家都会有家人和朋友发来各种微信消息，填充了我整个晚上的时间，使我并没有一段固定且连续的个人时间了，也就导致我对于当下缺少反思，活在网络的世界中。还有各种 APP 新闻推送，一刷就停不下来的短视频等，我们的时间被大量的占据，这也是痛苦和拖延的关键，也是一个很重要的⚓️。然后我做了一些改变。</p>
-<ol>
-<li>开始清理📱中那些功能重复的 APP，比如获取热点新闻微信足够了，我对时效性又没有那么高。</li>
-<li>各种短视频 APP，这些起初我觉得有学到东西才装的，但是却背离了初衷，成了娱乐工具，然后果断卸掉。</li>
-<li>还有各种能用微信小程序替代的常用 APP 基本都卸掉了。</li>
-<li>有些保留了，QQ 被我用 Tim 替代，有些不得不看的群内容我也是订好提醒，每周看一周的内容。无关紧要的推送都被我禁掉了。</li>
-<li>还有最重要的一点是每天非特殊情况下执行断舍离计划，晚上 10 点到 11 点断网一小时，感觉这个世界突然安静了起来，可以专心想和做一些事了。</li>
-</ol>
-<p>这里多说一句，网络依赖确实像一种上瘾的症状，而且现在绝大多数人都是这样子，这个还是要从自身开始尝试摆脱这种依赖，呼吁身边的人同样去改变，我们的生活应该会有很大的改变。</p>
-<p><strong>认知</strong>，认知是我们最宝贵的自由。前几年我们一直在讲认知升级，确实，这就是一种让我们获得自由的方法。这里推荐去看《见识》这本书，不再多说。</p>
-<p><img src="/resource/img/15584585285131.jpg"></p>
-<p>回到最初，极简主义是一个工具，这个工具使我们摆脱那些闲杂冗余，从而更容易过上有意义的生活，这个工具使充斥着无尽装饰、看起来错综复杂的世界变得更简单、更容易、更真实。</p>
-<hr>
-<p>第二天早起接的🐰主子，来自主子的凝视 qwq…<br><img src="/resource/img/15584586882785.jpg"></p>
-<p><img src="/resource/img/15584587970593.jpg"></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>

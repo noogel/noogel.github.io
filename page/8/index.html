@@ -134,7 +134,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">80</span>
+          <span class="site-state-item-count">81</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -145,7 +145,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-count">37</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -183,6 +183,82 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2016/12/28/1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="noogel">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知一杂谈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2016/12/28/1.html" class="post-title-link" itemprop="url">k近邻法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2016-12-28 00:00:00" itemprop="dateCreated datePublished" datetime="2016-12-28T00:00:00+00:00">2016-12-28</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>简单解释：采用测量不同特征值之间距离的方法进行分类的算法。<br>主要优点是精度高，缺点是计算和空间负责度高，适用于数值型和标称型。<br>已下是通过Python实现的k-近邻算法，大致思路是计算样本数据<code>data_set</code>中的点与待分类点的距离，按距离递增排序，然后取出前K个点，计算这些点所属标签的数量，计数最高的标签为分类结果。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#! /data/server/python/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">k-近邻算法</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">import</span> operator</span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">knn</span>(<span class="params">position, data_set, labels, k</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    k-近邻算法</span></span><br><span class="line"><span class="string">    :param position: 待分类点</span></span><br><span class="line"><span class="string">    :param data_set: 数据样本</span></span><br><span class="line"><span class="string">    :param labels: 标签集合</span></span><br><span class="line"><span class="string">    :param k: 取值</span></span><br><span class="line"><span class="string">    :return: 所属标签</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    distance_list = []</span><br><span class="line">    <span class="keyword">for</span> index, item <span class="keyword">in</span> <span class="built_in">enumerate</span>(data_set):</span><br><span class="line">        distance_list.append((</span><br><span class="line">            labels[index],</span><br><span class="line">            math.sqrt(reduce(operator.add, [(v - position[i]) ** <span class="number">2</span> <span class="keyword">for</span> i, v <span class="keyword">in</span> <span class="built_in">enumerate</span>(item)]))</span><br><span class="line">        ))</span><br><span class="line">    distance_list = <span class="built_in">sorted</span>(distance_list, key=<span class="keyword">lambda</span> x: x, reverse=<span class="literal">True</span>)</span><br><span class="line">    result = Counter([val[<span class="number">0</span>] <span class="keyword">for</span> val <span class="keyword">in</span> distance_list[:k]])</span><br><span class="line">    result_labels = <span class="built_in">sorted</span>(result.items(), <span class="keyword">lambda</span> x, y: cmp(x[<span class="number">1</span>], y[<span class="number">1</span>]), reverse=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">return</span> result_labels[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    point = [<span class="number">0.2</span>, <span class="number">0.3</span>]</span><br><span class="line">    data_set = [[<span class="number">1</span>, <span class="number">1.1</span>], [<span class="number">1</span>, <span class="number">1</span>], [<span class="number">0</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">0.1</span>]]</span><br><span class="line">    labels = [<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;B&#x27;</span>]</span><br><span class="line">    k = <span class="number">3</span></span><br><span class="line">    <span class="built_in">print</span> knn(point, data_set, labels, k)</span><br></pre></td></tr></table></figure>
+
+<h3 id="k-d-tree算法"><a href="#k-d-tree算法" class="headerlink" title="k-d tree算法"></a>k-d tree算法</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="http://www.cnblogs.com/eyeszjwang/articles/2429382.html">http://www.cnblogs.com/eyeszjwang/articles/2429382.html</a></p>
+</blockquote>
+<hr>
+<p><strong>k近邻法</strong> 给定一个训练数据集，对新输入的实例，在训练的数据集中找到与该实例最近邻的k个实例，这k个实例的多数属于某个类，就把该输入实例分为这个类。</p>
+<p><strong>kd树</strong> 是一种对k维空间中的实例点进行存储以便对其进行快速检索的树形数据结构。</p>
+<h5 id="算法：（构造平衡kd树）"><a href="#算法：（构造平衡kd树）" class="headerlink" title="算法：（构造平衡kd树）"></a>算法：（构造平衡kd树）</h5><p>输入：k维空间数据集<br>$$ T&#x3D;{x_1,x_2,…,x_N} $$,<br>$$ x_i&#x3D;(x_i^{(1)},x_i^{(2)},…,x_i^{(k)})^T, i&#x3D;1,2,…,N; $$</p>
+<p>输出：kd树。</p>
+<h5 id="生成："><a href="#生成：" class="headerlink" title="生成："></a>生成：</h5><p>从深度为0的结点开始。重复对深度为j的结点，选择<code>x(l)</code>为切分的坐标轴，<code>l=j(mode k) + 1</code>，以该结点的区域中所有实例的<code>x(l)</code>坐标的中位数为切分点，将该结点对应的超矩形区域切分为两个子区域。切分由通过切分点并与坐标轴<code>x(l)</code>垂直的超平面实现。由该结点生成深度为j+1的左、右子结点：左子节点对应坐标<code>x(l)</code>小于切分点的子区域，右子节点对应坐标<code>x(l)</code>大于切分点的子区域。</p>
+<h5 id="实例："><a href="#实例：" class="headerlink" title="实例："></a>实例：</h5><p>对以下给定二维数据集构造一个平衡kd树<br>$$ T&#x3D; {(2,3)^T, (5,4)^T, (9,6)^T, (4,7)^T, (8,1)^T, (7,2)^T } $$</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -987,90 +1063,8 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2014/01/29/1.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="noogel">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="知一杂谈">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2014/01/29/1.html" class="post-title-link" itemprop="url">写在2013年末</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2014-01-29 00:00:00" itemprop="dateCreated datePublished" datetime="2014-01-29T00:00:00+00:00">2014-01-29</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>微弱的灯光驱散浓重的夜色，压低的歌声怕惊醒梦中人。</p>
-<p>又是深夜，双手在键盘上飞舞，闪烁的光标不断向前推进，一行行的注释和代码呈现在屏幕上，对于我来说这便成为了一种习惯，喜欢在深夜学习编程，接触编程有两年半了，非睡眠状态下的大部分时间都贡献给了我手中这台笔记本电脑，现在被我的朋友称之为我的“媳妇”。哈哈，因为她对于我来说兴趣很浓，我从不迷恋游戏，只是偶尔玩玩，也很少购物，电影基本不看，只是偶尔听听歌，还是敲代码的时候。转眼这不又是要过年了，该来点总结了，看看都学了什么，有什么体会都要来写写的。</p>
-<p>主要学习的语言是C#，两年半的时间大部分都是用C#在编程；当然对C++&#x2F;Java也是比较熟悉的，给点代码也是能看懂什么意思的。对汇编语言也有所了解，目前正在学习中。<br>那下面就是要讲讲主攻技能.NET平台下的学习细节了：</p>
-<ol>
-<li>ASP.NET网站开发方面能做出个像模像样的网站，但是不能保证效率；熟悉三层架构，用的比较烂；对于难理解的HttpModule、HttpHandler有些了解。</li>
-<li>Winform方面百分之八十的控件能熟练使用，剩下的就是感觉不好用的了，这里的熟练使用是了解并使用过常用的属性、方法、事件。</li>
-<li>再有就是关于多线程、网络编程、数字图像处理、单元测试等等升级技能也是用的比较不错，专门买过书学习过。</li>
-</ol>
-<p>像一些附加技能的话如HTML&#x2F;CSS用的还是比较不错的，至少能做出能拿得出手的网页去，各种效果咱不会写还不会“偷”吗，其实就是拷贝网上现有的呗。JS&#x2F;jQuery这些吗，实话是没有怎么接触，也基本能写一点点的，都不好意思说了。不想走网站开发方面，感觉没有前途，也不好玩，就学了一年就止步了。</p>
-<p>再有就是编程的基本功，像数据结构、操作系统、算法、数据库这些知识是学会六分左右，现在正在补习其余的四分，并且是努力的在夯实这方面欠缺的。至于软件工程的知识我觉得是先有所了解然后在工作中主键掌握并熟练运用。</p>
-<p>最大的优点是对计算机软件技术充满了热情，乐死不疲的。各种好玩的新技术都想鼓捣一下，比如：Wifi共享、RamDisk、远程开机等等。</p>
-<p>不足之处是不太爱说话，喜欢熬夜。</p>
-<p>目前学习计划：</p>
-<ul>
-<li>数据结构+算法</li>
-<li>Unity3D游戏开发</li>
-</ul>
-<p>职业规划还木有想好，因为还未毕业，干嘛这么早就草率决定，等工作一两年之后再说呗，定居城市也是这样。但是目前来说不想一直走.NET发展路线，先打好基本功到时候好转行。</p>
-<p>2014年，把前半年的时间用在刀刃上，学习的技能放在毕业找的工作方面。另外要努力学习英语，这个也是个大大的重点。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span>
+    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>

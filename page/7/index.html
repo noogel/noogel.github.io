@@ -134,7 +134,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">80</span>
+          <span class="site-state-item-count">81</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -145,7 +145,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-count">37</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -183,6 +183,112 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2018/01/07/2.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="noogel">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知一杂谈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/01/07/2.html" class="post-title-link" itemprop="url">SHH打洞配置</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-01-07 00:00:00" itemprop="dateCreated datePublished" datetime="2018-01-07T00:00:00+00:00">2018-01-07</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>拿三台机器举例打洞配置讲解</p>
+<table>
+<thead>
+<tr>
+<th>机器</th>
+<th>网络环境</th>
+<th>用途</th>
+<th>SSH服务</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A机器</td>
+<td>公网IP固定</td>
+<td>中转机器</td>
+<td>需要</td>
+</tr>
+<tr>
+<td>B机器</td>
+<td>NAT网络</td>
+<td>被访问机器</td>
+<td>需要</td>
+</tr>
+<tr>
+<td>C机器</td>
+<td>任意网络环境</td>
+<td>需要访问B机器</td>
+<td>不需要</td>
+</tr>
+</tbody></table>
+<h2 id="自动连接重试"><a href="#自动连接重试" class="headerlink" title="自动连接重试"></a>自动连接重试</h2><p>需要B机器向A机器建立 SSH 反向隧道，命令如下：</p>
+<p><code>autossh -p 22 -M 6777 -NR &#39;*:6766:127.0.0.1:22&#39; usera@a.site</code></p>
+<p>通过 <code>autossh</code> 可以实现连接失败自动重连，<code>*:6766:127.0.0.1:22</code> 是将A机器的6766端口转发到B机器的22端口，<code>usera@a.site</code> 是请求B机器的用户名和地址。</p>
+<h2 id="打洞"><a href="#打洞" class="headerlink" title="打洞"></a>打洞</h2><p>开启端口转发功能，编辑 sshd 的配置文件 &#x2F;etc&#x2F;ssh&#x2F;sshd_config，增加配置：<br><code>GatewayPorts yes</code></p>
+<h2 id="另一台机器连接"><a href="#另一台机器连接" class="headerlink" title="另一台机器连接"></a>另一台机器连接</h2><p>通过C机器对A机器的6766端口发起连接就会自动被转发到B机器。</p>
+<p><code>ssh -p 6766 userb@a.site</code></p>
+<h2 id="SSH-私钥认证"><a href="#SSH-私钥认证" class="headerlink" title="SSH 私钥认证"></a>SSH 私钥认证</h2><p>把请求机器的 ~&#x2F;.ssh&#x2F;id_rsa.pub 添加到被请求机器的 ~&#x2F;.ssh&#x2F;authorzied_keys 文件中</p>
+<p>同时设置文件权限为 <code>chmod 600 ~/.ssh/authorzied_keys</code></p>
+<p>设置后在连接机器的时候就不需要密码了，可以走私钥认证。</p>
+<h2 id="守护进程"><a href="#守护进程" class="headerlink" title="守护进程"></a>守护进程</h2><p>这里通过 supervisord 配置保证B机器重启后 autossh 能启动。</p>
+<h2 id="有固定公网IP的机器"><a href="#有固定公网IP的机器" class="headerlink" title="有固定公网IP的机器"></a>有固定公网IP的机器</h2><p>这里我选用的是阿里云的机器，因为平时用的量不大，所以选择按量付费就可以了，看了下费用大概 80RMB&#x2F;月。</p>
+<h2 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="http://blog.csdn.net/lidongshengajz/article/details/73482908">http://blog.csdn.net/lidongshengajz/article/details/73482908</a><br><a target="_blank" rel="noopener" href="https://linux.cn/article-5975-1.html">https://linux.cn/article-5975-1.html</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1110,84 +1216,8 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2016/12/28/1.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="noogel">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="知一杂谈">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2016/12/28/1.html" class="post-title-link" itemprop="url">k近邻法</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2016-12-28 00:00:00" itemprop="dateCreated datePublished" datetime="2016-12-28T00:00:00+00:00">2016-12-28</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>简单解释：采用测量不同特征值之间距离的方法进行分类的算法。<br>主要优点是精度高，缺点是计算和空间负责度高，适用于数值型和标称型。<br>已下是通过Python实现的k-近邻算法，大致思路是计算样本数据<code>data_set</code>中的点与待分类点的距离，按距离递增排序，然后取出前K个点，计算这些点所属标签的数量，计数最高的标签为分类结果。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#! /data/server/python/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">k-近邻算法</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">import</span> operator</span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">knn</span>(<span class="params">position, data_set, labels, k</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    k-近邻算法</span></span><br><span class="line"><span class="string">    :param position: 待分类点</span></span><br><span class="line"><span class="string">    :param data_set: 数据样本</span></span><br><span class="line"><span class="string">    :param labels: 标签集合</span></span><br><span class="line"><span class="string">    :param k: 取值</span></span><br><span class="line"><span class="string">    :return: 所属标签</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    distance_list = []</span><br><span class="line">    <span class="keyword">for</span> index, item <span class="keyword">in</span> <span class="built_in">enumerate</span>(data_set):</span><br><span class="line">        distance_list.append((</span><br><span class="line">            labels[index],</span><br><span class="line">            math.sqrt(reduce(operator.add, [(v - position[i]) ** <span class="number">2</span> <span class="keyword">for</span> i, v <span class="keyword">in</span> <span class="built_in">enumerate</span>(item)]))</span><br><span class="line">        ))</span><br><span class="line">    distance_list = <span class="built_in">sorted</span>(distance_list, key=<span class="keyword">lambda</span> x: x, reverse=<span class="literal">True</span>)</span><br><span class="line">    result = Counter([val[<span class="number">0</span>] <span class="keyword">for</span> val <span class="keyword">in</span> distance_list[:k]])</span><br><span class="line">    result_labels = <span class="built_in">sorted</span>(result.items(), <span class="keyword">lambda</span> x, y: cmp(x[<span class="number">1</span>], y[<span class="number">1</span>]), reverse=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">return</span> result_labels[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    point = [<span class="number">0.2</span>, <span class="number">0.3</span>]</span><br><span class="line">    data_set = [[<span class="number">1</span>, <span class="number">1.1</span>], [<span class="number">1</span>, <span class="number">1</span>], [<span class="number">0</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">0.1</span>]]</span><br><span class="line">    labels = [<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;B&#x27;</span>]</span><br><span class="line">    k = <span class="number">3</span></span><br><span class="line">    <span class="built_in">print</span> knn(point, data_set, labels, k)</span><br></pre></td></tr></table></figure>
-
-<h3 id="k-d-tree算法"><a href="#k-d-tree算法" class="headerlink" title="k-d tree算法"></a>k-d tree算法</h3><blockquote>
-<p><a target="_blank" rel="noopener" href="http://www.cnblogs.com/eyeszjwang/articles/2429382.html">http://www.cnblogs.com/eyeszjwang/articles/2429382.html</a></p>
-</blockquote>
-<hr>
-<p><strong>k近邻法</strong> 给定一个训练数据集，对新输入的实例，在训练的数据集中找到与该实例最近邻的k个实例，这k个实例的多数属于某个类，就把该输入实例分为这个类。</p>
-<p><strong>kd树</strong> 是一种对k维空间中的实例点进行存储以便对其进行快速检索的树形数据结构。</p>
-<h5 id="算法：（构造平衡kd树）"><a href="#算法：（构造平衡kd树）" class="headerlink" title="算法：（构造平衡kd树）"></a>算法：（构造平衡kd树）</h5><p>输入：k维空间数据集<br>$$ T&#x3D;{x_1,x_2,…,x_N} $$,<br>$$ x_i&#x3D;(x_i^{(1)},x_i^{(2)},…,x_i^{(k)})^T, i&#x3D;1,2,…,N; $$</p>
-<p>输出：kd树。</p>
-<h5 id="生成："><a href="#生成：" class="headerlink" title="生成："></a>生成：</h5><p>从深度为0的结点开始。重复对深度为j的结点，选择<code>x(l)</code>为切分的坐标轴，<code>l=j(mode k) + 1</code>，以该结点的区域中所有实例的<code>x(l)</code>坐标的中位数为切分点，将该结点对应的超矩形区域切分为两个子区域。切分由通过切分点并与坐标轴<code>x(l)</code>垂直的超平面实现。由该结点生成深度为j+1的左、右子结点：左子节点对应坐标<code>x(l)</code>小于切分点的子区域，右子节点对应坐标<code>x(l)</code>大于切分点的子区域。</p>
-<h5 id="实例："><a href="#实例：" class="headerlink" title="实例："></a>实例：</h5><p>对以下给定二维数据集构造一个平衡kd树<br>$$ T&#x3D; {(2,3)^T, (5,4)^T, (9,6)^T, (4,7)^T, (8,1)^T, (7,2)^T } $$</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>
