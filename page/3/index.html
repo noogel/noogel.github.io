@@ -134,7 +134,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">82</span>
+          <span class="site-state-item-count">83</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -183,6 +183,129 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2021/11/16/1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="noogel">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知一杂谈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/11/16/1.html" class="post-title-link" itemprop="url">ETCD 运维笔记</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-11-16 00:00:00" itemprop="dateCreated datePublished" datetime="2021-11-16T00:00:00+00:00">2021-11-16</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p><strong>调研环境说明</strong></p>
+<p>etcd –version<br>etcd Version: 3.5.1<br>Git SHA: d42e8589e<br>Go Version: go1.17.2<br>Go OS&#x2F;Arch: darwin&#x2F;amd64</p>
+</blockquote>
+<h2 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明"></a>参数说明</h2><p>启动参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">--name etcd-1 // 节点名称</span><br><span class="line">--data-dir /Users/noogel/Debug/data/etcd1 // 数据目录</span><br><span class="line">--initial-advertise-peer-urls http://127.0.0.1:238</span><br><span class="line">--listen-peer-urls http://127.0.0.1:2381</span><br><span class="line">--listen-client-urls http://127.0.0.1:2379</span><br><span class="line">--advertise-client-urls http://127.0.0.1:2379</span><br><span class="line">--initial-cluster-token etcd-lock-cluster-1 // 集群 token</span><br><span class="line">--initial-cluster etcd-1=http://127.0.0.1:2381,etcd-2=http://127.0.0.1:2382,etcd-3=http://127.0.0.1:2383 // 集群节点信息</span><br><span class="line">--initial-cluster-state new // 初始化的集群状态</span><br><span class="line">--heartbeat-interval 1000 // 心跳间隔</span><br><span class="line">--auto-compaction-retention 1 // 开启自动压缩，间隔 1h 执行</span><br><span class="line">--auto-compaction-mode periodic</span><br><span class="line">--quota-backend-bytes 8589934592 // 后端存储大小</span><br><span class="line">--election-timeout 5000 // 选举超时时间</span><br></pre></td></tr></table></figure>
+
+<p><strong>关于自动压缩</strong><br><a target="_blank" rel="noopener" href="https://etcd.io/docs/v3.4/op-guide/maintenance/#defragmentation">https://etcd.io/docs/v3.4/op-guide/maintenance/#defragmentation</a></p>
+<ul>
+<li><code>--auto-compaction-mode=revision --auto-compaction-retention=1000</code> 每5分钟自动压缩”latest revision” - 1000</li>
+<li><code>--auto-compaction-mode=periodic --auto-compaction-retention=12h</code> 每1小时自动压缩并保留12小时窗口。</li>
+</ul>
+<p>自动压缩碎片后还需要单独再清理占用的系统存储空间，<code>etcdctl defrag</code>。</p>
+<h3 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h3><ol>
+<li>heartbeat timeout 默认为 100ms,推荐配置为 1s;</li>
+<li>election timeout 默认为 1000ms,推荐为 5s(election timeout &gt;&#x3D; 5 * heartbeat timeout);</li>
+<li>quota-backend-bytes 默认为 2G(最大值8G),推荐根据集群容量预估调整;</li>
+<li>配置 auto-compaction-retention&#x3D;1 和 auto-compaction-mode&#x3D;periodic 参数，定期压缩历史数据;</li>
+<li>推荐通过 cronjob 定期执行 etcdctl defrag（如果 defrag 执行时间 &gt; election timeout，则集群会进入重新选主模式）</li>
+</ol>
+<h2 id="环境模拟"><a href="#环境模拟" class="headerlink" title="环境模拟"></a>环境模拟</h2><h3 id="端口映射"><a href="#端口映射" class="headerlink" title="端口映射"></a>端口映射</h3><p>单机环境写集群搭建，以下是端口映射</p>
+<p>etcd1 2379 -&gt; 2391 2380 -&gt; 2381</p>
+<p>etcd2 2379 -&gt; 2392 2380 -&gt; 2382</p>
+<p>etcd3 2379 -&gt; 2393 2380 -&gt; 2383</p>
+<h3 id="启动命令"><a href="#启动命令" class="headerlink" title="启动命令"></a>启动命令</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ETCDCTL_API=3 etcd --name etcd-1 --data-dir /Users/noogel/Debug/data/etcd1 --initial-advertise-peer-urls http://127.0.0.1:2381 --listen-peer-urls http://127.0.0.1:2381 --listen-client-urls http://127.0.0.1:2379 --advertise-client-urls http://127.0.0.1:2379 --initial-cluster-token etcd-lock-cluster-1 --initial-cluster etcd-1=http://127.0.0.1:2381,etcd-2=http://127.0.0.1:2382,etcd-3=http://127.0.0.1:2383 --initial-cluster-state new --heartbeat-interval 1000 --auto-compaction-mode=revision --auto-compaction-retention=1000 --quota-backend-bytes 8589934592 --election-timeout 5000 &gt; /Users/noogel/Debug/data/etcd1/run.log 2&gt;&amp;1 &amp;</span><br><span class="line"></span><br><span class="line">ETCDCTL_API=3 etcd --name etcd-2 --data-dir /Users/noogel/Debug/data/etcd2 --initial-advertise-peer-urls http://127.0.0.1:2382 --listen-peer-urls http://127.0.0.1:2382 --listen-client-urls http://127.0.0.1:2378 --advertise-client-urls http://127.0.0.1:2378 --initial-cluster-token etcd-lock-cluster-1 --initial-cluster etcd-1=http://127.0.0.1:2381,etcd-2=http://127.0.0.1:2382,etcd-3=http://127.0.0.1:2383 --initial-cluster-state new --heartbeat-interval 1000 --auto-compaction-mode=revision --auto-compaction-retention=1000 --quota-backend-bytes 8589934592 --election-timeout 5000 &gt; /Users/noogel/Debug/data/etcd2/run.log 2&gt;&amp;1 &amp;</span><br><span class="line"></span><br><span class="line">ETCDCTL_API=3 etcd --name etcd-3 --data-dir /Users/noogel/Debug/data/etcd3 --initial-advertise-peer-urls http://127.0.0.1:2383 --listen-peer-urls http://127.0.0.1:2383 --listen-client-urls http://127.0.0.1:2377 --advertise-client-urls http://127.0.0.1:2377 --initial-cluster-token etcd-lock-cluster-1 --initial-cluster etcd-1=http://127.0.0.1:2381,etcd-2=http://127.0.0.1:2382,etcd-3=http://127.0.0.1:2383 --initial-cluster-state new --heartbeat-interval 1000 --auto-compaction-mode=revision --auto-compaction-retention=1000 --quota-backend-bytes 8589934592 --election-timeout 5000 &gt; /Users/noogel/Debug/data/etcd3/run.log 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure>
+
+<h3 id="历史数据清理命令"><a href="#历史数据清理命令" class="headerlink" title="历史数据清理命令"></a>历史数据清理命令</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rm -rf /Users/noogel/Debug/data/etcd1</span><br><span class="line">rm -rf /Users/noogel/Debug/data/etcd2</span><br><span class="line">rm -rf /Users/noogel/Debug/data/etcd3</span><br><span class="line">mkdir etcd1 etcd2 etcd3</span><br></pre></td></tr></table></figure>
+
+<h2 id="日常运维"><a href="#日常运维" class="headerlink" title="日常运维"></a>日常运维</h2><h3 id="常规命令"><a href="#常规命令" class="headerlink" title="常规命令"></a>常规命令</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">export ETCDCTL_API=3</span><br><span class="line">// 节点列表查询</span><br><span class="line">etcdctl member list</span><br><span class="line">// 节点状态</span><br><span class="line">etcdctl --endpoints=127.0.0.1:2381,127.0.0.1:2382,127.0.0.1:2383 endpoint status --write-out=table</span><br><span class="line">// 整理磁盘碎片</span><br><span class="line">etcdctl --endpoints=127.0.0.1:2381,127.0.0.1:2382,127.0.0.1:2383 --user root:123456 defrag</span><br></pre></td></tr></table></figure>
+
+<h3 id="开启鉴权"><a href="#开启鉴权" class="headerlink" title="开启鉴权"></a>开启鉴权</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 添加 root 用户</span><br><span class="line">etcdctl --endpoints=127.0.0.1:2381,127.0.0.1:2382,127.0.0.1:2383 user add root</span><br><span class="line">// 授权 root 角色</span><br><span class="line">etcdctl --endpoints=127.0.0.1:2381,127.0.0.1:2382,127.0.0.1:2383 user grant-role root root</span><br><span class="line">// 查看用户列表</span><br><span class="line">etcdctl --endpoints=127.0.0.1:2381,127.0.0.1:2382,127.0.0.1:2383 --user=root:123456 user list</span><br><span class="line">// 开启鉴权</span><br><span class="line">etcdctl --endpoints=127.0.0.1:2381,127.0.0.1:2382,127.0.0.1:2383 auth enable</span><br></pre></td></tr></table></figure>
+
+<h3 id="生产集群节点启动方式"><a href="#生产集群节点启动方式" class="headerlink" title="生产集群节点启动方式"></a>生产集群节点启动方式</h3><p>在生产机通过 <code>systemd</code> 启动。第一次启动命令<code>--initial-cluster-state new</code>，后续节点的增加需要修改为 <code>--initial-cluster-state existing</code>，不明白看节点增加部分。</p>
+<p><strong>修改配置</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 编辑配置</span><br><span class="line">vim /lib/systemd/system/etcd.service</span><br><span class="line">// 重新加载配置</span><br><span class="line">systemctl daemon-reload</span><br><span class="line">// 启动服务</span><br><span class="line">systemctl start etcd.service</span><br><span class="line">// 查看服务状态</span><br><span class="line">systemctl status etcd.service</span><br></pre></td></tr></table></figure>
+
+<h3 id="问题处理"><a href="#问题处理" class="headerlink" title="问题处理"></a>问题处理</h3><h4 id="Etcd-的-compact-机制"><a href="#Etcd-的-compact-机制" class="headerlink" title="Etcd 的 compact 机制"></a>Etcd 的 compact 机制</h4><p>Etcd 默认不会自动 compact，需要设置启动参数，或者通过命令进行compact，如果变更频繁建议设置，否则会导致空间和内存的浪费以及错误。Etcd v3 的默认的 backend quota 2GB，如果不 compact，boltdb 文件大小超过这个限制后，就会报错：”Error: etcdserver: mvcc: database space exceeded”，导致数据无法写入。</p>
+<p>要从空间不足配额警报中恢复：</p>
+<ol>
+<li>Compact etcd的历史。</li>
+<li>对每个etcd端点进行碎片整理。</li>
+<li>解除警报。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 1、获取当前的版本</span><br><span class="line">$ rev=$(ETCDCTL_API=3 etcdctl --endpoints=:2379 endpoint status --write-out=&quot;json&quot; | egrep -o &#x27;&quot;revision&quot;:[0-9]*&#x27; | egrep -o &#x27;[0-9].*&#x27;)</span><br><span class="line"># 2、压缩当前版本之前的所有记录</span><br><span class="line">$ ETCDCTL_API=3 etcdctl compact $rev</span><br><span class="line">compacted revision 1516</span><br><span class="line"># 3、清理多余的碎片空间</span><br><span class="line">$ ETCDCTL_API=3 etcdctl defrag</span><br><span class="line">Finished defragmenting etcd member[127.0.0.1:2381]</span><br><span class="line"># 4、解除警告</span><br><span class="line">$ ETCDCTL_API=3 etcdctl alarm disarm</span><br><span class="line">memberID:13803658152347727308 alarm:NOSPACE</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>需要注意的是整理碎片释放空间，要一个一个节点执行，因为在执行期间节点是无响应的，直到处理完。防止因为全部节点无响应导致的服务不可用</strong></p>
+</blockquote>
+<h4 id="碎片整理"><a href="#碎片整理" class="headerlink" title="碎片整理"></a>碎片整理</h4><p>压缩key空间后，会出现内部碎片，这些压缩出来的碎片空间可以被etcd使用，但是不会真正的释放物理空间，需要进行碎片整理，如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ etcdctl defrag</span><br><span class="line">Finished defragmenting etcd member[127.0.0.1:2379]以上指令只作用于当前所在的主机，不会在集群</span><br></pre></td></tr></table></figure>
+
+<p>环境中复刻。可以使用–cluster标记指定所有成员以自动查找所有集群成员。如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ etcdctl defrag --cluster</span><br><span class="line">Finished defragmenting etcd member[http://127.0.0.1:2381]</span><br><span class="line">Finished defragmenting etcd member[http://127.0.0.1:2382]</span><br><span class="line">Finished defragmenting etcd member[http://127.0.0.1:2383]</span><br></pre></td></tr></table></figure>
+
+<h4 id="节点增减"><a href="#节点增减" class="headerlink" title="节点增减"></a>节点增减</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 查看成员信息</span><br><span class="line">ETCDCTL_API=3 etcdctl member list</span><br><span class="line"># 移除节点</span><br><span class="line">ETCDCTL_API=3 etcdctl member remove wallet0x</span><br><span class="line"># 添加节点</span><br><span class="line">ETCDCTL_API=3 etcdctl member add wallet0x --peer-urls=&quot;http://10.137.158.119:2380&quot;</span><br><span class="line"># 最后再启动服务</span><br><span class="line"># 其中启动命令 --initial-cluster-state 需要设置为 existing。</span><br></pre></td></tr></table></figure>
+
+<p>需要先移除故障节点成员，再添加进去成员列表。然后清理掉故障节点的工作目录内容，之后再启动服务，启动后服务会自动同步数据。</p>
+<p>其中启动命令需要设置为 <code>--initial-cluster-state existing</code>。</p>
+<p><img src="/resource/img/2021-12-10-02-19-32.png"></p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a target="_blank" rel="noopener" href="http://www.zhaowenyu.com/etcd-doc/ops/data-space-manage.html">http://www.zhaowenyu.com/etcd-doc/ops/data-space-manage.html</a><br><a target="_blank" rel="noopener" href="https://xieys.club/etcd-backup-restore">https://xieys.club/etcd-backup-restore</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/lowezheng/p/10307592.html">https://www.cnblogs.com/lowezheng/p/10307592.html</a><br><a target="_blank" rel="noopener" href="https://bbotte.github.io/service_config/etcd-cluster-troubleshooting.html">https://bbotte.github.io/service_config/etcd-cluster-troubleshooting.html</a><br><a target="_blank" rel="noopener" href="https://www.mytecdb.com/blogDetail.php?id=211">https://www.mytecdb.com/blogDetail.php?id=211</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/tencent-cloud-native/p/14893209.html">https://www.cnblogs.com/tencent-cloud-native/p/14893209.html</a><br><a target="_blank" rel="noopener" href="http://www.dockone.io/article/2955">http://www.dockone.io/article/2955</a><br><a target="_blank" rel="noopener" href="https://mytecdb.com/blogDetail.php?id=199">https://mytecdb.com/blogDetail.php?id=199</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1323,129 +1446,6 @@
 <p><img src="/resource/img/2021-01-31-14-04-00.png"></p>
 <p><img src="/resource/img/2021-01-31-14-04-07.png"></p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://github.com/Pingren/bpmn-dataflow-diagram-editor">https://github.com/Pingren/bpmn-dataflow-diagram-editor</a><br><a target="_blank" rel="noopener" href="https://github.com/zhangqiangboss/WorkflowAndCamunda/blob/master/docs/camunda/CamundaProEngine.md">https://github.com/zhangqiangboss/WorkflowAndCamunda/blob/master/docs/camunda/CamundaProEngine.md</a><br><a target="_blank" rel="noopener" href="https://www.edrawsoft.cn/bpmn-symbols/">https://www.edrawsoft.cn/bpmn-symbols/</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2021/01/15/1.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="noogel">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="知一杂谈">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/01/15/1.html" class="post-title-link" itemprop="url">领域基本概念字典</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-01-15 00:00:00" itemprop="dateCreated datePublished" datetime="2021-01-15T00:00:00+00:00">2021-01-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">领域驱动设计</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>领域驱动设计中定义了超多的概念，如果不多找几篇资料综合的去看，正确的理解比较困难，下面搜集整理了大部分的领域驱动中的概念，并加以理解描述。</p>
-<p><img src="/resource/img/2021-01-15-01-11-37.png"></p>
-<h2 id="战略设计与战术设计"><a href="#战略设计与战术设计" class="headerlink" title="战略设计与战术设计"></a>战略设计与战术设计</h2><p>战略设计主要从业务视角出发，建立业务领域模型，划分领域边界，建立通用语言的限界上下文，限界上下文可以作为微服务设计的参考边界。它是从高层事业来绅士我们的软件系统。从战略设计角度来看，一套基础的电商业务应该包含如下领域，支付域、交易域、商品域、库存域、履约域。不同领域之间通过界限上下文来划分边界。</p>
-<p><img src="/resource/img/2021-01-15-01-12-07.png"></p>
-<p>战术设计则从技术视角出发，侧重于领域模型的技术实现，完成软件开发和落地，包括：聚合根、实体、值对象、领域服务、应用服务和资源库等代码逻辑的设计和实现。它主要关注的是技术层面的实施，也是对我们程序员最实在的地方。战术设计的具体落地案例在后面的内容中会讲解。</p>
-<h2 id="领域-amp-子领域"><a href="#领域-amp-子领域" class="headerlink" title="领域 &amp; 子领域"></a>领域 &amp; 子领域</h2><p>DDD 的领域就是这个边界内要解决的业务问题域。既然领域是用来限定业务边界和范围的，那么就会有大小之分，领域越大，业务范围就越大，反之则相反。领域可以进一步划分为子领域。我们把划分出来的多个子领域称为子域，每个子域对应一个更小的问题域或更小的业务范围。</p>
-<h2 id="核心域-amp-通用域-amp-支撑域"><a href="#核心域-amp-通用域-amp-支撑域" class="headerlink" title="核心域 &amp; 通用域 &amp; 支撑域"></a>核心域 &amp; 通用域 &amp; 支撑域</h2><p>在领域不断划分的过程中，领域会细分为不同的子域，子域可以根据自身重要性和功能属性划分为三类子域，它们分别是：核心域、通用域和支撑域。决定产品和公司核心竞争力的子域是核心域，它是业务成功的主要因素和公司的核心竞争力。没有太多个性化的诉求，同时被多个子域使用的通用功能子域是通用域。还有一种功能子域是必需的，但既不包含决定产品和公司核心竞争力的功能，也不包含通用功能的子域，它就是支撑域。</p>
-<p>基于以上概念定义，对订单域进行如下的拆分，其中交易子域和算价子域是最关键的核心子域，限购子域、交付子域、报表子域、会员订阅子域是支撑子域，消息子域为沟通各个子域的桥梁分类为通用子域。<strong>注意这里的曲线只是用来区分不同子域类型，不是界限上下文。</strong></p>
-<p><img src="/resource/img/2021-01-15-01-12-29.png"></p>
-<h2 id="事件风暴"><a href="#事件风暴" class="headerlink" title="事件风暴"></a>事件风暴</h2><p>事件风暴是一项团队活动，领域专家与项目团队通过头脑风暴的形式，罗列出领域中所有的领域事件，整合之后形成最终的领域事件集合，然后对每一个事件，标注出导致该事件的命令，再为每一个事件标注出命令发起方的角色。命令可以是用户发起，也可以是第三方系统调用或者定时器触发等，最后对事件进行分类，整理出实体、聚合、聚合根以及限界上下文。而事件风暴正是 DDD 战略设计中经常使用的一种方法，它可以快速分析和分解复杂的业务领域，完成领域建模。</p>
-<h2 id="通用语言-amp-界限上下文"><a href="#通用语言-amp-界限上下文" class="headerlink" title="通用语言 &amp; 界限上下文"></a>通用语言 &amp; 界限上下文</h2><p>在 DDD 领域建模和系统建设过程中，有很多的参与者，包括领域专家、产品经理、项目经理、架构师、开发经理和测试经理等。对同样的领域知识，不同的参与角色可能会有不同的理解，那大家交流起来就会有障碍，怎么办呢？因此，在 DDD 中就出现了“通用语言”和“限界上下文”这两个重要的概念。这两者相辅相成，通用语言定义上下文含义，限界上下文则定义领域边界，以确保每个上下文含义在它特定的边界内都具有唯一的含义，领域模型则存在于这个边界之内。</p>
-<h3 id="通用语言"><a href="#通用语言" class="headerlink" title="通用语言"></a>通用语言</h3><p>团队交流达成共识的能够明确简单清晰的描述业务规则和业务含义的语言就是通用语言。解决各岗位的沟通障碍问题，促进不同岗位的和合作，确保业务需求的正确表达。通用语言贯穿于整个设计过程，基于通用语言可以开发出可读性更好的代码，能准确的把业务需求转化为代码。</p>
-<h3 id="界限上下文"><a href="#界限上下文" class="headerlink" title="界限上下文"></a>界限上下文</h3><p>用来封装通用语言和领域对象，提供上下文环境，保证在领域之内的一些术语、业务相关对象等（通用语言）有一个确切的含义，没有二义性。这个边界定义了模型的适用范围，使团队所有成员能够明确地知道什么应该在模型中实现，什么不应该在模型中实现。</p>
-<h3 id="栗子说明"><a href="#栗子说明" class="headerlink" title="栗子说明"></a>栗子说明</h3><p>在商品域，商品实体则对应着一个具体的 SKU 商品，包含着标题和金额，如现在的课程、会员服务。在订单域中的商品实体并不等同域商品域中的实体，比如可以将优惠券做成可以被售卖的商品，coupon_no 就是 product_key，具有 non-consumable 属性；或者将付费咨询的用户服务打包成商品售卖，那么 member_id 就能映射成 producer_key，并且觉有 consumable 属性。界限上下文就是区分不同领域下的领域对象，划定了领域对象含义的边界。在订单域中，商品实体默认可以是商品系统 SKU，也可以是优惠券和用户服务等。</p>
-<p><img src="/resource/img/2021-01-15-01-14-08.png"></p>
-<h2 id="上下文映射图"><a href="#上下文映射图" class="headerlink" title="上下文映射图"></a>上下文映射图</h2><p>上下文映射图就通过画图的方式展示N（N&gt;&#x3D;2）个上下文之间的映射关系。</p>
-<p><img src="/resource/img/2021-01-15-01-14-22.png"></p>
-<p>ACL表示防腐层，OHS表示开放主机服务，PL表示发布语言，U代表上游，D代表下游。</p>
-<h2 id="领域服务"><a href="#领域服务" class="headerlink" title="领域服务"></a>领域服务</h2><p>你是否遇到过这样的问题：想建模一个领域概念，把它放在实体上不合适，把它放在值对象上也不合适，然后你冥思苦想着自己的建模方式是不是出了问题。恭喜你，祝贺你，你的建模手法完全没有问题，只是你还没有接触到领域服务（Domain Service）这个概念，因为领域服务本来就是来处理这种场景的。比如，要对客户端类型和版本进行判断是否支持某一项功能，我们可以创建一个 <code>ClientVersionService</code> 来负责。<br>值得一提的是，领域服务和上文中提到的应用服务是不同的，领域服务是领域模型的一部分，而应用服务不是。应用服务是领域服务的客户，它将领域模型变成对外界可用的软件系统。</p>
-<h2 id="领域事件"><a href="#领域事件" class="headerlink" title="领域事件"></a>领域事件</h2><p>在DDD中，领域事件便可以用于处理上述问题，此时最终一致性取代了事务一致性，通过领域事件的方式达到各个组件之间的数据一致性。领域事件的命名遵循英语中的“名词+动词过去分词”格式，即表示的是先前发生过的一件事情。比如，购买者提交商品订单之后发布 <code>OrderCreated</code> 事件，用户支付 <code>TradePaid</code> 事件。需要注意的是，既然是领域事件，他们便应该从领域模型中发布。领域事件的最终接收者可以是本限界上下文中的组件，也可以是另一个限界上下文。<br>领域事件的额外好处在于它可以记录发生在软件系统中所有的重要修改，这样可以很好地支持程序调试和商业智能化。另外，在CQRS架构的软件系统中，领域事件还用于写模型和读模型之间的数据同步。再进一步发展，事件驱动架构可以演变成事件源（Event Sourcing），即对聚合的获取并不是通过加载数据库中的瞬时状态，而是通过重放发生在聚合生命周期中的所有领域事件完成。</p>
-<h2 id="实体-amp-值对象-amp-聚合-amp-聚合根"><a href="#实体-amp-值对象-amp-聚合-amp-聚合根" class="headerlink" title="实体 &amp; 值对象 &amp; 聚合 &amp; 聚合根"></a>实体 &amp; 值对象 &amp; 聚合 &amp; 聚合根</h2><h3 id="实体-amp-值对象"><a href="#实体-amp-值对象" class="headerlink" title="实体 &amp; 值对象"></a>实体 &amp; 值对象</h3><p>实体和值对象是组成领域模型的基础单元。<br>在 DDD 中有这样一类对象，它们拥有唯一标识符，且标识符在历经各种状态变更后仍能保持一致。对这些对象而言，重要的不是其属性，而是其延续性和标识，对象的延续性和标识会跨越甚至超出软件的生命周期。我们把这样的对象称为实体。<br>通过对象属性值来识别的对象，它将多个相关属性组合为一个概念整体。在 DDD 中用来描述领域的特定方面，并且是一个没有标识符的对象，叫作值对象。值对象本质就是一个集合，可以保证属性归类的清晰和概念的完整性。</p>
-<p><strong>举例说明</strong></p>
-<p><img src="/resource/img/2021-01-15-01-14-41.png"></p>
-<p>消费者实体原本包括：ID、昵称、注册手机号、姓名以及人员所在的省、市、县和街道等属性。这样显示地址相关的属性就很零碎了对不对？现在，我们可以将“省、市、县和街道等属性”拿出来构成一个“地址属性集合”，这个集合就是值对象了。</p>
-<h3 id="聚合-amp-聚合根"><a href="#聚合-amp-聚合根" class="headerlink" title="聚合 &amp; 聚合根"></a>聚合 &amp; 聚合根</h3><p>聚合是业务和逻辑紧密关联的实体和值对象组合而成，聚合是数据修改和持久化的基本单元，一个聚合对应一个数据的持久化。聚合在DDD分层架构中属于领域层，领域层包含了多个聚合，共同实现核心业务逻辑，聚合内的实体以充血模型实现个体业务能力，以及业务逻辑的高内聚。跨多个实体的业务逻辑通过领域服务来实现，跨多个聚合的业务逻辑通过应用服务来实现。<br>如果把聚合比作组织，聚合根则是组织的负责人，聚合根也叫做根实体，它不仅仅是实体，还是实体的管理者。聚合之间通过聚合根关联引用，如果需要访问其他聚合的实体，先访问聚合根，再导航到聚合内部的实体。即外部对象不能直接访问聚合内的实体。</p>
-<p><strong>举例说明</strong></p>
-<p><img src="/resource/img/2021-01-15-01-14-50.png"></p>
-<p>上图说明聚合与聚合根的关系，交易聚合有一个唯一的聚合根交易单，交易单组织了消费者实体、商品实体、商铺实体、优惠券实体同时消费金额之对象。下面具体对比说明下：</p>
-<p>聚合的特点：高内聚、低耦合，它是领域模型中最底层的边界，可以作为拆分微服务的最小单位，但我不建议你对微服务过度拆分。但在对性能有极致要求的场景中，聚合可以独立作为一个微服务，以满足版本的高频发布和极致的弹性伸缩能力。<br>一个微服务可以包含多个聚合，聚合之间的边界是微服务内天然的逻辑边界。有了这个逻辑边界，在微服务架构演进时就可以以聚合为单位进行拆分和组合了，微服务的架构演进也就不再是一件难事了。<br>聚合根的特点：聚合根是实体，有实体的特点，具有全局唯一标识，有独立的生命周期。一个聚合只有一个聚合根，聚合根在聚合内对实体和值对象采用直接对象引用的方式进行组织和协调，聚合根与聚合根之间通过 ID 关联的方式实现聚合之间的协同。<br>实体的特点：有 ID 标识，通过 ID 判断相等性，ID 在聚合内唯一即可。状态可变，它依附于聚合根，其生命周期由聚合根管理。实体一般会持久化，但与数据库持久化对象不一定是一对一的关系。实体可以引用聚合内的聚合根、实体和值对象。<br>值对象的特点：无 ID，不可变，无生命周期，用完即扔。值对象之间通过属性值判断相等性。它的核心本质是值，是一组概念完整的属性组成的集合，用于描述实体的状态和特征。值对象尽量只引用值对象。</p>
-<h2 id="防腐层"><a href="#防腐层" class="headerlink" title="防腐层"></a>防腐层</h2><p>通过在遗留系统和现代系统之间使用防腐层来隔离它们。该层转换两个系统之间的通信，允许遗留系统保持不变，同时可以避免损害现代应用程序的设计和技术方法。</p>
-<p><img src="/resource/img/2021-01-15-01-15-04.png"></p>
-<p>现代应用与防腐层之间的通信始终使用应用程序的数据模型和架构。从防腐层到遗留系统的调用都符合该系统的数据模型或方法。 防腐层包含两个系统之间转换所需的所有逻辑。该层可以作为应用程序中的组件或作为独立服务来实现。</p>
-<h2 id="贫血模型"><a href="#贫血模型" class="headerlink" title="贫血模型"></a>贫血模型</h2><p>贫血模型就是模型对象之间存在完整的关联(可能存在多余的关联)，但是对象除了get和set方外外几乎就没有其它的方 法，整个对象充当的就是一个数据容器，用C语言的话来说就是一个结构体，所有的业务方法都在一个无状态的Service类中实现，Service类仅仅包 含一些行为。<br>贫血模型的优点是很明显的：</p>
-<ol>
-<li>被许多程序员所掌握，许多教材采用的是这种模型，对于初学者，这种模型很自然，甚至被很多人认为是java中最正统的模型。</li>
-<li>它非常简单，对于并不复杂的业务(转帐业务)，它工作得很好，开发起来非常迅速。它似乎也不需要对领域的充分了解，只要给出要实现功能的每一个步骤，就能实现它。</li>
-<li>事务边界相当清楚，一般来说service的每个方法都可以看成一个事务，因为通常Service的每个方法对应着一个用例。（在这个例子中我使用了facade作为事务边界，后面我要讲这个是多余的)<br>其缺点为也是很明显的：</li>
-<li>所有的业务都在service中处理，当业越来越复杂时，service会变得越来越庞大，最终难以理解和维护。</li>
-<li>将所有的业务放在无状态的service中实际上是一个过程化的设计，它在组织复杂的业务存在天然的劣势，随着业务的复杂，业务会在service中多个方法间重复。</li>
-<li>当添加一个新的UI时，很多业务逻辑得重新写。例如，当要提供Web Service的接口时，原先为Web界面提供的service就很难重用，导致重复的业务逻辑（在贫血模型的分层图中可以看得更清楚），如何保持业务逻辑一致是很大的挑战。</li>
-</ol>
-<h2 id="领域模型"><a href="#领域模型" class="headerlink" title="领域模型"></a>领域模型</h2><p>领域模型是对领域内的概念类或现实世界中对象的可视化表示。又称概念模型、领域对象模型、分析对象模型。它专注于分析问题领域本身，发掘重要的业务领域概念，并建立业务领域概念之间的关系。<br>领域驱动模型，与贫血模型相反，领域模型要承担关键业务逻辑，业务逻辑在多个领域对象之间分配，而Service只是完成一些不适合放在模型中的业务逻辑，它是非常薄的一层，它指挥多个模型对象来完成业务功能。<br>其优点是：</p>
-<ol>
-<li>领域模型采用OO设计，通过将职责分配到相应的模型对象或Service，可以很好的组织业务逻辑，当业务变得复杂时，领域模型显出巨大的优势。</li>
-<li>当需要多个UI接口时，领域模型可以重用，并且业务逻辑只在领域层中出现，这使得很容易对多个UI接口保持业务逻辑的一致(从领域模型的分层图可以看得更清楚)。<br>其缺点是：</li>
-<li>对程序员的要求较高，初学者对这种将职责分配到多个协作对象中的方式感到极不适应。</li>
-<li>领域驱动建模要求对领域模型完整而透彻的了解，只给出一个用例的实现步骤是无法得到领域模型的，这需要和领域专家的充分讨论。错误的领域模型对项目的危害非常之大，而实现一个好的领域模型非常困难。</li>
-<li>对于简单的软件，使用领域模型，显得有些杀鸡用牛刀了。</li>
-</ol>
-<h2 id="开放主机服务"><a href="#开放主机服务" class="headerlink" title="开放主机服务"></a>开放主机服务</h2><p>该模式可以通过REST实现。通常来讲，我们可以将开放主机服务看作是远程过程调用（RPC）的API。同时，也可以通过消息机制实现。</p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/snidget/p/12995676.html">https://www.cnblogs.com/snidget/p/12995676.html</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/130945830">https://zhuanlan.zhihu.com/p/130945830</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/itfly8/article/details/109554847">https://blog.csdn.net/itfly8/article/details/109554847</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/netfocus/archive/2011/10/10/2204949.html">https://www.cnblogs.com/netfocus/archive/2011/10/10/2204949.html</a><br><a target="_blank" rel="noopener" href="https://iambowen.gitbooks.io/cloud-design-pattern/content/patterns/anti-corruption-layer.html">https://iambowen.gitbooks.io/cloud-design-pattern/content/patterns/anti-corruption-layer.html</a></p>
 
       
     </div>
