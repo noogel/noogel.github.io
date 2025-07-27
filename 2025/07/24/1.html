@@ -32,7 +32,7 @@
 <meta property="og:image" content="https://noogel.xyz/resource/img/2025-07-24-14-28-38.png">
 <meta property="og:image" content="https://noogel.xyz/resource/img/2025-07-24-14-49-55.png">
 <meta property="article:published_time" content="2025-07-24T00:00:00.000Z">
-<meta property="article:modified_time" content="2025-07-24T07:06:39.613Z">
+<meta property="article:modified_time" content="2025-07-27T14:17:51.218Z">
 <meta property="article:author" content="noogel">
 <meta property="article:tag" content="系统设计">
 <meta name="twitter:card" content="summary">
@@ -382,7 +382,7 @@
 <p>这个“背包问题”的求解是算价系统智能化的核心体现，它旨在在满足所有业务规则和用户意愿的前提下，为用户提供最大化的优惠，从而提升用户满意度和转化率。</p>
 <hr>
 <h2 id="优惠网关：统一接口，屏蔽多源差异，确保模型内聚性"><a href="#优惠网关：统一接口，屏蔽多源差异，确保模型内聚性" class="headerlink" title="优惠网关：统一接口，屏蔽多源差异，确保模型内聚性"></a>优惠网关：统一接口，屏蔽多源差异，确保模型内聚性</h2><p>在复杂的电商生态系统中，优惠数据可能来源于多个不同的系统或服务：有的可能来自商品管理系统，有的来自会员系统，有的来自营销活动平台，还有的可能来自第三方优惠券平台。这些不同的促销源，其数据结构、调用方式、计算逻辑可能大相径庭。直接在算价模型中集成这些多样化的促销源，会导致算价逻辑高度耦合，难以维护和扩展。</p>
-<p>为了解决这个问题，**优惠网关（Promotion Gateway）**应运而生。</p>
+<p>为了解决这个问题，<strong>优惠网关（Promotion Gateway）</strong> 应运而生。</p>
 <p><strong>优惠网关的作用：</strong></p>
 <ul>
 <li><strong>统一接口</strong>：优惠网关向上层算价模型提供一套统一、标准化的接口，无论底层有多少种优惠源，算价模型都通过这一个接口与它们交互。这极大地简化了算价模型的复杂度。</li>
