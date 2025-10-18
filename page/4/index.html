@@ -134,7 +134,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">84</span>
+          <span class="site-state-item-count">85</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -183,6 +183,112 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2021/01/30/1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="noogel">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知一杂谈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/01/30/1.html" class="post-title-link" itemprop="url">订单系统建模思考</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-01-30 00:00:00" itemprop="dateCreated datePublished" datetime="2021-01-30T00:00:00+00:00">2021-01-30</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>本文是对于订单建模的一点思考整理，里面应用一些对领域驱动设计的思考，默认读者对于领域概念有一些基本了解。</p>
+<h2 id="基本元素"><a href="#基本元素" class="headerlink" title="基本元素"></a>基本元素</h2><p>交易最早是通过以物易物的方式来交换，后面产生等价通用物品即货币。交易上下文领域对象包括：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">顾客 Consumer</span><br><span class="line">货 Goods</span><br><span class="line">货币 Currency</span><br><span class="line">商家 Merchant</span><br></pre></td></tr></table></figure>
+
+<p>对于交易一句话描述就是，顾客在商家那里通过等价货币购换取了货物。</p>
+<p>上面描述的四种领域对象作为领域实体，每一种领域实体通过 key 组合来确定实体的唯一性，ext 是值对象，用来描述实体。对应的实体描述如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">Consumer:</span><br><span class="line">&#123;</span><br><span class="line">    &quot;key&quot;: &quot;USER_ID&quot;,</span><br><span class="line">    &quot;ext&quot;: &#123; &#125;</span><br><span class="line">&#125;</span><br><span class="line">Goods</span><br><span class="line">&#123;</span><br><span class="line">    &quot;key&quot;: &quot;SKU_ID&quot;,</span><br><span class="line">    &quot;amount&quot;: 100,</span><br><span class="line">    &quot;ext&quot;: &#123; &#125;</span><br><span class="line">&#125;</span><br><span class="line">Currency</span><br><span class="line">&#123;</span><br><span class="line">    &quot;type&quot;: &quot;CNY|VIRTUAL_COIN&quot;,</span><br><span class="line">    &quot;amount&quot;: 100</span><br><span class="line">&#125;</span><br><span class="line">Merchant</span><br><span class="line">&#123;</span><br><span class="line">    &quot;key&quot;: &quot;yO7LmcWjqsJz1N5j&quot;,</span><br><span class="line">    &quot;ext&quot;: &#123; &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="状态事件抽象"><a href="#状态事件抽象" class="headerlink" title="状态事件抽象"></a>状态事件抽象</h2><p>订单状态变更命令通用流程抽象如下图，一个领域命令被触发后，首先进行状态变更前的资格校验事件回调，所有校验方均校验通过后方可进行后续处理，将交易修改为对应状态，状态修改后发布对应的状态变更事件，经由事件总线发布事件，所有监听方进行后续处理。一个领域命令执行结束。此流程可以套用到任何状态变更命令。</p>
+<p><img src="/resource/img/2021-01-30-23-46-47.png"></p>
+<p>状态变化通过领域命令发起 <code>command</code>，首先进行 <code>BeforeOperating</code> 操作前的处理，每一个命令都定义了事件的资格校验 <code>qualification</code> 接口，实现接口的可能是子域内处理，比如下单的库存校验，优惠校验等，也可能是具体业务的校验，需要实现资格校验接口。通过后进行事务性的状态变更操作 <code>updateState</code>，操作后进行状态变更后 <code>AfterOperating</code> 的事件发布，由各个业务监听进行后续处理。这样处理方便业务逻辑解耦，订单子域专注于订单状态的管理。</p>
+<p>对应到订单系统，对于订单状态和物流状态节点以及领域事件如下表示：</p>
+<p><img src="/resource/img/2021-01-30-23-46-53.png"></p>
+<p><strong>订单状态</strong></p>
+<ul>
+<li>已创建 CREATE(COMMIT)</li>
+<li>已支付 PAID</li>
+<li>已退款 REFUND(REFUNDING)</li>
+<li>已关闭 CLOSED</li>
+</ul>
+<p><strong>物流状态</strong></p>
+<ul>
+<li>待发货 WAITING</li>
+<li>已发货 DELIVERED</li>
+<li>已收货 RECEIVED</li>
+<li>已退货 RETURN</li>
+</ul>
+<p><strong>领域命令</strong></p>
+<ul>
+<li>创建订单 createOrder</li>
+<li>超时关单 closeOrder</li>
+<li>支付订单 payOrder</li>
+<li>申请退款 refundOrder</li>
+<li>订单履约 deliverOrder</li>
+<li>商家发货 deliverGoods</li>
+<li>用户收货 receiveGoods</li>
+<li>用户退货 returnGoods</li>
+</ul>
+<h2 id="子域拆分"><a href="#子域拆分" class="headerlink" title="子域拆分"></a>子域拆分</h2><p>订单子域的拆分也是业务职责的拆分，订单管理和物流管理是相对独立的两个模块，订单主要关注收款履约退款，物流主要关注用户的收退货状态，所以整个交易域的订单和物流会被拆分成两个子域。</p>
+<p><img src="/resource/img/2021-01-30-23-47-00.png"></p>
+<h2 id="订单事件举例"><a href="#订单事件举例" class="headerlink" title="订单事件举例"></a>订单事件举例</h2><p>订单创建命令，首先对注册的条件回调方进行回调，确认当前的购买资格，通过后进行事务性的订单创建，创建后进行订单已创建的事件发布，所有监听方接收到消息后进行分析处理。</p>
+<p><img src="/resource/img/2021-01-30-23-47-06.png"></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1086,98 +1192,6 @@
 <h2 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h2><blockquote>
 <p><a target="_blank" rel="noopener" href="https://design-patterns.readthedocs.io/zh_CN/latest/index.html">https://design-patterns.readthedocs.io/zh_CN/latest/index.html</a></p>
 </blockquote>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2020/01/20/1.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="noogel">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="知一杂谈">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/01/20/1.html" class="post-title-link" itemprop="url">我的 2019 年</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-01-20 00:00:00" itemprop="dateCreated datePublished" datetime="2020-01-20T00:00:00+00:00">2020-01-20</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="一些小的点"><a href="#一些小的点" class="headerlink" title="一些小的点"></a>一些小的点</h2><ol>
-<li>坚持阅读英文技术资料，并至少翻译12篇技术文章。x</li>
-<li>戒掉熬夜的坏习惯，习惯性去健身，保持精力的充沛。60%</li>
-<li>刻意提高专注力，并坚持系统性的做技术储备。80%</li>
-<li>常出去走走，看看外面的世界，准备至少两次的远途旅行。100%</li>
-<li>找到一个互相合适的伴侣。100%</li>
-<li>趁年轻努力挣钱，但是不要透支身体。50%</li>
-<li>好好学说话，做一个有趣的人。60%</li>
-</ol>
-<h2 id="主要方向"><a href="#主要方向" class="headerlink" title="主要方向"></a>主要方向</h2><ol>
-<li>英语学习，坚持阅读英文技术资料，至少翻译12篇技术文章，基本的口语表达。x</li>
-<li>沟通能力，说话前多思考，减少小动作的出现，改变不好的下意识动作和反应。50%</li>
-<li>正确锻炼，学会并养成跑步习惯，无氧健身增加身体健壮。90%</li>
-</ol>
-<h2 id="发音练习"><a href="#发音练习" class="headerlink" title="发音练习"></a>发音练习</h2><p>《张浩翔 魅力声音必修课》<br>预计学习时间 2 天，整理笔记，刻意练习。注意学习的几个阶段。</p>
-<h2 id="做到了哪些"><a href="#做到了哪些" class="headerlink" title="做到了哪些"></a>做到了哪些</h2><ol>
-<li>考了救护员证</li>
-<li>去了天津、昆明、大理、丹东</li>
-<li>跑了马拉松</li>
-<li>去山顶露营</li>
-</ol>
-<p><a href="/2019/12/01/2.html">第一个半马</a></p>
-<p><img src="/resource/img/15782140217189.jpg"></p>
-<p><a href="/2019/11/30/1.html">云南之旅</a></p>
-<p><img src="/resource/img/15751048275862.jpg"></p>
-<p><a href="/2020/01/11/1.html">丹东之旅</a></p>
-<p><img src="/resource/img/15786784707412.jpg"></p>
-<p>救护员证</p>
-<p><img src="/resource/img/2021-07-01-01-50-07.png"></p>
 
       
     </div>

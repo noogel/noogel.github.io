@@ -6,7 +6,7 @@
   <link href="https://noogel.xyz/atom.xml" rel="self"/>
   
   <link href="https://noogel.xyz/"/>
-  <updated>2025-10-18T16:00:23.275Z</updated>
+  <updated>2025-10-18T16:49:03.590Z</updated>
   <id>https://noogel.xyz/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Vibe Coding 实践：用 Flask 构建容器管理平台</title>
+    <link href="https://noogel.xyz/2025/10/19/1.html"/>
+    <id>https://noogel.xyz/2025/10/19/1.html</id>
+    <published>2025-10-19T00:00:00.000Z</published>
+    <updated>2025-10-18T16:49:03.590Z</updated>
+    
+    <content type="html"><![CDATA[<p><img src="/resource/img/2025-10-19-00-45-36.png"></p><p>今天，我想向大家介绍一个非常有实用价值的项目：<strong>niche-dind</strong>，一个基于 Web 界面的 Docker 容器管理平台。</p><p>在当今的软件开发领域，Docker 几乎已经成为基础设施的标配。从开发环境到生产环境，我们都享受着容器化带来的便捷与一致性。然而，随着项目数量和容器规模的增长，随之而来的管理负担也变得越来越重。</p><p>你可能习惯于每天敲击着 <code>docker-compose up</code> 或 <code>docker stack deploy</code> 命令。但当需要同时管理数十个项目、几十个服务，并随时查看它们的运行状态、资源占用和实时日志时，纯粹的命令行操作就显得力不从心了。</p><p>这就是 <strong>niche-dind</strong>（全称 <strong>Docker in Docker Manager</strong>）诞生的初衷：<strong>用一个直观、统一的 Web 界面，彻底解放 DevOps 双手，将容器管理提升到项目和应用栈（Stack）的层面。</strong></p><span id="more"></span><hr><h2 id="一、告别命令行：从管理容器到管理项目"><a href="#一、告别命令行：从管理容器到管理项目" class="headerlink" title="一、告别命令行：从管理容器到管理项目"></a>一、告别命令行：从管理容器到管理项目</h2><p>传统的 Docker GUI 工具大多停留在单个容器的操作，但现代应用部署已经演进到 Compose 或 Swarm Stack 的层次。<code>niche-dind</code> 的最大价值，就在于它将管理重心直接放在了项目（Project）和部署栈（Stack）上。</p><p>对于使用 <code>docker-compose.yml</code> 来定义服务的用户来说，<code>niche-dind</code> 提供了完整的生命周期管理：</p><ul><li><strong>可视化配置:</strong> 你可以直接在 Web 界面上创建、编辑和查看你的 Compose 配置，告别 VIM 或 Nano 的束缚。</li><li><strong>一键式操作:</strong> 无论是初次部署、配置更新还是项目删除，都只需要一次点击，平台将自动完成所有底层的 Docker SDK 调用。</li></ul><p><img src="/resource/img/2025-10-19-00-47-03.png"></p><hr><h2 id="二、洞察一切：实时监控与日志聚合"><a href="#二、洞察一切：实时监控与日志聚合" class="headerlink" title="二、洞察一切：实时监控与日志聚合"></a>二、洞察一切：实时监控与日志聚合</h2><p>对于运维工程师而言，服务的“可观察性”（Observability）是确保系统稳定的基石。当出现问题时，你需要立即知道<strong>什么地方</strong>出了问题、<strong>为什么</strong>会出问题。</p><p><code>niche-dind</code> 提供了一个全面的仪表板，让你对容器环境有全局的掌控：</p><ul><li><strong>资源使用统计:</strong> 实时查看每个容器的 <strong>CPU 使用率</strong>、<strong>内存占用</strong>、以及<strong>网络 I&#x2F;O 统计</strong>。你可以迅速识别出资源瓶颈，避免突发性的性能问题。</li><li><strong>健康检查状态:</strong> 它不仅告诉你容器是“启动”还是“停止”，还会展示应用级别的健康检查结果，让你知道应用是否真的在正常工作。</li></ul><hr><h2 id="三、面向团队：OIDC-认证与生态系统管理"><a href="#三、面向团队：OIDC-认证与生态系统管理" class="headerlink" title="三、面向团队：OIDC 认证与生态系统管理"></a>三、面向团队：OIDC 认证与生态系统管理</h2><p>一个优秀的管理平台，必须是“团队友好”的。这意味着它要解决企业级的安全和协作需求。</p><h3 id="1-OIDC-单点登录认证（SSO）"><a href="#1-OIDC-单点登录认证（SSO）" class="headerlink" title="1. OIDC 单点登录认证（SSO）"></a>1. OIDC 单点登录认证（SSO）</h3><p>在企业环境中，使用统一的身份认证系统是标准要求。<code>niche-dind</code> 深度集成了 <strong>OIDC</strong>（OpenID Connect）协议。</p><ul><li><strong>企业级安全:</strong> 支持包括 Keycloak、Auth0 等主流 OIDC 提供商，实现一键登录。</li><li><strong>会话管理:</strong> 统一管理用户会话，确保安全性。</li></ul><p>这种设计使得 <code>niche-dind</code> 不仅仅是一个个人工具，而是一个真正面向团队的协作平台。</p><h3 id="2-完整的镜像与仓库管理"><a href="#2-完整的镜像与仓库管理" class="headerlink" title="2. 完整的镜像与仓库管理"></a>2. 完整的镜像与仓库管理</h3><p>从代码到容器，最后到部署，镜像和仓库是整个 CI&#x2F;CD 流程的起点。</p><ul><li><strong>中央仓库配置:</strong> 统一管理多个 Docker Registry（例如 Docker Hub、阿里云 ACR、私有 Harbor）。你可以配置认证信息，并一键测试连接性。</li><li><strong>镜像生命周期:</strong> 直接查看本地镜像列表、执行镜像的拉取（Pull）和推送（Push）操作，以及进行标签管理。你不再需要手动登录到每台服务器去处理镜像。</li></ul><p><img src="/resource/img/2025-10-19-00-47-58.png"></p><hr><h2 id="四、技术解密：为什么选择-Python-和-Flask"><a href="#四、技术解密：为什么选择-Python-和-Flask" class="headerlink" title="四、技术解密：为什么选择 Python 和 Flask"></a>四、技术解密：为什么选择 Python 和 Flask</h2><p>一个优秀的工具离不开一个简洁、可靠的技术基石。<code>niche-dind</code> 的技术选型体现了“<strong>用最简单的方式解决最复杂的问题</strong>”的原则。</p><p>它的核心技术栈是：</p><table><thead><tr><th align="left">模块</th><th align="left">技术栈</th><th align="left">版本</th><th align="left">核心价值</th></tr></thead><tbody><tr><td align="left"><strong>后端框架</strong></td><td align="left"><strong>Flask</strong></td><td align="left">3.0.2</td><td align="left">轻量、灵活、易于维护，是构建 API 服务的利器。</td></tr><tr><td align="left"><strong>容器核心</strong></td><td align="left"><strong>Docker SDK</strong></td><td align="left">7.1.0</td><td align="left">稳定且功能完备，是与 Docker 引擎交互的官方桥梁。</td></tr><tr><td align="left"><strong>认证组件</strong></td><td align="left"><strong>Authlib</strong></td><td align="left">1.6.0</td><td align="left">专业的 OAuth&#x2F;OIDC 库，确保认证流程的安全可靠。</td></tr><tr><td align="left"><strong>生产部署</strong></td><td align="left"><strong>Gunicorn</strong></td><td align="left">21.2.0</td><td align="left">工业级的 WSGI HTTP 服务器，提供高性能和高并发支持。</td></tr></tbody></table><p>选择 Python 和 Flask 的原因很简单：<strong>开发效率高，代码可读性强。</strong> 尤其是 <code>Docker SDK</code> 库，它将复杂的 Docker API 调用封装成优雅的 Python 对象和方法，让开发者可以专注于业务逻辑，而不是 HTTP 请求细节。</p><hr><h2 id="五、如何开始使用（极简部署）"><a href="#五、如何开始使用（极简部署）" class="headerlink" title="五、如何开始使用（极简部署）"></a>五、如何开始使用（极简部署）</h2><p>作为一款容器管理工具，<code>niche-dind</code> 自身的部署当然也必须是容器化的。开发者已经将部署流程简化到了极致。</p><ol><li><p><strong>克隆项目：</strong></p> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://gitee.com/noogel/niche-dind</span><br><span class="line"><span class="built_in">cd</span> niche-dind</span><br></pre></td></tr></table></figure></li><li><p><strong>一键启动：</strong></p> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure></li></ol><p>就是这么简单。通过一个 <code>docker-compose.yml</code> 文件，应用及其依赖将被完全拉起，并在默认情况下运行于 <code>http://localhost:5002</code>。</p><p>如果你打算在真实环境中使用 OIDC 认证，只需要在启动前配置好以下环境变量即可：<code>OIDC_CLIENT_ID</code>、<code>OIDC_CLIENT_SECRET</code>、<code>OIDC_ISSUER</code> 等。</p><hr><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>在容器化大潮中，管理工具的进步往往落后于部署技术的迭代。<strong>niche-dind</strong> 正是试图弥补这一差距的优秀实践。</p><p>它不仅仅是一个 Web 界面，更是一套<strong>面向团队、以项目为中心、具备企业级认证能力</strong>的容器管理解决方案。它帮助我们将精力从繁琐的命令行操作中解脱出来，专注于应用的构建和创新。</p><p>我强烈推荐任何正在使用 Docker Compose 的团队，花点时间去了解和尝试这个项目。如果你觉得它有价值，不妨在 Gitee 上给它点一个 Star，甚至参与到开发中来。</p><p><strong>项目地址：<a href="https://gitee.com/noogel/niche-dind">https://gitee.com/noogel/niche-dind</a></strong></p><p>让管理变得简单，将复杂留给工具本身。这是现代运维哲学的核心。</p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;&lt;img src=&quot;/resource/img/2025-10-19-00-45-36.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;今天，我想向大家介绍一个非常有实用价值的项目：&lt;strong&gt;niche-dind&lt;/strong&gt;，一个基于 Web 界面的 Docker 容器管理平台。&lt;/p&gt;
+&lt;p&gt;在当今的软件开发领域，Docker 几乎已经成为基础设施的标配。从开发环境到生产环境，我们都享受着容器化带来的便捷与一致性。然而，随着项目数量和容器规模的增长，随之而来的管理负担也变得越来越重。&lt;/p&gt;
+&lt;p&gt;你可能习惯于每天敲击着 &lt;code&gt;docker-compose up&lt;/code&gt; 或 &lt;code&gt;docker stack deploy&lt;/code&gt; 命令。但当需要同时管理数十个项目、几十个服务，并随时查看它们的运行状态、资源占用和实时日志时，纯粹的命令行操作就显得力不从心了。&lt;/p&gt;
+&lt;p&gt;这就是 &lt;strong&gt;niche-dind&lt;/strong&gt;（全称 &lt;strong&gt;Docker in Docker Manager&lt;/strong&gt;）诞生的初衷：&lt;strong&gt;用一个直观、统一的 Web 界面，彻底解放 DevOps 双手，将容器管理提升到项目和应用栈（Stack）的层面。&lt;/strong&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="项目" scheme="https://noogel.xyz/tags/%E9%A1%B9%E7%9B%AE/"/>
+    
+  </entry>
   
   <entry>
     <title>数字长征：一次 HTTP 请求的分层哲学</title>
@@ -459,33 +482,6 @@
     
     <summary type="html">&lt;p&gt;&lt;img src=&quot;/resource/img/2021-12-10-00-27-51.png&quot;&gt;&lt;/p&gt;
 &lt;h2 id=&quot;领域驱动设计核心概念&quot;&gt;&lt;a href=&quot;#领域驱动设计核心概念&quot; class=&quot;headerlink&quot; title=&quot;领域驱动设计核心概念&quot;&gt;&lt;/a&gt;领域驱动设计核心概念&lt;/h2&gt;&lt;p&gt;领域驱动设计学习拦路虎之一就是众多的概念，第一次接触这些概念会有一定的理解成本，不过正是这些概念支撑起的领域驱动设计，接下来会以电商为例对其中的核心概念做介绍。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="领域驱动设计" scheme="https://noogel.xyz/categories/%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1/"/>
-    
-    
-    <category term="架构" scheme="https://noogel.xyz/tags/%E6%9E%B6%E6%9E%84/"/>
-    
-    <category term="领域驱动设计" scheme="https://noogel.xyz/tags/%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>领域驱动设计精粹（上）</title>
-    <link href="https://noogel.xyz/2021/12/03/1.html"/>
-    <id>https://noogel.xyz/2021/12/03/1.html</id>
-    <published>2021-12-03T00:00:00.000Z</published>
-    <updated>2025-07-23T07:30:58.918Z</updated>
-    
-    <content type="html"><![CDATA[<p><img src="/resource/img/2021-12-10-00-27-51.png"></p><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>概念可以简单描述某类事物，这类事物可以是实体也可以是问题。领域驱动设计是为了管理系统复杂性问题而生的一套方法论。</p><p>随着业务系统的复杂性不断提高，系统的性能和灵活性要求也会越来越高，如何构建一个扩展性强、可用性高的业务系统是需要我们不断思考的问题。</p><p>我们以交易系统为例，在互联网之初，实体商业占据绝对主导地位的时代，电子商务系统最初的目的就是把货物卖出去，业务需求很简单，就是一手付钱，一手交货，而更多的难点是在于如何让人们接受并认可在网络上进行交易。随着这几十年的发展，电商早已不是最初的样子，需求变为如何更快更多的把商品卖出去，于是产生出了层出不穷你算不清楚的促销活动，比如满减、凑单、会员价、拼团、优惠券等。你买东西的价格也许只有系统能真正算清楚。</p><p>系统的复杂性比起最初，呈几何倍的增长，如何控制并管理系统复杂度是我们需要在业务发展过程中需要解决的问题。复杂的业务各有各的复杂，而拆解之道也各有各的侧重，<strong>今天要介绍的是领域驱动设计如何帮助我们拆解需求，并建立一个灵活性高、可扩展的业务系统。</strong></p><span id="more"></span><h2 id="领域驱动设计在讲什么"><a href="#领域驱动设计在讲什么" class="headerlink" title="领域驱动设计在讲什么"></a>领域驱动设计在讲什么</h2><p>领域驱动设计中的领域是什么？我理解的是一个比行业更加细分的方向，比如互联网做电商业务是电商领域，电商中有专注交易的交易领域，做电子支付叫支付领域。领域范围可大可小，领域知识表示某些具有相关相关性知识的合集。</p><p><strong>领域驱动设计是通过领域知识构建的领域模型来控制业务的复杂性，通过领域模型反映领域知识，构建更易维护的系统。解决软件难以理解，难以演化的问题。</strong></p><p><em>上面的总结涉嫌鸡生蛋蛋生鸡的问题。其实领域模型和领域知识是迭代产生的，随着人类抽象总结而不断凝练而成的。拿之前讨论过的例子来说，一个电商领域专家可能脱口而出订单的概念，大家先入为主的很容易理解这个概念。</em></p><p><em>从人类历程来看最早出现的是物物交换的概念，后面逐渐变成等价货币交换，我们抽象的名词叫交易，再到后面你从我这里付一笔钱，我给你一个凭据，过段时间你来取货，我们管这叫购买凭据，进而逐渐演化成订单这个概念。</em></p><h3 id="领域驱动设计的核心价值"><a href="#领域驱动设计的核心价值" class="headerlink" title="领域驱动设计的核心价值"></a>领域驱动设计的核心价值</h3><p>领域驱动设计的核心目标是<strong>基于特定业务范围，通过统一业务概念（统一语言），将系统参与各方整合在一起，从而减少不同角色和环节的信息熵减问题。</strong></p><p>领域模型是领域驱动设计的核心产出，它不仅能描述真实的业务逻辑和业务场景，也是系统实现的表达方式。<strong>领域模型的适应性能直接反应系统的扩展性上，能否使系统在增大时仍然保持敏捷。</strong></p><p>领域驱动设计之所以更加流行，很大因素是<strong>领域驱动设计提供的方法论上与近些年流行的微服务有很好的匹配性，通过领域驱动设计方法清晰地识别业务边界，以此来指导微服务的拆分。</strong> 领域驱动设计提供的领域划分方法可以指导我们对微服务的拆分，以及对于演进式架构有很强的助力。</p><h3 id="领域驱动设计的适用场景"><a href="#领域驱动设计的适用场景" class="headerlink" title="领域驱动设计的适用场景"></a>领域驱动设计的适用场景</h3><p>通过上面对于领域驱动设计的介绍，可以提炼出三个主要作用：</p><ol><li>统一通用语言，降低不同角色间的沟通成本。</li><li>通过战略设计划分子域、限界上下文，以此垂直拆解复杂度。</li><li>通过聚合的方式进行建模，以此水平拆解复杂度。</li></ol><p>通过以上三个作用来逐步介绍领域驱动设计的适用场景。</p><h4 id="多角色协作的业务场景"><a href="#多角色协作的业务场景" class="headerlink" title="多角色协作的业务场景"></a>多角色协作的业务场景</h4><p>领域驱动设计中引入领域专家角色，是指对某个领域的概念和流程有着深入理解的一类人。开发人员与领域专家之间，他们掌握的知识存在巨大的差异。就比如电商领域专家清楚地了解交易单、订单、子单、售后、物流单、运单这些概念的准确含义，而开发人员更专注技术的运用，在沟通中如果没有达成一致的理解，沟通效率就会很差，甚至产生误解。</p><p>领域驱动设计提出从需求中提炼出统一语言，其实就是在两个不同的语言世界中进行正确翻译的过程。在多角色协作的场景中可以有效降低沟通成本，迭代式的探索和发现模型。</p><h4 id="复杂业务场景进行业务拆解"><a href="#复杂业务场景进行业务拆解" class="headerlink" title="复杂业务场景进行业务拆解"></a>复杂业务场景进行业务拆解</h4><p>上面我们提到现代电商促销方案层出不穷，决定一笔交易的金额有很多影响因素，而算价结果直接影响到这笔交易的支付金额，以及每件商品的实付金额。如果我们认为促销价格计算和交易联系很紧密就把他们放到了一起去开发维护，我想这个系统后面必定会难以维护，最终进行拆分。</p><p>而系统拆分的指导思想就是我们耳熟能详的六个字：<strong>『高内聚，低耦合。』</strong> 领域驱动设计有着一套完整的方法论，指导我们对复杂问题进行拆分、梳理各个子系统间的关系，帮助我们落地复杂系统。</p>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;&lt;img src=&quot;/resource/img/2021-12-10-00-27-51.png&quot;&gt;&lt;/p&gt;
-&lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h2&gt;&lt;p&gt;概念可以简单描述某类事物，这类事物可以是实体也可以是问题。领域驱动设计是为了管理系统复杂性问题而生的一套方法论。&lt;/p&gt;
-&lt;p&gt;随着业务系统的复杂性不断提高，系统的性能和灵活性要求也会越来越高，如何构建一个扩展性强、可用性高的业务系统是需要我们不断思考的问题。&lt;/p&gt;
-&lt;p&gt;我们以交易系统为例，在互联网之初，实体商业占据绝对主导地位的时代，电子商务系统最初的目的就是把货物卖出去，业务需求很简单，就是一手付钱，一手交货，而更多的难点是在于如何让人们接受并认可在网络上进行交易。随着这几十年的发展，电商早已不是最初的样子，需求变为如何更快更多的把商品卖出去，于是产生出了层出不穷你算不清楚的促销活动，比如满减、凑单、会员价、拼团、优惠券等。你买东西的价格也许只有系统能真正算清楚。&lt;/p&gt;
-&lt;p&gt;系统的复杂性比起最初，呈几何倍的增长，如何控制并管理系统复杂度是我们需要在业务发展过程中需要解决的问题。复杂的业务各有各的复杂，而拆解之道也各有各的侧重，&lt;strong&gt;今天要介绍的是领域驱动设计如何帮助我们拆解需求，并建立一个灵活性高、可扩展的业务系统。&lt;/strong&gt;&lt;/p&gt;</summary>
     
     
     

@@ -134,7 +134,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">84</span>
+          <span class="site-state-item-count">85</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -183,6 +183,103 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2017/05/01/1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="noogel">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知一杂谈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2017/05/01/1.html" class="post-title-link" itemprop="url">支付交易系统架构调研</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-05-01 00:00:00" itemprop="dateCreated datePublished" datetime="2017-05-01T00:00:00+00:00">2017-05-01</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>交易过程：</p>
+<ol>
+<li>客户下单</li>
+<li>客户完成支付</li>
+<li>商家接单</li>
+<li>商家发货</li>
+</ol>
+<p>从软件开发角度， 还有一些非功能性需求需要实现：</p>
+<ol>
+<li>性能： 特别是秒杀的时候，如何满足高频率的支付需求？</li>
+<li>可靠性：不用说，系统能达到几个9，是衡量软件设计功力的重要指标。 99%是基础， 99.999%是目标，更多的9哪就是神了。</li>
+<li>易用性：支付中多一个步骤，就会流失至少2%的用户。 产品经理都在削尖脑袋想想怎么让用户赶紧掏钱。</li>
+<li>可扩展性： 近年来支付业务创新产品多，一元购、红包、打赏等，还有各种的支付场景。 怎么能够快速满足产品经理的需求，尽快上线来抢占市场，可扩展性对支付系统设计也是一个挑战。</li>
+<li>可伸缩性：为了支持公司业务，搞一些促销活动是必须的。 那促销带来的爆发流量，最佳应对方法就是加机器了。 平时流量低，用不了那么多机器，该释放的就释放掉了， 给公司省点钱。</li>
+</ol>
+<p>典型支付系统架构：<br><img src="/resource/img/15135039006989.jpg"></p>
+<p>某旅游公司：<br><img src="/resource/img/15135039141413.jpg"></p>
+<p>京东金融：<br><img src="/resource/img/15135039244991.jpg"></p>
+<p>支付系统一般会提供如下子系统：</p>
+<ol>
+<li>支付应用和产品.(应用层)： 这是针对各端（PC Web端、android、IOS)的应用和产品。 为各个业务系统提供收银台支持，同时支付作为一个独立的模块，可以提供诸如银行卡管理、理财、零钱、虚拟币管理、交易记录查阅、卡券等功能；</li>
+<li>支付运营系统(应用层)： 支付系统从安全的角度来说，有一个重要的要求是，懂代码的不碰线上，管运营的不碰代码。这对运营系统的要求就很高，要求基本上所有线上的问题，都可以通过运营系统来解决。</li>
+<li>支付BI系统(应用层): 支付中产生大量的数据，对这些数据进行分析， 有助于公司老板们了解运营状况，进行决策支持。</li>
+<li>风控系统(应用层)：这是合规要求的风险控制、反洗钱合规等。</li>
+<li>信用信息管理系统(应用层)：用来支持对信用算法做配置，对用户的信用信息做管理。<br>支付系统一般会提供如下子系统：</li>
+<li>支付应用和产品.(应用层)： 这是针对各端（PC Web端、android、IOS)的应用和产品。 为各个业务系统提供收银台支持，同时支付作为一个独立的模块，可以提供诸如银行卡管理、理财、零钱、虚拟币管理、交易记录查阅、卡券等功能；</li>
+<li>支付运营系统(应用层)： 支付系统从安全的角度来说，有一个重要的要求是，懂代码的不碰线上，管运营的不碰代码。这对运营系统的要求就很高，要求基本上所有线上的问题，都可以通过运营系统来解决。</li>
+<li>支付BI系统(应用层): 支付中产生大量的数据，对这些数据进行分析， 有助于公司老板们了解运营状况，进行决策支持。</li>
+<li>风控系统(应用层)：这是合规要求的风险控制、反洗钱合规等。</li>
+<li>信用信息管理系统(应用层)：用来支持对信用算法做配置，对用户的信用信息做管理。</li>
+</ol>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="http://www.bijishequ.com/detail/95641">http://www.bijishequ.com/detail/95641</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -972,100 +1069,6 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">root@bt:~# nmap -v -A *.*.*.* -p 1-65535 </span><br><span class="line">Starting Nmap 6.25 ( http://nmap.org ) at 2016-07-26 13:30 EDT</span><br><span class="line">......</span><br><span class="line">Not shown: 65527 filtered ports</span><br><span class="line">PORT      STATE  SERVICE     VERSION</span><br><span class="line">139/tcp   open   netbios-ssn</span><br><span class="line">1723/tcp  open   pptp        Microsoft</span><br><span class="line">8891/tcp  open   http        nginx 1.4.4</span><br><span class="line">9090/tcp  closed zeus-admin</span><br><span class="line">13228/tcp open   http        Microsoft IIS httpd 7.5</span><br><span class="line">14580/tcp closed unknown</span><br><span class="line">36666/tcp open   unknown</span><br><span class="line">64380/tcp open   unknown</span><br><span class="line">......</span><br><span class="line">Device type: general purpose|storage-misc</span><br><span class="line">Running (JUST GUESSING): Linux 2.4.X (99%), Microsoft Windows 7 (95%), BlueArc embedded (91%)</span><br><span class="line">OS CPE: cpe:/o:linux:linux_kernel:2.4 cpe:/o:microsoft:windows_7:::enterprise cpe:/h:bluearc:titan_2100</span><br><span class="line">Aggressive OS guesses: DD-WRT v24-sp2 (Linux 2.4.37) (99%), Microsoft Windows 7 Enterprise (95%), BlueArc Titan 2100 NAS device (91%)</span><br><span class="line">No exact OS matches for host (test conditions non-ideal).</span><br><span class="line">Network Distance: 2 hops</span><br><span class="line">TCP Sequence Prediction: Difficulty=259 (Good luck!)</span><br><span class="line">IP ID Sequence Generation: Incremental</span><br><span class="line">Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows</span><br><span class="line">......</span><br><span class="line">NSE: Script Post-scanning.</span><br><span class="line">Read data files from: /usr/local/bin/../share/nmap</span><br><span class="line">OS and Service detection performed. Please report any incorrect results at http://nmap.org/submit/ .</span><br><span class="line">Nmap done: 1 IP address (1 host up) scanned in 895.44 seconds</span><br><span class="line">           Raw packets sent: 262711 (11.560MB) | Rcvd: 55220 (2.209MB)</span><br></pre></td></tr></table></figure>
 <p>Links：<br><a target="_blank" rel="noopener" href="http://www.cyberciti.biz/networking/nmap-command-examples-tutorials/">http://www.cyberciti.biz/networking/nmap-command-examples-tutorials/</a></p>
 <h4 id="反向Shell"><a href="#反向Shell" class="headerlink" title="反向Shell"></a>反向Shell</h4><p><a target="_blank" rel="noopener" href="http://os.51cto.com/art/201312/424378.htm">http://os.51cto.com/art/201312/424378.htm</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2016/01/09/1.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="noogel">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="知一杂谈">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2016/01/09/1.html" class="post-title-link" itemprop="url">正则表达式 Cheatsheet</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2016-01-09 00:00:00" itemprop="dateCreated datePublished" datetime="2016-01-09T00:00:00+00:00">2016-01-09</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>用来匹配和处理文本的字符串。 基本用途是查找和替换。一种不完备的程序设计语言。</p>
-<h2 id="锚点"><a href="#锚点" class="headerlink" title="锚点"></a>锚点</h2><p><code>^</code> 字符串开头，或多行模式中的行开头<br><code>\A</code> 字符串的开始<br><code>$</code> 字符串结尾，或多行模式中的行尾<br><code>\Z</code> 字符串结束<br><code>\b</code> 字边界<br><code>\B</code> 不是单词边界<br><code>\&lt;</code> 词的开头<br><code>\&gt;</code> 词尾</p>
-<h2 id="字符集"><a href="#字符集" class="headerlink" title="字符集"></a>字符集</h2><p><code>\c</code> 控制字符<br><code>\s</code> 任何一个空白字符（[\f\n\r\t\v]）<br><code>\S</code> 任何一个非空白字符（[^\f\n\r\t\v]）<br><code>\d</code> 任何一个数字字符<br><code>\D</code> 任何一个非数字字符<br><code>\w</code> 任何一个字母数字字符或下划线字符（[a-zA-Z0-9_]）<br><code>\W</code> 任何一个非字母数字或非下划线字符（[^a-zA-Z0-9_]）<br><code>\x</code> 十六进制数字<br><code>\O</code> 八进制数</p>
-<h2 id="量词"><a href="#量词" class="headerlink" title="量词"></a>量词</h2><p><code>+</code> 1 个或更多<br><code>*</code> 0 个或更多<br><code>?</code> 0 个或 1 个<br><code>&#123;&#125;</code> 匹配指定个数<br><code>&#123;3&#125;</code> 精确的 3 个<br><code>&#123;3,&#125;</code> 3 个或更多<br><code>&#123;3,5&#125;</code> 3,4,5</p>
-<p>添加 <code>?</code> 表示非贪婪模式，懒惰型匹配，匹配最小子集。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">+?</span><br><span class="line">*?</span><br><span class="line">&#123;n,&#125;?</span><br></pre></td></tr></table></figure>
-
-<h2 id="断言"><a href="#断言" class="headerlink" title="断言"></a>断言</h2><p><code>?=</code> 前瞻断言<br><code>?!</code> 负前瞻<br><code>?&lt;=</code> 后向断言<br><code>?!= or ?&lt;!</code> 负面回顾<br><code>?&gt;</code> 一次性子表达式<br><code>?()</code> 条件 [if then]<br><code>?()|</code> 条件 [if then else]<br><code>?#</code> 评论</p>
-<h2 id="转移"><a href="#转移" class="headerlink" title="转移"></a>转移</h2><p><code>\</code> 转义后面的字符<br><code>\Q</code> Begin literal sequence<br><code>\E</code> End literal sequence</p>
-<p>『转义』是一种处理正则表达式中具有特殊含义的字符的方式，而不是特殊字符。</p>
-<h2 id="常用元字符"><a href="#常用元字符" class="headerlink" title="常用元字符"></a>常用元字符</h2><p><code>^</code><br><code>[</code><br><code>.</code><br><code>$</code><br><code>&#123;</code><br><code>*</code><br><code>(</code><br><code>\</code><br><code>+</code><br><code>)</code><br><code>|</code><br><code>?</code><br><code>&lt;</code><br><code>&gt;</code></p>
-<h2 id="特殊字符"><a href="#特殊字符" class="headerlink" title="特殊字符"></a>特殊字符</h2><p><code>\n</code> 新行<br><code>\r</code> 回车<br><code>\t</code> 制表符<br><code>\v</code> 垂直制表符<br><code>\f</code> Form feed<br><code>\xxx</code> 八进制字符 xxx<br><code>\xhh</code> 十六进制字符 hh</p>
-<h2 id="组合范围"><a href="#组合范围" class="headerlink" title="组合范围"></a>组合范围</h2><p><code>.</code> 除换行符 (\n) 以外的任何字符<br><code>(a|b)</code> a 或 b<br><code>(...)</code> 组<br><code>(?:...)</code>  被动（非捕获）组<br><code>[abc]</code> 范围 a b c<br><code>[^abc]</code>  not (a or b or c)<br><code>[a-q]</code> 从 a 到 q 的小写字母<br><code>[A-Q]</code> 从 A 到 Q 的大写字母<br><code>[0-7]</code> 从 0 到 7 的数字<br><code>\x</code> 组&#x2F;子模式编号『x』</p>
-<p>范围包括在内。</p>
-<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><h3 id="回溯引用"><a href="#回溯引用" class="headerlink" title="回溯引用"></a>回溯引用</h3><p>下面例子匹配 <code>空格 字符 空格</code><br><img src="/resource/img/zzbds/0b845d60-f9f5-4240-8f55-24f8cea04953.png" alt="原始图片"><br>下面的例子使回溯引用<br><img src="/resource/img/zzbds/a8a95f79-96ed-45db-8cb3-790a7ac6b64d.png" alt="原始图片"><br>解释回溯引用，<code>\1</code>用来获取<code>(\w+)</code>中的字符串。第一个匹配上的<code>of</code>被<code>\1</code>引用，就变成表达式<code>[ ]+(\w+)[ ]+of</code>。<br>其中<code>\1</code>代表模式里的第一个子表达式，<code>\2</code>就会代表着第二个子表达式，以此递推。</p>
-<h3 id="替换"><a href="#替换" class="headerlink" title="替换"></a>替换</h3><p><img src="/resource/img/zzbds/32cebbb3-461b-4259-b8a3-b83d0280b752.png" alt="原始图片"></p>
-<blockquote>
-<p>大小写转换测试工具不支持，待测试</p>
-</blockquote>
-<h3 id="向前查找、向后查找"><a href="#向前查找、向后查找" class="headerlink" title="向前查找、向后查找"></a>向前查找、向后查找</h3><p>必须要放到一个字表达式中，如下例子，根据<code>:</code>来匹配，但是不消费他。<br><code>(?=)</code> 向前查找</p>
-<p><img src="/resource/img/zzbds/0b28d288-452d-4d9a-a416-0e98f80d8278.png" alt="原始图片"></p>
-<p><code>(?&lt;=)</code> 向后查找<br><img src="/resource/img/zzbds/acbe623c-05c5-444f-b385-169b6adedadb.png" alt="原始图片"></p>
-<p><code>(?!)</code> 负向前查找<br><code>(?&lt;!)</code> 负向后查找</p>
-<h3 id="嵌入条件"><a href="#嵌入条件" class="headerlink" title="嵌入条件"></a>嵌入条件</h3><p><code>(?(brackreference)true-regex)</code>其中<code>?</code>表明这是一个条件，括号里的<code>brackreference</code>是一个回溯引用，<code>true-regex</code>是一个只在<code>backreference</code>存在时才会被执行的子表达式。<br><img src="/resource/img/zzbds/352f8f35-dcac-4440-a21f-4779a26ac743.png" alt="原始图片"></p>
-<h3 id="不区分大小写匹配"><a href="#不区分大小写匹配" class="headerlink" title="不区分大小写匹配"></a>不区分大小写匹配</h3><p><img src="/resource/img/zzbds/00434677-3908-47ed-b192-1b337f8ea064.png" alt="原始图片"></p>
-<h3 id="字符区间匹配"><a href="#字符区间匹配" class="headerlink" title="字符区间匹配"></a>字符区间匹配</h3><p><img src="/resource/img/zzbds/c44e81f9-acf5-4bb6-8f9a-e062724871bd.png" alt="原始图片"></p>
-<h3 id="取非匹配"><a href="#取非匹配" class="headerlink" title="取非匹配"></a>取非匹配</h3><p><img src="/resource/img/zzbds/686133cb-f93b-4954-a17a-5aed01c0e0e8.png" alt="原始图片"></p>
-<h3 id="匹配多个字符"><a href="#匹配多个字符" class="headerlink" title="匹配多个字符"></a>匹配多个字符</h3><p><img src="/resource/img/zzbds/3c36ee0a-819a-40ca-9dd5-150e0cb68beb.png" alt="原始图片"></p>
-<h3 id="子表达式"><a href="#子表达式" class="headerlink" title="子表达式"></a>子表达式</h3><p><img src="/resource/img/zzbds/d5cb48c9-e648-4874-b24a-d950ffbd9868.png" alt="原始图片"></p>
-<h3 id="匹配四位数的年份"><a href="#匹配四位数的年份" class="headerlink" title="匹配四位数的年份"></a>匹配四位数的年份</h3><p><img src="/resource/img/zzbds/64ddb1d1-bb13-476b-9fc4-ae4dc93e1c08.png" alt="原始图片"></p>
-<h3 id="嵌入查找、向后查找组合应用"><a href="#嵌入查找、向后查找组合应用" class="headerlink" title="嵌入查找、向后查找组合应用"></a>嵌入查找、向后查找组合应用</h3><p><img src="/resource/img/zzbds/9bb21719-d586-4f77-98f7-8b0c37f16a0a.png" alt="原始图片"></p>
 
       
     </div>

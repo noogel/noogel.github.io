@@ -134,7 +134,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">84</span>
+          <span class="site-state-item-count">85</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -183,6 +183,100 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2016/01/09/1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="noogel">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知一杂谈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2016/01/09/1.html" class="post-title-link" itemprop="url">正则表达式 Cheatsheet</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2016-01-09 00:00:00" itemprop="dateCreated datePublished" datetime="2016-01-09T00:00:00+00:00">2016-01-09</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>用来匹配和处理文本的字符串。 基本用途是查找和替换。一种不完备的程序设计语言。</p>
+<h2 id="锚点"><a href="#锚点" class="headerlink" title="锚点"></a>锚点</h2><p><code>^</code> 字符串开头，或多行模式中的行开头<br><code>\A</code> 字符串的开始<br><code>$</code> 字符串结尾，或多行模式中的行尾<br><code>\Z</code> 字符串结束<br><code>\b</code> 字边界<br><code>\B</code> 不是单词边界<br><code>\&lt;</code> 词的开头<br><code>\&gt;</code> 词尾</p>
+<h2 id="字符集"><a href="#字符集" class="headerlink" title="字符集"></a>字符集</h2><p><code>\c</code> 控制字符<br><code>\s</code> 任何一个空白字符（[\f\n\r\t\v]）<br><code>\S</code> 任何一个非空白字符（[^\f\n\r\t\v]）<br><code>\d</code> 任何一个数字字符<br><code>\D</code> 任何一个非数字字符<br><code>\w</code> 任何一个字母数字字符或下划线字符（[a-zA-Z0-9_]）<br><code>\W</code> 任何一个非字母数字或非下划线字符（[^a-zA-Z0-9_]）<br><code>\x</code> 十六进制数字<br><code>\O</code> 八进制数</p>
+<h2 id="量词"><a href="#量词" class="headerlink" title="量词"></a>量词</h2><p><code>+</code> 1 个或更多<br><code>*</code> 0 个或更多<br><code>?</code> 0 个或 1 个<br><code>&#123;&#125;</code> 匹配指定个数<br><code>&#123;3&#125;</code> 精确的 3 个<br><code>&#123;3,&#125;</code> 3 个或更多<br><code>&#123;3,5&#125;</code> 3,4,5</p>
+<p>添加 <code>?</code> 表示非贪婪模式，懒惰型匹配，匹配最小子集。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">+?</span><br><span class="line">*?</span><br><span class="line">&#123;n,&#125;?</span><br></pre></td></tr></table></figure>
+
+<h2 id="断言"><a href="#断言" class="headerlink" title="断言"></a>断言</h2><p><code>?=</code> 前瞻断言<br><code>?!</code> 负前瞻<br><code>?&lt;=</code> 后向断言<br><code>?!= or ?&lt;!</code> 负面回顾<br><code>?&gt;</code> 一次性子表达式<br><code>?()</code> 条件 [if then]<br><code>?()|</code> 条件 [if then else]<br><code>?#</code> 评论</p>
+<h2 id="转移"><a href="#转移" class="headerlink" title="转移"></a>转移</h2><p><code>\</code> 转义后面的字符<br><code>\Q</code> Begin literal sequence<br><code>\E</code> End literal sequence</p>
+<p>『转义』是一种处理正则表达式中具有特殊含义的字符的方式，而不是特殊字符。</p>
+<h2 id="常用元字符"><a href="#常用元字符" class="headerlink" title="常用元字符"></a>常用元字符</h2><p><code>^</code><br><code>[</code><br><code>.</code><br><code>$</code><br><code>&#123;</code><br><code>*</code><br><code>(</code><br><code>\</code><br><code>+</code><br><code>)</code><br><code>|</code><br><code>?</code><br><code>&lt;</code><br><code>&gt;</code></p>
+<h2 id="特殊字符"><a href="#特殊字符" class="headerlink" title="特殊字符"></a>特殊字符</h2><p><code>\n</code> 新行<br><code>\r</code> 回车<br><code>\t</code> 制表符<br><code>\v</code> 垂直制表符<br><code>\f</code> Form feed<br><code>\xxx</code> 八进制字符 xxx<br><code>\xhh</code> 十六进制字符 hh</p>
+<h2 id="组合范围"><a href="#组合范围" class="headerlink" title="组合范围"></a>组合范围</h2><p><code>.</code> 除换行符 (\n) 以外的任何字符<br><code>(a|b)</code> a 或 b<br><code>(...)</code> 组<br><code>(?:...)</code>  被动（非捕获）组<br><code>[abc]</code> 范围 a b c<br><code>[^abc]</code>  not (a or b or c)<br><code>[a-q]</code> 从 a 到 q 的小写字母<br><code>[A-Q]</code> 从 A 到 Q 的大写字母<br><code>[0-7]</code> 从 0 到 7 的数字<br><code>\x</code> 组&#x2F;子模式编号『x』</p>
+<p>范围包括在内。</p>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><h3 id="回溯引用"><a href="#回溯引用" class="headerlink" title="回溯引用"></a>回溯引用</h3><p>下面例子匹配 <code>空格 字符 空格</code><br><img src="/resource/img/zzbds/0b845d60-f9f5-4240-8f55-24f8cea04953.png" alt="原始图片"><br>下面的例子使回溯引用<br><img src="/resource/img/zzbds/a8a95f79-96ed-45db-8cb3-790a7ac6b64d.png" alt="原始图片"><br>解释回溯引用，<code>\1</code>用来获取<code>(\w+)</code>中的字符串。第一个匹配上的<code>of</code>被<code>\1</code>引用，就变成表达式<code>[ ]+(\w+)[ ]+of</code>。<br>其中<code>\1</code>代表模式里的第一个子表达式，<code>\2</code>就会代表着第二个子表达式，以此递推。</p>
+<h3 id="替换"><a href="#替换" class="headerlink" title="替换"></a>替换</h3><p><img src="/resource/img/zzbds/32cebbb3-461b-4259-b8a3-b83d0280b752.png" alt="原始图片"></p>
+<blockquote>
+<p>大小写转换测试工具不支持，待测试</p>
+</blockquote>
+<h3 id="向前查找、向后查找"><a href="#向前查找、向后查找" class="headerlink" title="向前查找、向后查找"></a>向前查找、向后查找</h3><p>必须要放到一个字表达式中，如下例子，根据<code>:</code>来匹配，但是不消费他。<br><code>(?=)</code> 向前查找</p>
+<p><img src="/resource/img/zzbds/0b28d288-452d-4d9a-a416-0e98f80d8278.png" alt="原始图片"></p>
+<p><code>(?&lt;=)</code> 向后查找<br><img src="/resource/img/zzbds/acbe623c-05c5-444f-b385-169b6adedadb.png" alt="原始图片"></p>
+<p><code>(?!)</code> 负向前查找<br><code>(?&lt;!)</code> 负向后查找</p>
+<h3 id="嵌入条件"><a href="#嵌入条件" class="headerlink" title="嵌入条件"></a>嵌入条件</h3><p><code>(?(brackreference)true-regex)</code>其中<code>?</code>表明这是一个条件，括号里的<code>brackreference</code>是一个回溯引用，<code>true-regex</code>是一个只在<code>backreference</code>存在时才会被执行的子表达式。<br><img src="/resource/img/zzbds/352f8f35-dcac-4440-a21f-4779a26ac743.png" alt="原始图片"></p>
+<h3 id="不区分大小写匹配"><a href="#不区分大小写匹配" class="headerlink" title="不区分大小写匹配"></a>不区分大小写匹配</h3><p><img src="/resource/img/zzbds/00434677-3908-47ed-b192-1b337f8ea064.png" alt="原始图片"></p>
+<h3 id="字符区间匹配"><a href="#字符区间匹配" class="headerlink" title="字符区间匹配"></a>字符区间匹配</h3><p><img src="/resource/img/zzbds/c44e81f9-acf5-4bb6-8f9a-e062724871bd.png" alt="原始图片"></p>
+<h3 id="取非匹配"><a href="#取非匹配" class="headerlink" title="取非匹配"></a>取非匹配</h3><p><img src="/resource/img/zzbds/686133cb-f93b-4954-a17a-5aed01c0e0e8.png" alt="原始图片"></p>
+<h3 id="匹配多个字符"><a href="#匹配多个字符" class="headerlink" title="匹配多个字符"></a>匹配多个字符</h3><p><img src="/resource/img/zzbds/3c36ee0a-819a-40ca-9dd5-150e0cb68beb.png" alt="原始图片"></p>
+<h3 id="子表达式"><a href="#子表达式" class="headerlink" title="子表达式"></a>子表达式</h3><p><img src="/resource/img/zzbds/d5cb48c9-e648-4874-b24a-d950ffbd9868.png" alt="原始图片"></p>
+<h3 id="匹配四位数的年份"><a href="#匹配四位数的年份" class="headerlink" title="匹配四位数的年份"></a>匹配四位数的年份</h3><p><img src="/resource/img/zzbds/64ddb1d1-bb13-476b-9fc4-ae4dc93e1c08.png" alt="原始图片"></p>
+<h3 id="嵌入查找、向后查找组合应用"><a href="#嵌入查找、向后查找组合应用" class="headerlink" title="嵌入查找、向后查找组合应用"></a>嵌入查找、向后查找组合应用</h3><p><img src="/resource/img/zzbds/9bb21719-d586-4f77-98f7-8b0c37f16a0a.png" alt="原始图片"></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
