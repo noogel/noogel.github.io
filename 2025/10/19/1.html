@@ -21,18 +21,18 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"noogel.xyz","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
-<meta name="description" content="今天，我想向大家介绍一个非常有实用价值的项目：niche-dind，一个基于 Web 界面的 Docker 容器管理平台。 在当今的软件开发领域，Docker 几乎已经成为基础设施的标配。从开发环境到生产环境，我们都享受着容器化带来的便捷与一致性。然而，随着项目数量和容器规模的增长，随之而来的管理负担也变得越来越重。 你可能习惯于每天敲击着 docker-compose up 或 docker">
+<meta name="description" content="今天，我想向大家介绍一个非常有实用价值的项目：niche-dind，一个基于 Web 界面的 Docker 容器管理平台。 在当今的软件开发领域，Docker 几乎已经成为基础设施的标配。从开发环境到生产环境，我们都享受着容器化带来的便捷与一致性。然而，市面上很少有简单易用的个人 docker 维护工具，随着项目数量和容器规模的增长，随之而来的管理负担也变得越来越重。 对于个人用户，你可能习惯于每">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Vibe Coding 实践：用 Flask 构建容器管理平台">
+<meta property="og:title" content="Vibe Coding 实践：用 Flask 构建 Docker 管理平台">
 <meta property="og:url" content="https://noogel.xyz/2025/10/19/1.html">
 <meta property="og:site_name" content="知一杂谈">
-<meta property="og:description" content="今天，我想向大家介绍一个非常有实用价值的项目：niche-dind，一个基于 Web 界面的 Docker 容器管理平台。 在当今的软件开发领域，Docker 几乎已经成为基础设施的标配。从开发环境到生产环境，我们都享受着容器化带来的便捷与一致性。然而，随着项目数量和容器规模的增长，随之而来的管理负担也变得越来越重。 你可能习惯于每天敲击着 docker-compose up 或 docker">
+<meta property="og:description" content="今天，我想向大家介绍一个非常有实用价值的项目：niche-dind，一个基于 Web 界面的 Docker 容器管理平台。 在当今的软件开发领域，Docker 几乎已经成为基础设施的标配。从开发环境到生产环境，我们都享受着容器化带来的便捷与一致性。然而，市面上很少有简单易用的个人 docker 维护工具，随着项目数量和容器规模的增长，随之而来的管理负担也变得越来越重。 对于个人用户，你可能习惯于每">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://noogel.xyz/resource/img/2025-10-19-00-45-36.png">
 <meta property="og:image" content="https://noogel.xyz/resource/img/2025-10-19-00-47-03.png">
 <meta property="og:image" content="https://noogel.xyz/resource/img/2025-10-19-00-47-58.png">
 <meta property="article:published_time" content="2025-10-19T00:00:00.000Z">
-<meta property="article:modified_time" content="2025-10-18T16:49:03.590Z">
+<meta property="article:modified_time" content="2025-10-18T17:05:54.273Z">
 <meta property="article:author" content="noogel">
 <meta property="article:tag" content="项目">
 <meta name="twitter:card" content="summary">
@@ -43,10 +43,10 @@
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://noogel.xyz/2025/10/19/1.html","path":"2025/10/19/1.html","title":"Vibe Coding 实践：用 Flask 构建容器管理平台"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://noogel.xyz/2025/10/19/1.html","path":"2025/10/19/1.html","title":"Vibe Coding 实践：用 Flask 构建 Docker 管理平台"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Vibe Coding 实践：用 Flask 构建容器管理平台 | 知一杂谈</title>
+<title>Vibe Coding 实践：用 Flask 构建 Docker 管理平台 | 知一杂谈</title>
   
 
   <script src="/js/third-party/analytics/baidu-analytics.js"></script>
@@ -216,7 +216,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Vibe Coding 实践：用 Flask 构建容器管理平台
+          Vibe Coding 实践：用 Flask 构建 Docker 管理平台
         </h1>
 
         <div class="post-meta-container">
@@ -240,11 +240,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p><img src="/resource/img/2025-10-19-00-45-36.png"></p>
-<p>今天，我想向大家介绍一个非常有实用价值的项目：<strong>niche-dind</strong>，一个基于 Web 界面的 Docker 容器管理平台。</p>
-<p>在当今的软件开发领域，Docker 几乎已经成为基础设施的标配。从开发环境到生产环境，我们都享受着容器化带来的便捷与一致性。然而，随着项目数量和容器规模的增长，随之而来的管理负担也变得越来越重。</p>
-<p>你可能习惯于每天敲击着 <code>docker-compose up</code> 或 <code>docker stack deploy</code> 命令。但当需要同时管理数十个项目、几十个服务，并随时查看它们的运行状态、资源占用和实时日志时，纯粹的命令行操作就显得力不从心了。</p>
+        <p>今天，我想向大家介绍一个非常有实用价值的项目：<strong>niche-dind</strong>，一个基于 Web 界面的 Docker 容器管理平台。</p>
+<p>在当今的软件开发领域，Docker 几乎已经成为基础设施的标配。从开发环境到生产环境，我们都享受着容器化带来的便捷与一致性。然而，市面上很少有简单易用的个人 docker 维护工具，随着项目数量和容器规模的增长，随之而来的管理负担也变得越来越重。</p>
+<p>对于个人用户，你可能习惯于每天敲击着 <code>docker-compose up</code> 或 <code>docker stack deploy</code> 命令。但当需要同时管理数十个项目、几十个服务，并随时查看它们的运行状态、资源占用和实时日志时，纯粹的命令行操作就显得力不从心了。</p>
 <p>这就是 <strong>niche-dind</strong>（全称 <strong>Docker in Docker Manager</strong>）诞生的初衷：<strong>用一个直观、统一的 Web 界面，彻底解放 DevOps 双手，将容器管理提升到项目和应用栈（Stack）的层面。</strong></p>
+<p><img src="/resource/img/2025-10-19-00-45-36.png"></p>
 <span id="more"></span>
 
 <hr>
