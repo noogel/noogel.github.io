@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 7.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/resource/img/favicon2018.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/resource/img/favicon2018.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/resource/img/favicon2018.png">
+  <link rel="mask-icon" href="/resource/img/favicon2018.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"noogel.xyz","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="分布式系统，如同现代信息世界的钢筋水泥，其存在的首要目的，就是驯服数据洪流，解决那令人望而生畏的“高并发”难题。 回顾这些年，我参与和观察过形形色色的业务系统：从早年的电商，到后来的社交网络，再到广告计费。虽然业务逻辑千差万别，但当你剥开那层层叠叠的业务代码，会发现它们在“数据处理”这件事上，使用的竟是几乎相同的积木块。 这让我意识到，构建高性能系统的关键，并不在于你选择了哪种炫酷的编程语言，而在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="高并发系统：读写分离架构的思考">
+<meta property="og:url" content="https://noogel.xyz/2025/10/19/2.html">
+<meta property="og:site_name" content="知一杂谈">
+<meta property="og:description" content="分布式系统，如同现代信息世界的钢筋水泥，其存在的首要目的，就是驯服数据洪流，解决那令人望而生畏的“高并发”难题。 回顾这些年，我参与和观察过形形色色的业务系统：从早年的电商，到后来的社交网络，再到广告计费。虽然业务逻辑千差万别，但当你剥开那层层叠叠的业务代码，会发现它们在“数据处理”这件事上，使用的竟是几乎相同的积木块。 这让我意识到，构建高性能系统的关键，并不在于你选择了哪种炫酷的编程语言，而在">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://noogel.xyz/resource/img/2025-10-19-22-19-00.png">
+<meta property="article:published_time" content="2025-10-19T00:00:00.000Z">
+<meta property="article:modified_time" content="2025-10-19T14:25:44.064Z">
+<meta property="article:author" content="noogel">
+<meta property="article:tag" content="架构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://noogel.xyz/resource/img/2025-10-19-22-19-00.png">
+
+
+<link rel="canonical" href="https://noogel.xyz/2025/10/19/2.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://noogel.xyz/2025/10/19/2.html","path":"2025/10/19/2.html","title":"高并发系统：读写分离架构的思考"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>高并发系统：读写分离架构的思考 | 知一杂谈</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?9cdc9a11cbd242c6336b07c464d8820c"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="知一杂谈" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">知一杂谈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">我思故我在</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-career"><a href="/career/" rel="section"><i class="sitemap fa-fw"></i>├ 技术</a></li>
+        <li class="menu-item menu-item-life"><a href="/life/" rel="section"><i class="sitemap fa-fw"></i>├ 生活</a></li>
+        <li class="menu-item menu-item-future"><a href="/future/" rel="section"><i class="sitemap fa-fw"></i>└ 未来</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%AE%9E%E6%97%B6%E6%95%B0%E6%8D%AE%E7%B3%BB%E7%BB%9F%E7%9A%84%E2%80%9C%E5%9B%9B%E4%BB%B6%E5%A5%97%E2%80%9D"><span class="nav-number">1.</span> <span class="nav-text">一、实时数据系统的“四件套”</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%88The-Anchor%EF%BC%89%EF%BC%9A%E7%BB%93%E6%9E%84%E5%8C%96%E4%B8%8E%E6%8C%81%E4%B9%85%E7%9A%84%E6%89%BF%E8%AF%BA"><span class="nav-number">1.1.</span> <span class="nav-text">1. 数据库（The Anchor）：结构化与持久的承诺</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E7%BC%93%E5%AD%98%EF%BC%88The-Accelerator%EF%BC%89%EF%BC%9A%E9%80%9F%E5%BA%A6%E4%B8%8E%E5%B9%B6%E5%8F%91%E7%9A%84%E5%88%A9%E5%99%A8"><span class="nav-number">1.2.</span> <span class="nav-text">2. 缓存（The Accelerator）：速度与并发的利器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%EF%BC%88The-Decoupler%EF%BC%89%EF%BC%9A%E4%BA%8B%E4%BB%B6%E9%A9%B1%E5%8A%A8%E4%B8%8E%E7%B3%BB%E7%BB%9F%E8%A7%A3%E8%80%A6"><span class="nav-number">1.3.</span> <span class="nav-text">3. 消息队列（The Decoupler）：事件驱动与系统解耦</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E%EF%BC%88The-Retriever%EF%BC%89%EF%BC%9A%E5%85%A8%E6%96%87%E6%A3%80%E7%B4%A2%E4%B8%8E%E9%AB%98%E6%95%88%E6%9F%A5%E8%AF%A2"><span class="nav-number">1.4.</span> <span class="nav-text">4. 搜索引擎（The Retriever）：全文检索与高效查询</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%95%B0%E6%8D%AE%E6%B5%81%E7%9A%84%E2%80%9C%E9%98%B4%E2%80%9D%E4%B8%8E%E2%80%9C%E9%98%B3%E2%80%9D%EF%BC%9A%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB%E7%9A%84%E5%93%B2%E5%AD%A6"><span class="nav-number">2.</span> <span class="nav-text">二、数据流的“阴”与“阳”：读写分离的哲学</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%95%B0%E6%8D%AE%E7%9A%84%E2%80%9C%E5%86%99%E5%85%A5%E2%80%9D%E5%93%B2%E5%AD%A6%EF%BC%9A%E4%BA%8B%E5%8A%A1%E4%B8%8E%E6%9C%80%E7%BB%88%E4%B8%80%E8%87%B4%E6%80%A7"><span class="nav-number">2.1.</span> <span class="nav-text">1. 数据的“写入”哲学：事务与最终一致性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E6%95%B0%E6%8D%AE%E7%9A%84%E2%80%9C%E8%AF%BB%E5%8F%96%E2%80%9D%E5%93%B2%E5%AD%A6%EF%BC%9A%E4%B8%80%E8%87%B4%E6%80%A7%E4%B8%8E%E6%80%A7%E8%83%BD%E7%9A%84%E6%9D%83%E8%A1%A1"><span class="nav-number">2.2.</span> <span class="nav-text">2. 数据的“读取”哲学：一致性与性能的权衡</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E9%AB%98%E5%B9%B6%E5%8F%91%E7%9A%84%E2%80%9C%E5%88%86%E6%B2%BB%E2%80%9D%E4%B9%8B%E9%81%93%EF%BC%9A%E8%AF%BB%E5%A4%9A%E4%B8%8E%E5%86%99%E5%A4%9A%E7%9A%84%E5%A4%84%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text">三、高并发的“分治”之道：读多与写多的处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E9%A9%AF%E6%9C%8D%E2%80%9C%E8%AF%BB%E5%A4%9A%E2%80%9D%EF%BC%9A%E9%AB%98%E5%B9%B6%E5%8F%91%E8%AF%BB%E7%9A%84%E5%B1%82%E6%AC%A1%E7%AD%96%E7%95%A5"><span class="nav-number">3.1.</span> <span class="nav-text">1. 驯服“读多”：高并发读的层次策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E9%A9%AF%E6%9C%8D%E2%80%9C%E5%86%99%E5%A4%9A%E2%80%9D%EF%BC%9A%E9%AB%98%E5%B9%B6%E5%8F%91%E5%86%99%E7%9A%84%E6%8B%86%E8%A7%A3%E7%AD%96%E7%95%A5"><span class="nav-number">3.2.</span> <span class="nav-text">2. 驯服“写多”：高并发写的拆解策略</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E7%BB%88%E6%9E%81%E5%A5%A5%E4%B9%89%EF%BC%9A%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB%E4%B8%8E-CQRS"><span class="nav-number">4.</span> <span class="nav-text">四、终极奥义：读写分离与 CQRS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">noogel</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/noogel" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;noogel" rel="noopener" target="_blank"><i class="github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:noogel@163.com" title="E-Mail → mailto:noogel@163.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2025/10/19/2.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="noogel">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知一杂谈">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          高并发系统：读写分离架构的思考
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-10-19 00:00:00" itemprop="dateCreated datePublished" datetime="2025-10-19T00:00:00+00:00">2025-10-19</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>分布式系统，如同现代信息世界的钢筋水泥，其存在的首要目的，就是驯服数据洪流，解决那令人望而生畏的“高并发”难题。</p>
+<p>回顾这些年，我参与和观察过形形色色的业务系统：从早年的电商，到后来的社交网络，再到广告计费。虽然业务逻辑千差万别，但当你剥开那层层叠叠的业务代码，会发现它们在“数据处理”这件事上，使用的竟是几乎相同的积木块。</p>
+<p>这让我意识到，构建高性能系统的关键，并不在于你选择了哪种炫酷的编程语言，而在于你如何理解和组织这些数据处理的“基石”。</p>
+<p>这些基石，职责不同，但都围绕着“数据”运转。我将它们归纳为四类，它们构成了我们应对高并发挑战的<strong>实时数据系统</strong>。</p>
+<h3 id="一、实时数据系统的“四件套”"><a href="#一、实时数据系统的“四件套”" class="headerlink" title="一、实时数据系统的“四件套”"></a>一、实时数据系统的“四件套”</h3><p>想象一下一个高耸入云的摩天大楼，它的结构是稳定且分层的。我们的数据系统也是如此。</p>
+<p><img src="/resource/img/2025-10-19-22-19-00.png"></p>
+<h4 id="1-数据库（The-Anchor）：结构化与持久的承诺"><a href="#1-数据库（The-Anchor）：结构化与持久的承诺" class="headerlink" title="1. 数据库（The Anchor）：结构化与持久的承诺"></a>1. 数据库（The Anchor）：结构化与持久的承诺</h4><p>数据库是数据系统的“主存”，是所有数据的最终归宿。它提供结构化的保证，最重要的是，它承诺了<strong>持久化（Persistence）</strong>。无论发生什么，只要数据写入成功，它就在那里。</p>
+<p>但我们都知道，数据库（尤其是关系型数据库）在面对极高并发的读写时，会成为瓶颈。这也是为什么我们需要其他构件来分担它的压力。</p>
+<h4 id="2-缓存（The-Accelerator）：速度与并发的利器"><a href="#2-缓存（The-Accelerator）：速度与并发的利器" class="headerlink" title="2. 缓存（The Accelerator）：速度与并发的利器"></a>2. 缓存（The Accelerator）：速度与并发的利器</h4><p>缓存（如 Redis、Memcached）的使命非常单纯：<strong>提高并发能力和响应速度</strong>。它通常驻留在内存中，以极快的速度响应用户的请求。</p>
+<p>它好比数据库前面的一个“快速通道”或“临时接待区”。绝大多数的读请求，如果能在缓存层面就被消化掉，那么数据库就可以高枕无忧。它是解决“读多”问题的首要武器。</p>
+<h4 id="3-消息队列（The-Decoupler）：事件驱动与系统解耦"><a href="#3-消息队列（The-Decoupler）：事件驱动与系统解耦" class="headerlink" title="3. 消息队列（The Decoupler）：事件驱动与系统解耦"></a>3. 消息队列（The Decoupler）：事件驱动与系统解耦</h4><p>消息队列（MQ，如 Kafka、RabbitMQ）扮演着“邮递员”的角色。它的主要价值在于<strong>系统解耦</strong>和<strong>流量削峰</strong>。</p>
+<p>当主系统完成核心写操作后，它不是同步地去更新缓存、通知其他系统，而是发送一个“事件消息”给 MQ。后续的任务（比如发送邮件、更新积分、同步到搜索引擎等）可以异步、独立地消费这些消息。这使得整个系统流程不再是僵硬的串行，而是灵活的事件驱动。</p>
+<h4 id="4-搜索引擎（The-Retriever）：全文检索与高效查询"><a href="#4-搜索引擎（The-Retriever）：全文检索与高效查询" class="headerlink" title="4. 搜索引擎（The Retriever）：全文检索与高效查询"></a>4. 搜索引擎（The Retriever）：全文检索与高效查询</h4><p>对于需要进行复杂、快速的全文检索（如商品搜索、站内搜索）的场景，数据库往往力不从心。</p>
+<p>搜索引擎（如 Elasticsearch、Solr）的出现，就是为了提供<strong>快速的全文检索能力</strong>。它通过构建倒排索引（Inverted Index）等机制，让用户可以在数亿条数据中，以毫秒级的速度找到他们想要的内容。</p>
+<p>这四件套——数据库、缓存、MQ、搜索引擎——构成了相对完备的实时数据系统。它们各自承担着不同的职责，共同处理数据的流入与流出。</p>
+<h3 id="二、数据流的“阴”与“阳”：读写分离的哲学"><a href="#二、数据流的“阴”与“阳”：读写分离的哲学" class="headerlink" title="二、数据流的“阴”与“阳”：读写分离的哲学"></a>二、数据流的“阴”与“阳”：读写分离的哲学</h3><p>理解这套框架的运行，需要从两个截然不同的角度来看待数据流：<strong>写入</strong>（Write）和<strong>读取</strong>（Read）。</p>
+<h4 id="1-数据的“写入”哲学：事务与最终一致性"><a href="#1-数据的“写入”哲学：事务与最终一致性" class="headerlink" title="1. 数据的“写入”哲学：事务与最终一致性"></a>1. 数据的“写入”哲学：事务与最终一致性</h4><p><strong>目标：保证数据被正确处理和持久化。</strong></p>
+<p>一次完整的写操作，其核心流程必须满足事务性：</p>
+<ol>
+<li><strong>持久化主存数据：</strong> 数据首先要被写入到数据库，这是所有后续操作的基础和保障。</li>
+<li><strong>发送事件消息：</strong> 数据库写入成功后，系统需要立刻发送一个事件消息到 MQ。</li>
+<li><strong>异步同步：</strong> 监听 MQ 的服务，会将数据异步同步到高速缓存和搜索引擎。</li>
+</ol>
+<p>这里的关键在于<strong>事务性</strong>。通常，我们会保证数据库写入和发送 MQ 消息在一个事务内完成（或者通过 TCC、本地消息表等方式保证最终的一致性），确保主存数据和“事件”的同步性。至于缓存和搜索引擎，它们通过异步机制最终与主存数据保持一致，这是一种经典的 <strong>最终一致性（Eventual Consistency）</strong> 模型。</p>
+<h4 id="2-数据的“读取”哲学：一致性与性能的权衡"><a href="#2-数据的“读取”哲学：一致性与性能的权衡" class="headerlink" title="2. 数据的“读取”哲学：一致性与性能的权衡"></a>2. 数据的“读取”哲学：一致性与性能的权衡</h4><p><strong>目标：在满足一致性要求的前提下，最大化响应速度。</strong></p>
+<p>在读数据时，我们面临的主要问题就是<strong>一致性</strong>。读到的数据，是最新写入的吗？</p>
+<p>在高并发场景下，为了性能，我们通常选择<strong>弱一致性（Weak Consistency）<strong>或</strong>最终一致性</strong>。这意味着用户在写操作完成后，短时间内可能会读到旧数据。</p>
+<p>读数据的简化流程是：</p>
+<blockquote>
+<p><strong>先读缓存 $\rightarrow$ 读不到读数据库 $\rightarrow$ 再回填缓存</strong>。</p>
+</blockquote>
+<p>如果缓存命中，请求直接返回，速度极快。如果未命中，请求穿透到数据库，此时数据库的压力依然存在，因此需要有一套针对读请求的优化策略。</p>
+<h3 id="三、高并发的“分治”之道：读多与写多的处理"><a href="#三、高并发的“分治”之道：读多与写多的处理" class="headerlink" title="三、高并发的“分治”之道：读多与写多的处理"></a>三、高并发的“分治”之道：读多与写多的处理</h3><p>不同的业务系统，其数据访问模式截然不同。无非是两种操作的组合：读（Read）和写（Write）。</p>
+<table>
+<thead>
+<tr>
+<th align="left">系统类型</th>
+<th align="left">读写特征</th>
+<th align="left">典型案例</th>
+<th align="left">核心挑战</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>读多写少</strong></td>
+<td align="left">读操作远超写操作</td>
+<td align="left">百度搜索、电商商品搜索</td>
+<td align="left">响应速度和系统稳定性</td>
+</tr>
+<tr>
+<td align="left"><strong>写多读少</strong></td>
+<td align="left">写操作是主要负载</td>
+<td align="left">广告计费系统、双十一支付</td>
+<td align="left">吞吐量和数据准确性</td>
+</tr>
+<tr>
+<td align="left"><strong>读多写多</strong></td>
+<td align="left">读写压力都很大</td>
+<td align="left">电商秒杀、新浪微博</td>
+<td align="left">极端高并发下的系统均衡</td>
+</tr>
+</tbody></table>
+<p>针对不同的挑战，我们的处理思路都围绕着一个核心思想展开：<strong>分治（Divide and Conquer）</strong>。</p>
+<h4 id="1-驯服“读多”：高并发读的层次策略"><a href="#1-驯服“读多”：高并发读的层次策略" class="headerlink" title="1. 驯服“读多”：高并发读的层次策略"></a>1. 驯服“读多”：高并发读的层次策略</h4><p>“读多”的解决方案，本质上就是一套<strong>多级缓存策略</strong>，将数据尽量推近用户。</p>
+<table>
+<thead>
+<tr>
+<th align="left">缓存层次</th>
+<th align="left">距离用户</th>
+<th align="left">职责与特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">客户端缓存</td>
+<td align="left">最近</td>
+<td align="left">浏览器缓存、App 缓存。速度最快，但一致性最难控制。</td>
+</tr>
+<tr>
+<td align="left">CDN 缓存</td>
+<td align="left">靠近</td>
+<td align="left">缓存静态文件（图片、JS、CSS）。全球分布式，极大地分摊服务器压力。</td>
+</tr>
+<tr>
+<td align="left">分布式缓存</td>
+<td align="left">适中</td>
+<td align="left">如 Redis 集群。服务端的共享高速缓存。</td>
+</tr>
+<tr>
+<td align="left">内存缓存</td>
+<td align="left">最远</td>
+<td align="left">应用进程内的缓存。访问速度最快，但容量有限。</td>
+</tr>
+</tbody></table>
+<p>缓存越接近用户，对服务器的压力就越小，访问速度越快。但弊端是<strong>一致性的处理越不可控</strong>，排查成本也越高。</p>
+<p>除了多级缓存，还有两种重要的优化思想：</p>
+<ul>
+<li><strong>串行改并行：</strong> 将一个依赖多个外部服务的用户请求，从串行调用（总耗时 $T_1 + T_2 + T_3$）改为异步并行执行（总耗时 $\text{Max}(T_1, T_2, T_3)$）。这是通过多线程、协程或异步编程来实现的。</li>
+<li><strong>批量请求：</strong> 将多次单个请求合并为一次批量请求（例如 Redis 的 $MGET$ 或数据库的批量插入）。这可以显著减少网络传输的总耗时。</li>
+</ul>
+<h4 id="2-驯服“写多”：高并发写的拆解策略"><a href="#2-驯服“写多”：高并发写的拆解策略" class="headerlink" title="2. 驯服“写多”：高并发写的拆解策略"></a>2. 驯服“写多”：高并发写的拆解策略</h4><p>“写多”的解决方案，核心思路是<strong>数据分片</strong>，以提高整体的吞吐量。</p>
+<p>最常见的是<strong>数据库层面的分库分表（Sharding）</strong>，通过合理的分片算法（如按用户ID取模），将数据均匀地分散到多台机器上。这利用了多台机器的计算和存储资源，将“单车道”变成了“高速多车道”。</p>
+<p>这种分片思想，在现代系统设计中无处不在：</p>
+<ul>
+<li><strong>Kafka 的 Partition 设计：</strong> 将一个 Topic 的消息分为多个 Partition，每个 Partition 独立写，实现高吞吐。</li>
+<li><strong>ConcurrentHashMap 的设计：</strong> 早期通过 Segment 锁，将大哈希表拆分为多个小片段，减少锁的竞争。</li>
+<li><strong>任务分片（流水线）：</strong> 将一个大任务拆分成若干子任务，串行流程并行化。如同 CPU 的指令流水线，通过“取指 $\rightarrow$ 译码 $\rightarrow$ 执行 $\rightarrow$ 访存 $\rightarrow$ 写回”的阶段划分，实现了指令的并行处理，大幅提升了整体效率。</li>
+</ul>
+<p><strong>队列缓冲</strong>是另一个驯服写多的重要手段。如果瞬时请求量超过系统最大负载（如秒杀场景），我们可以将请求放入 MQ 进行<strong>异步化处理</strong>，由服务端慢慢消费，异步通知用户结果。这实现了<strong>流量削峰</strong>。</p>
+<h3 id="四、终极奥义：读写分离与-CQRS"><a href="#四、终极奥义：读写分离与-CQRS" class="headerlink" title="四、终极奥义：读写分离与 CQRS"></a>四、终极奥义：读写分离与 CQRS</h3><p>上述所有策略，其本质都是在贯彻一个理念：<strong>读写分离（Read-Write Separation）</strong>。这在微服务架构中被称为 <strong>CQRS（Command Query Responsibility Segregation，命令查询职责分离）</strong>。</p>
+<p>CQRS 的核心特征是：</p>
+<ol>
+<li><strong>设计分离：</strong> 为系统的“读”和“写”分别设计两个视图。读视图的设计目标是高并发、快速查询；写视图的设计目标是保证事务、数据完整性。</li>
+<li><strong>数据流分离：</strong> 写操作（Command）通过分库分表提高并发能力。写完成后，数据通过 MQ 异步地流入读数据存储：写入缓存提高读并发，写入搜索引擎实现全文检索。</li>
+<li><strong>一致性折衷：</strong> 读数据存储（缓存、搜索引擎）是异步写入的。因此，读到的数据会有一定延迟，我们保障<strong>最终一致性</strong>，而不是昂贵的<strong>强一致性（Strong Consistency）</strong>。</li>
+</ol>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>回到我们最初的数据框架图。一个高并发系统，不过是利用数据库、缓存、搜索引擎、消息队列这四大构件，以<strong>读</strong>和<strong>写</strong>两个视角将用户的海量请求分流到最合适的地方处理。</p>
+<p>通过<strong>水平扩容（Horizontal Scaling）</strong>，利用多副本、分库分表等方式将数据构件进行拆分和复制，这本身就是<strong>分治思想</strong>在系统架构上的实践。</p>
+<p>高性能的架构，就是数据流的艺术。它不是要追求某种极致的技术，而是在性能、一致性、可用性之间，找到一个适合当前业务的、精妙的平衡点。而这个平衡点，就隐藏在对这“四件套”的深刻理解和灵活运用之中。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div></div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/resource/file/wechat_mini.jpg" alt="noogel 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/resource/file/alipay_mini.jpg" alt="noogel 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/resource/file/qrcode_for_gh_4223a67f3865_258.jpg">
+          <span class="icon">
+            <i class="fab fa-weixin"></i>
+          </span>
+
+          <span class="label">WeChat</span>
+        </a>
+      </div>
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/atom.xml">
+          <span class="icon">
+            <i class="fa fa-rss"></i>
+          </span>
+
+          <span class="label">RSS</span>
+        </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag"># 架构</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/10/18/1.html" rel="prev" title="数字长征：一次 HTTP 请求的分层哲学">
+                  <i class="fa fa-chevron-left"></i> 数字长征：一次 HTTP 请求的分层哲学
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/10/19/1.html" rel="next" title="Vibe Coding 实践：用 Flask 构建 Docker 管理平台">
+                  Vibe Coding 实践：用 Flask 构建 Docker 管理平台 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">noogel</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.13.4/dist/mermaid.min.js","integrity":"sha256-96rwDGMWIQYB0yKGp1sKi1yrjrLPj2oT39IpbCsIrsg="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"noogel","repo":"noogel.github.io","client_id":"41a4e14aca0b3552334a","client_secret":"ebe0f9bfd24824f3d0d0f41bfd88a8736353759b","admin_user":"noogel","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"0b1cc961a2e819bee903693fe702ec3c"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

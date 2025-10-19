@@ -134,7 +134,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">85</span>
+          <span class="site-state-item-count">86</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -183,6 +183,121 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2019/07/14/1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="noogel">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知一杂谈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/07/14/1.html" class="post-title-link" itemprop="url">网络异常测试</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-07-14 00:00:00" itemprop="dateCreated datePublished" datetime="2019-07-14T00:00:00+00:00">2019-07-14</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>在这几年的微服务开发过程中遇到过两次因为网络问题导致的系统故障，并且没有做好降级策略，导致系统的不可用时间增加，所以今天专门整理一篇关于网络故障的问题分析处理以及开发中需要注意的地方。</p>
+<h2 id="基础部分"><a href="#基础部分" class="headerlink" title="基础部分"></a>基础部分</h2><p>TCP 连接，先抛大图：</p>
+<p><img src="/resource/img/socket_error/b97f970a96f13cdd660b024244b2e164.jpg" alt="a"></p>
+<p>主要分为三部分：</p>
+<ol>
+<li>建立连接</li>
+<li>传输数据</li>
+<li>关闭连接</li>
+</ol>
+<p>原理不做过多介绍，主要说说常见的异常和模拟方式。</p>
+<h3 id="常见的异常类型"><a href="#常见的异常类型" class="headerlink" title="常见的异常类型"></a>常见的异常类型</h3><p><img src="/resource/img/socket_error/a2f97d3e308e701cc12caf993bb45744.png" alt="b"><br>上面的异常是一些常见的功能性异常，其它性能方面的异常不在本文讨论范围。</p>
+<h2 id="实施手段"><a href="#实施手段" class="headerlink" title="实施手段"></a>实施手段</h2><h3 id="需要的工具"><a href="#需要的工具" class="headerlink" title="需要的工具"></a>需要的工具</h3><ul>
+<li>python 脚本</li>
+<li>iptables，对网络流量进行规则过滤</li>
+<li>tcpkill，用来断开网络构造异常</li>
+<li>curl，发起 http 访问请求</li>
+</ul>
+<h3 id="Python脚本"><a href="#Python脚本" class="headerlink" title="Python脚本"></a>Python脚本</h3><p>主要作用是启动一个TCP监听，然后将接收到的数据在转发回去。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">#! /usr/bin/python</span><br><span class="line"># -*- coding:utf-8 -*-</span><br><span class="line">import socket</span><br><span class="line">import sys</span><br><span class="line">def start_tcp_server(ip, port):</span><br><span class="line">    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">    server_address = (ip, port)</span><br><span class="line">    print(&#x27;Starting listen on ip %s, port %s&#x27; % server_address)</span><br><span class="line">    sock.bind(server_address)</span><br><span class="line">    try:</span><br><span class="line">        sock.listen(1)</span><br><span class="line">    except socket.error as exc:</span><br><span class="line">        print(&#x27;Fail to listen on port %s&#x27; % exc)</span><br><span class="line">        return</span><br><span class="line">    while True:</span><br><span class="line">        print(&quot;Waiting for connection&quot;)</span><br><span class="line">        client, addr = sock.accept()</span><br><span class="line">        data = client.recv(1000)</span><br><span class="line">        client.send(data)</span><br><span class="line">        client.close()</span><br><span class="line">        print(data)</span><br><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">    start_tcp_server(&#x27;0.0.0.0&#x27;, 12345)</span><br></pre></td></tr></table></figure>
+
+<h3 id="iptables-基本使用"><a href="#iptables-基本使用" class="headerlink" title="iptables 基本使用"></a>iptables 基本使用</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 查看当前生效规则</span><br><span class="line">iptables -L -n</span><br><span class="line">// 清空所有规则</span><br><span class="line">iptables --flush</span><br><span class="line">iptables -F</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="tcpkill-基本使用"><a href="#tcpkill-基本使用" class="headerlink" title="tcpkill 基本使用"></a>tcpkill 基本使用</h3><p><a target="_blank" rel="noopener" href="https://yq.aliyun.com/articles/59308">https://yq.aliyun.com/articles/59308</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 安装</span><br><span class="line">sudo apt-get install dsniff</span><br><span class="line">// 使用</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h3 id="curl-超时设置"><a href="#curl-超时设置" class="headerlink" title="curl 超时设置"></a>curl 超时设置</h3><p>使用 curl 有两个超时时间，一个是连接超时时间，另一个是数据传输的最大允许时间。<br>连接超时时间用 <code>--connect-timeout</code> 参数来指定，数据传输的最大允许时间用 <code>-m</code> 参数来指定。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl --connect-timeout 10 -m 20 &quot;http://192.168.1.110:12345&quot;</span><br></pre></td></tr></table></figure>
+
+<h2 id="实施过程"><a href="#实施过程" class="headerlink" title="实施过程"></a>实施过程</h2><ol>
+<li>A机器启动Python脚本，监听12345端口。</li>
+<li>B级器通过curl命令进行访问。</li>
+<li>在访问过程中通过配置iptables来实现网络的各种异常情况。</li>
+<li>通过 tcpkill 来实现连接中断的异常情况。</li>
+</ol>
+<h3 id="正常访问"><a href="#正常访问" class="headerlink" title="正常访问"></a>正常访问</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">xyz@xyz-pc:~$ curl &quot;http://192.168.1.110:12345&quot;</span><br><span class="line">GET / HTTP/1.1</span><br><span class="line">Host: 192.168.1.110:12345</span><br><span class="line">User-Agent: curl/7.58.0</span><br><span class="line">Accept: */*</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="查看和清除规则"><a href="#查看和清除规则" class="headerlink" title="查看和清除规则"></a>查看和清除规则</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">xyz@xyz-pc:~$ sudo iptables -L -n</span><br><span class="line">[sudo] xyz 的密码： </span><br><span class="line">Chain INPUT (policy ACCEPT)</span><br><span class="line">target prot opt source destination         </span><br><span class="line"></span><br><span class="line">Chain FORWARD (policy ACCEPT)</span><br><span class="line">target prot opt source destination         </span><br><span class="line"></span><br><span class="line">Chain OUTPUT (policy ACCEPT)</span><br><span class="line">target prot opt source destination         </span><br><span class="line">DROP tcp -- 0.0.0.0/0 0.0.0.0/0 tcp dpt:12345 flags:0x17/0x02</span><br><span class="line"></span><br><span class="line">xyz@xyz-pc:~$ sudo iptables -F</span><br></pre></td></tr></table></figure>
+
+<h3 id="连接超时"><a href="#连接超时" class="headerlink" title="连接超时"></a>连接超时</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">xyz@xyz-pc:~$ sudo iptables -A OUTPUT -p tcp --syn --dport 12345 -j DROP</span><br><span class="line">xyz@xyz-pc:~$ curl --connect-timeout 10 &quot;http://192.168.1.110:12345&quot;</span><br><span class="line">curl: (28) Connection timed out after 10001 milliseconds</span><br></pre></td></tr></table></figure>
+
+<h3 id="读取数据超时"><a href="#读取数据超时" class="headerlink" title="读取数据超时"></a>读取数据超时</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">xyz@xyz-pc:~$ sudo iptables -A OUTPUT -p tcp -m state --state ESTABLISHED --dport 12345 -j DROP</span><br><span class="line">xyz@xyz-pc:~$ curl --connect-timeout 10 -m 20 &quot;http://192.168.1.110:12345&quot;</span><br><span class="line">curl: (28) Operation timed out after 20001 milliseconds with 0 bytes received</span><br></pre></td></tr></table></figure>
+
+<h3 id="拒绝连接"><a href="#拒绝连接" class="headerlink" title="拒绝连接"></a>拒绝连接</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">xyz@xyz-pc:~$ sudo iptables -A OUTPUT -p tcp --dport 12345 -j REJECT</span><br><span class="line">xyz@xyz-pc:~$ curl --connect-timeout 10 -m 20 &quot;http://192.168.1.110:12345&quot;</span><br><span class="line">curl: (7) Failed to connect to 192.168.1.110 port 12345: 拒绝连接</span><br></pre></td></tr></table></figure>
+
+<h3 id="连接被重置"><a href="#连接被重置" class="headerlink" title="连接被重置"></a>连接被重置</h3><p>这里需要将Python脚本的 <code>client.close()</code> 注释掉。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">xyz@xyz-pc:~$ sudo tcpkill -iwlp8s0 port 12345</span><br><span class="line">xyz@xyz-pc:~$ curl --connect-timeout 10 &quot;http://192.168.1.110:12345&quot;</span><br><span class="line">GET / HTTP/1.1</span><br><span class="line">Host: 192.168.1.110:12345</span><br><span class="line">User-Agent: curl/7.58.0</span><br><span class="line">Accept: */*</span><br><span class="line">curl: (56) Recv failure: 连接被对方重设</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在越来越多的企业微服务化进程中，肯定会遇到网络请求的各种问题，当我们在做一个基础组件或者进行网络通信请求时需要考虑到这些异常情况，最好还是将各种常见的情况模拟实施一下，来保证服务的稳定性。首先要说的是请求的超时设置，不论是在进行 HTTP 访问还是封装后的 RPC 请求，超时设置是最基本的。<br>基于不同语言的不同组件实现质量来说。曾经遇到过一个问题是，一个服务处于假死状态，Java 的客户端中默认超时和多线程可以使主线程服务不会受到过多影响，golang 中的客户端默认设置了一个很长的超时时间，服务在一定程度上受到了影响，而Python的客户端超时时间也是很长，还有就是Python只有一个主线程再跑，所以此时服务会被 hang 住了。<br>所以这里还有一个问题就是服务降级，当前服务如果出现问题，重试几次后仍然失败，那么是否降级来保证当前服务的可用性，其实考虑的是异常服务对于当下的重要性，是否在整个核心服务链路当中，否则的话进行降级处理。<br>还有一个关键点是慎用重试，偶然的网络波动导致的异常在重试下会很有效，但是当遇到服务性能导致的超时问题时，就遇到大量的客户端重试导致请求翻倍，很可能会直接把服务打挂，所以不要轻易使用重试，可以通过一些额外的补偿机制来提高服务稳定性。</p>
+<h2 id="ad"><a href="#ad" class="headerlink" title="ad."></a>ad.</h2><p>未防止爬虫盗爬我的文章，在末尾打个广告。这篇文章首发在我的个人博客 <a href="http://noogel.xyz/">知一的指纹</a> <a href="http://noogel.xyz/">http://noogel.xyz</a> ，有需要技术交流的朋友可以加我个人微信：zhi2012666</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/llianlianpay/article/details/79768890">https://blog.csdn.net/llianlianpay/article/details/79768890</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/gl1573/p/10129382.html">https://www.cnblogs.com/gl1573/p/10129382.html</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/wangyiyungw/article/details/85004905">https://blog.csdn.net/wangyiyungw/article/details/85004905</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1021,85 +1136,6 @@
 <h2 id="金钱自律法则"><a href="#金钱自律法则" class="headerlink" title="金钱自律法则"></a>金钱自律法则</h2><p>钱是赚出来的，不是省出来的<br>努力赚钱不俗，打工攒钱不low<br>将知识与爱好变现是绝对快乐<br>不是买不起贵的，而是只买对的</p>
 <h2 id="用自律培养真正爱好"><a href="#用自律培养真正爱好" class="headerlink" title="用自律培养真正爱好"></a>用自律培养真正爱好</h2><p>休闲消遣不是爱好<br>爱好不能浅尝辄止<br>get任何技能都需要付出时间和坚持</p>
 <h2 id="自律的体现"><a href="#自律的体现" class="headerlink" title="自律的体现"></a>自律的体现</h2><p><img src="/resource/img/15360769444243.jpg"></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2018/05/16/1.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="noogel">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="知一杂谈">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/05/16/1.html" class="post-title-link" itemprop="url">计算机名词收录（持续更新）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-05-16 00:00:00" itemprop="dateCreated datePublished" datetime="2018-05-16T00:00:00+00:00">2018-05-16</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="UGC"><a href="#UGC" class="headerlink" title="UGC"></a>UGC</h2><p>UGC是互联网术语，全称为User Generated Content，含义为用户生成内容，即用户原创内容。UGC的概念最早起源于互联网领域，即用户将自己原创的内容通过互联网平台进行展示或者提供给其他用户。UGC是伴随着以提倡个性化为主要特点的Web2.0概念兴起的，也可叫做UCC。</p>
-<h2 id="PGC"><a href="#PGC" class="headerlink" title="PGC"></a>PGC</h2><p>PGC互联网术语，指专业生产内容、专家生产内容。用来泛指内容个性化、视角多元化、传播民主化、社会关系虚拟化。也称为PPC,(Professionally-produced Content）。PGC，专业生产内容。经由传统广电业者按照几乎与电视节目无异的方式进行制作，但在内容的传播层面，却必须按照互联网的传播特性进行调整。</p>
-<h2 id="OGC"><a href="#OGC" class="headerlink" title="OGC"></a>OGC</h2><p>OGC（Occupationally-generated Content）职业生产内容，其内容生产主体是具备一定知识和专业背景的从业人员，他们从职业身份出发参与生产并从中获得报酬。OGC对于内容是生产者设置了更高的门槛，不仅要求具备知识或资历，还要求有职业身份，这最大成苏生对生产者进行了过滤，从而有助于生产出更多更高质量的内容。但这隔绝了网民的参与，互动性受限，生产成本也更高。</p>
-<h2 id="DAU"><a href="#DAU" class="headerlink" title="DAU"></a>DAU</h2><p>DAU 指日活跃用户数量。常用于反映一日内网站、互联网应用或网络游戏的运营情况。DAU通常统计一日（统计日）之内，登录或使用了某个产品的用户数（去除重复登录的用户），这与流量统计工具里的访客（UV）概念相似。</p>
-<h2 id="MAU"><a href="#MAU" class="headerlink" title="MAU"></a>MAU</h2><p>MAU 指月活跃用户人数。常用于反映一个月内网站、互联网应用或网络游戏的运营情况。MAU是一个用户数量统计名词，指网站、app等月活跃用户数量（去除重复用户数），数量的大小反应用户的活跃度。</p>
-<h2 id="TOTP"><a href="#TOTP" class="headerlink" title="TOTP"></a>TOTP</h2><p>基于时间的一次性密码算法：TOTP 是一种根据预共享的密钥与当前时间计算一次性密码的算法。TOTP是散列消息认证码（HMAC）当中的一个例子。它结合一个私钥与当前时间戳，使用一个密码散列函数来生成一次性密码。由于网络延迟与时钟不同步可能导致密码接收者不得不尝试多次遇到正确的时间来进行身份验证，时间戳通常以30秒为间隔，从而避免反复尝试。</p>
-<h2 id="有限状态机（FSM）"><a href="#有限状态机（FSM）" class="headerlink" title="有限状态机（FSM）"></a>有限状态机（FSM）</h2><p>有限状态机又称有限状态自动机，简称状态机，是表示有限个状态以及在这些状态之间的转移和动作等行为的数学模型。</p>
-<ul>
-<li>米利型有限状态机是基于它的当前状态和输入生成输出的有限状态自动机。</li>
-<li>摩尔型有限状态机是指输出只由当前的状态所确定的有限状态自动机。</li>
-</ul>
-<h2 id="Kata-programming"><a href="#Kata-programming" class="headerlink" title="Kata (programming)"></a>Kata (programming)</h2><p>A code kata is an exercise in programming which helps programmers hone their skills through practice and repetition.</p>
-<h2 id="联机分析处理（OLAP）"><a href="#联机分析处理（OLAP）" class="headerlink" title="联机分析处理（OLAP）"></a>联机分析处理（OLAP）</h2><p>On-Line Analytical Processing<br>需以大量历史数据为基础配合上时间点的差异并对多维度及汇整型的信息进行复杂的分析。</p>
-<h2 id="联机事务处理（OLTP）"><a href="#联机事务处理（OLTP）" class="headerlink" title="联机事务处理（OLTP）"></a>联机事务处理（OLTP）</h2><p>On-Line Transaction Processing<br>是传统的关系型数据库的主要应用，主要是基本的、日常的事务处理，例如银行交易。</p>
-<h2 id="ETL"><a href="#ETL" class="headerlink" title="ETL"></a>ETL</h2><p>在抽取、变换和装入（ETL）过程中，数据是从各种数据源抽取而来，通过编码的业务规则进行转换和规范化，然后装入数据集市的事实表和维表。</p>
-<h2 id="MapReduce"><a href="#MapReduce" class="headerlink" title="MapReduce"></a>MapReduce</h2><p>是Google提出的一个软件架构，概念“Map（映射）”和“Reduce（归纳）”，及他们的主要思想，都是从函数式编程语言借来的。当前的软件实现是指定一个 Map（映射） 函数，用来把一组键值对映射成一组新的键值对，指定并发的 Reduce（归纳） 函数，用来保证所有映射的键值对中的每一个共享相同的键组。</p>
 
       
     </div>
