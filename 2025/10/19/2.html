@@ -30,7 +30,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://noogel.xyz/resource/img/2025-10-19-22-19-00.png">
 <meta property="article:published_time" content="2025-10-19T00:00:00.000Z">
-<meta property="article:modified_time" content="2025-10-19T14:25:44.064Z">
+<meta property="article:modified_time" content="2025-10-20T15:27:28.631Z">
 <meta property="article:author" content="noogel">
 <meta property="article:tag" content="架构">
 <meta name="twitter:card" content="summary">
@@ -241,9 +241,10 @@
         <p>分布式系统，如同现代信息世界的钢筋水泥，其存在的首要目的，就是驯服数据洪流，解决那令人望而生畏的“高并发”难题。</p>
 <p>回顾这些年，我参与和观察过形形色色的业务系统：从早年的电商，到后来的社交网络，再到广告计费。虽然业务逻辑千差万别，但当你剥开那层层叠叠的业务代码，会发现它们在“数据处理”这件事上，使用的竟是几乎相同的积木块。</p>
 <p>这让我意识到，构建高性能系统的关键，并不在于你选择了哪种炫酷的编程语言，而在于你如何理解和组织这些数据处理的“基石”。</p>
-<p>这些基石，职责不同，但都围绕着“数据”运转。我将它们归纳为四类，它们构成了我们应对高并发挑战的<strong>实时数据系统</strong>。</p>
+<p>这些基石，职责不同，但都围绕着“数据”运转。我将它们归纳为四类，它们构成了我们应对高并发挑战的<strong>实时数据系统</strong>。<br><img src="/resource/img/2025-10-19-22-19-00.png"></p>
+<span id="more"></span>
+
 <h3 id="一、实时数据系统的“四件套”"><a href="#一、实时数据系统的“四件套”" class="headerlink" title="一、实时数据系统的“四件套”"></a>一、实时数据系统的“四件套”</h3><p>想象一下一个高耸入云的摩天大楼，它的结构是稳定且分层的。我们的数据系统也是如此。</p>
-<p><img src="/resource/img/2025-10-19-22-19-00.png"></p>
 <h4 id="1-数据库（The-Anchor）：结构化与持久的承诺"><a href="#1-数据库（The-Anchor）：结构化与持久的承诺" class="headerlink" title="1. 数据库（The Anchor）：结构化与持久的承诺"></a>1. 数据库（The Anchor）：结构化与持久的承诺</h4><p>数据库是数据系统的“主存”，是所有数据的最终归宿。它提供结构化的保证，最重要的是，它承诺了<strong>持久化（Persistence）</strong>。无论发生什么，只要数据写入成功，它就在那里。</p>
 <p>但我们都知道，数据库（尤其是关系型数据库）在面对极高并发的读写时，会成为瓶颈。这也是为什么我们需要其他构件来分担它的压力。</p>
 <h4 id="2-缓存（The-Accelerator）：速度与并发的利器"><a href="#2-缓存（The-Accelerator）：速度与并发的利器" class="headerlink" title="2. 缓存（The Accelerator）：速度与并发的利器"></a>2. 缓存（The Accelerator）：速度与并发的利器</h4><p>缓存（如 Redis、Memcached）的使命非常单纯：<strong>提高并发能力和响应速度</strong>。它通常驻留在内存中，以极快的速度响应用户的请求。</p>
