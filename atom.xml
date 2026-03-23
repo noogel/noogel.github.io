@@ -3,11 +3,11 @@
   <title>知一杂谈</title>
   
   <subtitle>我思故我在</subtitle>
-  <link href="https://noogel.xyz/atom.xml" rel="self"/>
+  <link href="https://noge.top/atom.xml" rel="self"/>
   
-  <link href="https://noogel.xyz/"/>
+  <link href="https://noge.top/"/>
   <updated>2025-10-18T17:05:54.273Z</updated>
-  <id>https://noogel.xyz/</id>
+  <id>https://noge.top/</id>
   
   <author>
     <name>noogel</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>Vibe Coding 实践：用 Flask 构建 Docker 管理平台</title>
-    <link href="https://noogel.xyz/2025/10/19/1.html"/>
-    <id>https://noogel.xyz/2025/10/19/1.html</id>
+    <link href="https://noge.top/2025/10/19/1.html"/>
+    <id>https://noge.top/2025/10/19/1.html</id>
     <published>2025-10-19T00:00:00.000Z</published>
     <updated>2025-10-18T17:05:54.273Z</updated>
     
@@ -35,14 +35,14 @@
     
     
     
-    <category term="项目" scheme="https://noogel.xyz/tags/%E9%A1%B9%E7%9B%AE/"/>
+    <category term="项目" scheme="https://noge.top/tags/%E9%A1%B9%E7%9B%AE/"/>
     
   </entry>
   
   <entry>
     <title>高并发系统：读写分离架构的思考</title>
-    <link href="https://noogel.xyz/2025/10/19/2.html"/>
-    <id>https://noogel.xyz/2025/10/19/2.html</id>
+    <link href="https://noge.top/2025/10/19/2.html"/>
+    <id>https://noge.top/2025/10/19/2.html</id>
     <published>2025-10-19T00:00:00.000Z</published>
     <updated>2025-10-20T15:27:28.631Z</updated>
     
@@ -57,14 +57,14 @@
     
     
     
-    <category term="架构" scheme="https://noogel.xyz/tags/%E6%9E%B6%E6%9E%84/"/>
+    <category term="架构" scheme="https://noge.top/tags/%E6%9E%B6%E6%9E%84/"/>
     
   </entry>
   
   <entry>
     <title>数字长征：一次 HTTP 请求的分层哲学</title>
-    <link href="https://noogel.xyz/2025/10/18/1.html"/>
-    <id>https://noogel.xyz/2025/10/18/1.html</id>
+    <link href="https://noge.top/2025/10/18/1.html"/>
+    <id>https://noge.top/2025/10/18/1.html</id>
     <published>2025-10-18T00:00:00.000Z</published>
     <updated>2025-10-18T16:00:23.275Z</updated>
     
@@ -87,8 +87,8 @@
   
   <entry>
     <title>电商算价模型：理解复杂促销背后的逻辑</title>
-    <link href="https://noogel.xyz/2025/07/24/1.html"/>
-    <id>https://noogel.xyz/2025/07/24/1.html</id>
+    <link href="https://noge.top/2025/07/24/1.html"/>
+    <id>https://noge.top/2025/07/24/1.html</id>
     <published>2025-07-24T00:00:00.000Z</published>
     <updated>2025-07-27T14:17:51.218Z</updated>
     
@@ -102,14 +102,14 @@
     
     
     
-    <category term="系统设计" scheme="https://noogel.xyz/tags/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/"/>
+    <category term="系统设计" scheme="https://noge.top/tags/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/"/>
     
   </entry>
   
   <entry>
     <title>从淘宝看促销：解析电商促销模型</title>
-    <link href="https://noogel.xyz/2025/07/23/1.html"/>
-    <id>https://noogel.xyz/2025/07/23/1.html</id>
+    <link href="https://noge.top/2025/07/23/1.html"/>
+    <id>https://noge.top/2025/07/23/1.html</id>
     <published>2025-07-23T00:00:00.000Z</published>
     <updated>2025-07-24T03:03:17.490Z</updated>
     
@@ -123,14 +123,14 @@
     
     
     
-    <category term="系统设计" scheme="https://noogel.xyz/tags/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/"/>
+    <category term="系统设计" scheme="https://noge.top/tags/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/"/>
     
   </entry>
   
   <entry>
     <title>折腾 Docker 管理：一个自力更生的 DinD 工具是怎么来的</title>
-    <link href="https://noogel.xyz/2025/06/02/1.html"/>
-    <id>https://noogel.xyz/2025/06/02/1.html</id>
+    <link href="https://noge.top/2025/06/02/1.html"/>
+    <id>https://noge.top/2025/06/02/1.html</id>
     <published>2025-06-02T00:00:00.000Z</published>
     <updated>2025-07-24T08:04:14.760Z</updated>
     
@@ -144,14 +144,14 @@
     
     
     
-    <category term="项目" scheme="https://noogel.xyz/tags/%E9%A1%B9%E7%9B%AE/"/>
+    <category term="项目" scheme="https://noge.top/tags/%E9%A1%B9%E7%9B%AE/"/>
     
   </entry>
   
   <entry>
     <title>FUST 与 DeepSeek：构建智能问答系统的实践探索</title>
-    <link href="https://noogel.xyz/2025/04/28/1.html"/>
-    <id>https://noogel.xyz/2025/04/28/1.html</id>
+    <link href="https://noge.top/2025/04/28/1.html"/>
+    <id>https://noge.top/2025/04/28/1.html</id>
     <published>2025-04-28T00:00:00.000Z</published>
     <updated>2025-07-27T15:29:54.023Z</updated>
     
@@ -166,14 +166,14 @@
     
     
     
-    <category term="项目" scheme="https://noogel.xyz/tags/%E9%A1%B9%E7%9B%AE/"/>
+    <category term="项目" scheme="https://noge.top/tags/%E9%A1%B9%E7%9B%AE/"/>
     
   </entry>
   
   <entry>
     <title>畅文全索：文档检索系统的探索与实践</title>
-    <link href="https://noogel.xyz/2025/04/18/1.html"/>
-    <id>https://noogel.xyz/2025/04/18/1.html</id>
+    <link href="https://noge.top/2025/04/18/1.html"/>
+    <id>https://noge.top/2025/04/18/1.html</id>
     <published>2025-04-18T00:00:00.000Z</published>
     <updated>2025-07-23T18:20:05.316Z</updated>
     
@@ -189,14 +189,14 @@
     
     
     
-    <category term="项目" scheme="https://noogel.xyz/tags/%E9%A1%B9%E7%9B%AE/"/>
+    <category term="项目" scheme="https://noge.top/tags/%E9%A1%B9%E7%9B%AE/"/>
     
   </entry>
   
   <entry>
     <title>2022-2024 已读书单</title>
-    <link href="https://noogel.xyz/2024/12/31/1.html"/>
-    <id>https://noogel.xyz/2024/12/31/1.html</id>
+    <link href="https://noge.top/2024/12/31/1.html"/>
+    <id>https://noge.top/2024/12/31/1.html</id>
     <published>2024-12-31T00:00:00.000Z</published>
     <updated>2025-07-24T09:54:02.933Z</updated>
     
@@ -213,14 +213,14 @@
     
     
     
-    <category term="书单" scheme="https://noogel.xyz/tags/%E4%B9%A6%E5%8D%95/"/>
+    <category term="书单" scheme="https://noge.top/tags/%E4%B9%A6%E5%8D%95/"/>
     
   </entry>
   
   <entry>
     <title>软件系统复杂性治理方法</title>
-    <link href="https://noogel.xyz/2024/02/13/1.html"/>
-    <id>https://noogel.xyz/2024/02/13/1.html</id>
+    <link href="https://noge.top/2024/02/13/1.html"/>
+    <id>https://noge.top/2024/02/13/1.html</id>
     <published>2024-02-13T00:00:00.000Z</published>
     <updated>2025-07-23T07:30:58.916Z</updated>
     
@@ -244,8 +244,8 @@
   
   <entry>
     <title>服务拆分的几种处理思路</title>
-    <link href="https://noogel.xyz/2022/11/24/1.html"/>
-    <id>https://noogel.xyz/2022/11/24/1.html</id>
+    <link href="https://noge.top/2022/11/24/1.html"/>
+    <id>https://noge.top/2022/11/24/1.html</id>
     <published>2022-11-24T00:00:00.000Z</published>
     <updated>2025-07-23T07:30:58.916Z</updated>
     
@@ -260,14 +260,14 @@
     
     
     
-    <category term="架构" scheme="https://noogel.xyz/tags/%E6%9E%B6%E6%9E%84/"/>
+    <category term="架构" scheme="https://noge.top/tags/%E6%9E%B6%E6%9E%84/"/>
     
   </entry>
   
   <entry>
     <title>关于读写分离架构的思考</title>
-    <link href="https://noogel.xyz/2022/04/12/1.html"/>
-    <id>https://noogel.xyz/2022/04/12/1.html</id>
+    <link href="https://noge.top/2022/04/12/1.html"/>
+    <id>https://noge.top/2022/04/12/1.html</id>
     <published>2022-04-12T00:00:00.000Z</published>
     <updated>2025-07-23T07:30:58.916Z</updated>
     
@@ -287,14 +287,14 @@
     
     
     
-    <category term="架构" scheme="https://noogel.xyz/tags/%E6%9E%B6%E6%9E%84/"/>
+    <category term="架构" scheme="https://noge.top/tags/%E6%9E%B6%E6%9E%84/"/>
     
   </entry>
   
   <entry>
     <title>统一博客系统变更日志</title>
-    <link href="https://noogel.xyz/2022/04/10/1.html"/>
-    <id>https://noogel.xyz/2022/04/10/1.html</id>
+    <link href="https://noge.top/2022/04/10/1.html"/>
+    <id>https://noge.top/2022/04/10/1.html</id>
     <published>2022-04-10T00:00:00.000Z</published>
     <updated>2025-07-23T07:30:58.915Z</updated>
     
@@ -318,18 +318,18 @@
     
     
     
-    <category term="效率" scheme="https://noogel.xyz/tags/%E6%95%88%E7%8E%87/"/>
+    <category term="效率" scheme="https://noge.top/tags/%E6%95%88%E7%8E%87/"/>
     
-    <category term="HEXO" scheme="https://noogel.xyz/tags/HEXO/"/>
+    <category term="HEXO" scheme="https://noge.top/tags/HEXO/"/>
     
-    <category term="Docker" scheme="https://noogel.xyz/tags/Docker/"/>
+    <category term="Docker" scheme="https://noge.top/tags/Docker/"/>
     
   </entry>
   
   <entry>
     <title>Markdown 语法模板</title>
-    <link href="https://noogel.xyz/2022/04/07/1.html"/>
-    <id>https://noogel.xyz/2022/04/07/1.html</id>
+    <link href="https://noge.top/2022/04/07/1.html"/>
+    <id>https://noge.top/2022/04/07/1.html</id>
     <published>2022-04-07T00:00:00.000Z</published>
     <updated>2025-07-23T07:30:58.915Z</updated>
     
@@ -344,14 +344,14 @@
     
     
     
-    <category term="模板" scheme="https://noogel.xyz/tags/%E6%A8%A1%E6%9D%BF/"/>
+    <category term="模板" scheme="https://noge.top/tags/%E6%A8%A1%E6%9D%BF/"/>
     
   </entry>
   
   <entry>
     <title>架构设计的 ROI 关注点</title>
-    <link href="https://noogel.xyz/2022/03/29/1.html"/>
-    <id>https://noogel.xyz/2022/03/29/1.html</id>
+    <link href="https://noge.top/2022/03/29/1.html"/>
+    <id>https://noge.top/2022/03/29/1.html</id>
     <published>2022-03-29T00:00:00.000Z</published>
     <updated>2025-07-23T07:30:58.916Z</updated>
     
@@ -370,14 +370,14 @@
     
     
     
-    <category term="架构" scheme="https://noogel.xyz/tags/%E6%9E%B6%E6%9E%84/"/>
+    <category term="架构" scheme="https://noge.top/tags/%E6%9E%B6%E6%9E%84/"/>
     
   </entry>
   
   <entry>
     <title>技术项目复盘经验</title>
-    <link href="https://noogel.xyz/2022/03/14/1.html"/>
-    <id>https://noogel.xyz/2022/03/14/1.html</id>
+    <link href="https://noge.top/2022/03/14/1.html"/>
+    <id>https://noge.top/2022/03/14/1.html</id>
     <published>2022-03-14T00:00:00.000Z</published>
     <updated>2025-07-23T07:30:58.918Z</updated>
     
@@ -396,14 +396,14 @@
     
     
     
-    <category term="软技能" scheme="https://noogel.xyz/tags/%E8%BD%AF%E6%8A%80%E8%83%BD/"/>
+    <category term="软技能" scheme="https://noge.top/tags/%E8%BD%AF%E6%8A%80%E8%83%BD/"/>
     
   </entry>
   
   <entry>
     <title>技术面试的一点经验</title>
-    <link href="https://noogel.xyz/2022/03/05/1.html"/>
-    <id>https://noogel.xyz/2022/03/05/1.html</id>
+    <link href="https://noge.top/2022/03/05/1.html"/>
+    <id>https://noge.top/2022/03/05/1.html</id>
     <published>2022-03-05T00:00:00.000Z</published>
     <updated>2025-07-23T07:30:58.918Z</updated>
     
@@ -420,14 +420,14 @@
     
     
     
-    <category term="招聘" scheme="https://noogel.xyz/tags/%E6%8B%9B%E8%81%98/"/>
+    <category term="招聘" scheme="https://noge.top/tags/%E6%8B%9B%E8%81%98/"/>
     
   </entry>
   
   <entry>
     <title>macOS 系统 10 倍高效工具</title>
-    <link href="https://noogel.xyz/2022/01/23/1.html"/>
-    <id>https://noogel.xyz/2022/01/23/1.html</id>
+    <link href="https://noge.top/2022/01/23/1.html"/>
+    <id>https://noge.top/2022/01/23/1.html</id>
     <published>2022-01-23T00:00:00.000Z</published>
     <updated>2025-07-23T07:30:58.915Z</updated>
     
@@ -440,14 +440,14 @@
     
     
     
-    <category term="效率" scheme="https://noogel.xyz/tags/%E6%95%88%E7%8E%87/"/>
+    <category term="效率" scheme="https://noge.top/tags/%E6%95%88%E7%8E%87/"/>
     
   </entry>
   
   <entry>
     <title>知一的 2021 已读书单</title>
-    <link href="https://noogel.xyz/2022/01/21/1.html"/>
-    <id>https://noogel.xyz/2022/01/21/1.html</id>
+    <link href="https://noge.top/2022/01/21/1.html"/>
+    <id>https://noge.top/2022/01/21/1.html</id>
     <published>2022-01-21T00:00:00.000Z</published>
     <updated>2025-07-23T07:30:58.919Z</updated>
     
@@ -459,14 +459,14 @@
     
     
     
-    <category term="书单" scheme="https://noogel.xyz/tags/%E4%B9%A6%E5%8D%95/"/>
+    <category term="书单" scheme="https://noge.top/tags/%E4%B9%A6%E5%8D%95/"/>
     
   </entry>
   
   <entry>
     <title>领域驱动设计精粹（下）</title>
-    <link href="https://noogel.xyz/2021/12/07/1.html"/>
-    <id>https://noogel.xyz/2021/12/07/1.html</id>
+    <link href="https://noge.top/2021/12/07/1.html"/>
+    <id>https://noge.top/2021/12/07/1.html</id>
     <published>2021-12-07T00:00:00.000Z</published>
     <updated>2025-07-23T07:30:58.918Z</updated>
     
@@ -483,12 +483,12 @@
     
     
     
-    <category term="领域驱动设计" scheme="https://noogel.xyz/categories/%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1/"/>
+    <category term="领域驱动设计" scheme="https://noge.top/categories/%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1/"/>
     
     
-    <category term="架构" scheme="https://noogel.xyz/tags/%E6%9E%B6%E6%9E%84/"/>
+    <category term="架构" scheme="https://noge.top/tags/%E6%9E%B6%E6%9E%84/"/>
     
-    <category term="领域驱动设计" scheme="https://noogel.xyz/tags/%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1/"/>
+    <category term="领域驱动设计" scheme="https://noge.top/tags/%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1/"/>
     
   </entry>
   

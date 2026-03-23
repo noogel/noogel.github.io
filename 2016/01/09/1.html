@@ -20,40 +20,40 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"noogel.xyz","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"noge.top","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 <meta name="description" content="用来匹配和处理文本的字符串。 基本用途是查找和替换。一种不完备的程序设计语言。 锚点^ 字符串开头，或多行模式中的行开头\A 字符串的开始$ 字符串结尾，或多行模式中的行尾\Z 字符串结束\b 字边界\B 不是单词边界\&lt; 词的开头\&gt; 词尾 字符集\c 控制字符\s 任何一个空白字符（[\f\n\r\t\v]）\S 任何一个非空白字符（[^\f\n\r\t\v]）\d 任何一个数字字">
 <meta property="og:type" content="article">
 <meta property="og:title" content="正则表达式 Cheatsheet">
-<meta property="og:url" content="https://noogel.xyz/2016/01/09/1.html">
+<meta property="og:url" content="https://noge.top/2016/01/09/1.html">
 <meta property="og:site_name" content="知一杂谈">
 <meta property="og:description" content="用来匹配和处理文本的字符串。 基本用途是查找和替换。一种不完备的程序设计语言。 锚点^ 字符串开头，或多行模式中的行开头\A 字符串的开始$ 字符串结尾，或多行模式中的行尾\Z 字符串结束\b 字边界\B 不是单词边界\&lt; 词的开头\&gt; 词尾 字符集\c 控制字符\s 任何一个空白字符（[\f\n\r\t\v]）\S 任何一个非空白字符（[^\f\n\r\t\v]）\d 任何一个数字字">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://noogel.xyz/resource/img/zzbds/0b845d60-f9f5-4240-8f55-24f8cea04953.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/zzbds/a8a95f79-96ed-45db-8cb3-790a7ac6b64d.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/zzbds/32cebbb3-461b-4259-b8a3-b83d0280b752.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/zzbds/0b28d288-452d-4d9a-a416-0e98f80d8278.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/zzbds/acbe623c-05c5-444f-b385-169b6adedadb.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/zzbds/352f8f35-dcac-4440-a21f-4779a26ac743.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/zzbds/00434677-3908-47ed-b192-1b337f8ea064.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/zzbds/c44e81f9-acf5-4bb6-8f9a-e062724871bd.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/zzbds/686133cb-f93b-4954-a17a-5aed01c0e0e8.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/zzbds/3c36ee0a-819a-40ca-9dd5-150e0cb68beb.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/zzbds/d5cb48c9-e648-4874-b24a-d950ffbd9868.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/zzbds/64ddb1d1-bb13-476b-9fc4-ae4dc93e1c08.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/zzbds/9bb21719-d586-4f77-98f7-8b0c37f16a0a.png">
+<meta property="og:image" content="https://noge.top/resource/img/zzbds/0b845d60-f9f5-4240-8f55-24f8cea04953.png">
+<meta property="og:image" content="https://noge.top/resource/img/zzbds/a8a95f79-96ed-45db-8cb3-790a7ac6b64d.png">
+<meta property="og:image" content="https://noge.top/resource/img/zzbds/32cebbb3-461b-4259-b8a3-b83d0280b752.png">
+<meta property="og:image" content="https://noge.top/resource/img/zzbds/0b28d288-452d-4d9a-a416-0e98f80d8278.png">
+<meta property="og:image" content="https://noge.top/resource/img/zzbds/acbe623c-05c5-444f-b385-169b6adedadb.png">
+<meta property="og:image" content="https://noge.top/resource/img/zzbds/352f8f35-dcac-4440-a21f-4779a26ac743.png">
+<meta property="og:image" content="https://noge.top/resource/img/zzbds/00434677-3908-47ed-b192-1b337f8ea064.png">
+<meta property="og:image" content="https://noge.top/resource/img/zzbds/c44e81f9-acf5-4bb6-8f9a-e062724871bd.png">
+<meta property="og:image" content="https://noge.top/resource/img/zzbds/686133cb-f93b-4954-a17a-5aed01c0e0e8.png">
+<meta property="og:image" content="https://noge.top/resource/img/zzbds/3c36ee0a-819a-40ca-9dd5-150e0cb68beb.png">
+<meta property="og:image" content="https://noge.top/resource/img/zzbds/d5cb48c9-e648-4874-b24a-d950ffbd9868.png">
+<meta property="og:image" content="https://noge.top/resource/img/zzbds/64ddb1d1-bb13-476b-9fc4-ae4dc93e1c08.png">
+<meta property="og:image" content="https://noge.top/resource/img/zzbds/9bb21719-d586-4f77-98f7-8b0c37f16a0a.png">
 <meta property="article:published_time" content="2016-01-09T00:00:00.000Z">
 <meta property="article:modified_time" content="2025-07-23T07:30:58.915Z">
 <meta property="article:author" content="noogel">
 <meta property="article:tag" content="正则表达式">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://noogel.xyz/resource/img/zzbds/0b845d60-f9f5-4240-8f55-24f8cea04953.png">
+<meta name="twitter:image" content="https://noge.top/resource/img/zzbds/0b845d60-f9f5-4240-8f55-24f8cea04953.png">
 
 
-<link rel="canonical" href="https://noogel.xyz/2016/01/09/1.html">
+<link rel="canonical" href="https://noge.top/2016/01/09/1.html">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://noogel.xyz/2016/01/09/1.html","path":"2016/01/09/1.html","title":"正则表达式 Cheatsheet"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://noge.top/2016/01/09/1.html","path":"2016/01/09/1.html","title":"正则表达式 Cheatsheet"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>正则表达式 Cheatsheet | 知一杂谈</title>
@@ -213,7 +213,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2016/01/09/1.html">
+    <link itemprop="mainEntityOfPage" href="https://noge.top/2016/01/09/1.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -371,7 +371,7 @@
 
 <div class="copyright">
   &copy; 2015 – 
-  <span itemprop="copyrightYear">2025</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

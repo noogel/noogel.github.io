@@ -20,29 +20,29 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"noogel.xyz","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"noge.top","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 <meta name="description" content="ORM（Object&#x2F;Relational Mapper），即“对象-关系型数据映射组件”。对于O&#x2F;R，即 Object（对象）和Relational（关系型数据），表示必须同时使用面向对象和关系型数据进行开发。本文简述通过 Java 动态代理机制实现关系数据与 POJO 对象的映射。 代理静态代理静态代理其实就是指设计模式中的代理模式。代理模式为其他对象提供一种代理以控制对这">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java 动态代理实现 ORM">
-<meta property="og:url" content="https://noogel.xyz/2020/04/29/1.html">
+<meta property="og:url" content="https://noge.top/2020/04/29/1.html">
 <meta property="og:site_name" content="知一杂谈">
 <meta property="og:description" content="ORM（Object&#x2F;Relational Mapper），即“对象-关系型数据映射组件”。对于O&#x2F;R，即 Object（对象）和Relational（关系型数据），表示必须同时使用面向对象和关系型数据进行开发。本文简述通过 Java 动态代理机制实现关系数据与 POJO 对象的映射。 代理静态代理静态代理其实就是指设计模式中的代理模式。代理模式为其他对象提供一种代理以控制对这">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2020-04-29-23-12-29.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2020-04-29-23-17-27.png">
+<meta property="og:image" content="https://noge.top/resource/img/2020-04-29-23-12-29.png">
+<meta property="og:image" content="https://noge.top/resource/img/2020-04-29-23-17-27.png">
 <meta property="article:published_time" content="2020-04-29T00:00:00.000Z">
 <meta property="article:modified_time" content="2025-07-23T07:30:58.917Z">
 <meta property="article:author" content="noogel">
 <meta property="article:tag" content="编程语言">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://noogel.xyz/resource/img/2020-04-29-23-12-29.png">
+<meta name="twitter:image" content="https://noge.top/resource/img/2020-04-29-23-12-29.png">
 
 
-<link rel="canonical" href="https://noogel.xyz/2020/04/29/1.html">
+<link rel="canonical" href="https://noge.top/2020/04/29/1.html">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://noogel.xyz/2020/04/29/1.html","path":"2020/04/29/1.html","title":"Java 动态代理实现 ORM"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://noge.top/2020/04/29/1.html","path":"2020/04/29/1.html","title":"Java 动态代理实现 ORM"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>Java 动态代理实现 ORM | 知一杂谈</title>
@@ -202,7 +202,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2020/04/29/1.html">
+    <link itemprop="mainEntityOfPage" href="https://noge.top/2020/04/29/1.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -380,7 +380,7 @@
 
 <div class="copyright">
   &copy; 2015 – 
-  <span itemprop="copyrightYear">2025</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

@@ -20,29 +20,29 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"noogel.xyz","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"noge.top","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 <meta name="description" content="Firefox + Firepath、Chrome + XPath Helper 常用xpath例子 Python 使用XPath匹配页面数据 参考   Firefox + Firepath、Chrome + XPath Helper如下图 Firefox下，XPath需要通过Firebug + Firepath来方便的获取。 Chrome下，通过XPath Helper插件实现，开启和关闭快捷">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Xpath总结">
-<meta property="og:url" content="https://noogel.xyz/2017/01/31/1.html">
+<meta property="og:url" content="https://noge.top/2017/01/31/1.html">
 <meta property="og:site_name" content="知一杂谈">
 <meta property="og:description" content="Firefox + Firepath、Chrome + XPath Helper 常用xpath例子 Python 使用XPath匹配页面数据 参考   Firefox + Firepath、Chrome + XPath Helper如下图 Firefox下，XPath需要通过Firebug + Firepath来方便的获取。 Chrome下，通过XPath Helper插件实现，开启和关闭快捷">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://noogel.xyz/resource/img/firefox_xpath.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/chrome_xpathhelper.png">
+<meta property="og:image" content="https://noge.top/resource/img/firefox_xpath.png">
+<meta property="og:image" content="https://noge.top/resource/img/chrome_xpathhelper.png">
 <meta property="article:published_time" content="2017-01-31T00:00:00.000Z">
-<meta property="article:modified_time" content="2025-07-23T07:30:58.915Z">
+<meta property="article:modified_time" content="2026-03-23T14:53:05.846Z">
 <meta property="article:author" content="noogel">
 <meta property="article:tag" content="Xpath">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://noogel.xyz/resource/img/firefox_xpath.png">
+<meta name="twitter:image" content="https://noge.top/resource/img/firefox_xpath.png">
 
 
-<link rel="canonical" href="https://noogel.xyz/2017/01/31/1.html">
+<link rel="canonical" href="https://noge.top/2017/01/31/1.html">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://noogel.xyz/2017/01/31/1.html","path":"2017/01/31/1.html","title":"Xpath总结"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://noge.top/2017/01/31/1.html","path":"2017/01/31/1.html","title":"Xpath总结"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>Xpath总结 | 知一杂谈</title>
@@ -202,7 +202,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2017/01/31/1.html">
+    <link itemprop="mainEntityOfPage" href="https://noge.top/2017/01/31/1.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -258,7 +258,7 @@
 <p>有的时候页面中一系列数据下面并不一定包含某些字段，这时我们通过<code>contains()</code>来匹配包含某些关键字的节点来寻找对应的另一个节点。<br><code>.//div[@class=&#39;infobox&#39;]//node()[contains(text(), &#39;户型&#39;)]/../node()/text()</code></p>
 <p>这里总结一点使用技巧，更多的关于XPath的方法可以看参考中的链接，足以解决大部分问题。</p>
 <h2 id="Python-使用XPath匹配页面数据"><a href="#Python-使用XPath匹配页面数据" class="headerlink" title="Python 使用XPath匹配页面数据"></a>Python 使用XPath匹配页面数据</h2><p>对于爬虫抓取中XPath是一种比较高效的获取数据的方式，在各个爬虫框架中也很多的使用到，具体的用法大致相同，细微之处可自行摸索。以下是最简单的一种方式。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#! /usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">@author: abc</span></span><br><span class="line"><span class="string">@file: xpath_demo.py</span></span><br><span class="line"><span class="string">@date: 2017-02-04</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line">__author__ = <span class="string">&quot;abc&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> lxml.html</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    url = <span class="string">&quot;http://noogel.xyz&quot;</span></span><br><span class="line">    res = requests.get(url)</span><br><span class="line">    doc = lxml.html.document_fromstring(res.content)</span><br><span class="line">    title_xpath = <span class="string">&quot;.//header[@id=&#x27;header&#x27;]//a[@class=&#x27;brand&#x27;]/span[@class=&#x27;site-title&#x27;]&quot;</span></span><br><span class="line">    <span class="built_in">print</span> doc.xpath(title_xpath)[<span class="number">0</span>].text</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#! /usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">@author: abc</span></span><br><span class="line"><span class="string">@file: xpath_demo.py</span></span><br><span class="line"><span class="string">@date: 2017-02-04</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line">__author__ = <span class="string">&quot;abc&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> lxml.html</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    url = <span class="string">&quot;http://noge.top&quot;</span></span><br><span class="line">    res = requests.get(url)</span><br><span class="line">    doc = lxml.html.document_fromstring(res.content)</span><br><span class="line">    title_xpath = <span class="string">&quot;.//header[@id=&#x27;header&#x27;]//a[@class=&#x27;brand&#x27;]/span[@class=&#x27;site-title&#x27;]&quot;</span></span><br><span class="line">    <span class="built_in">print</span> doc.xpath(title_xpath)[<span class="number">0</span>].text</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>XPath是我在做爬虫任务时接触的，这只是整个环节中的一小部分，关于爬虫的一些抓取技巧（动态页面抓取、数据清洗、任务调度等）请关注博客后续更新的文章。</p>
 <hr>
@@ -355,7 +355,7 @@
 
 <div class="copyright">
   &copy; 2015 – 
-  <span itemprop="copyrightYear">2025</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

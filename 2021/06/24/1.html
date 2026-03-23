@@ -20,46 +20,46 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"noogel.xyz","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"noge.top","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 <meta name="description" content="本文主要介绍知乎订单系统后端语言栈的转型升级过程，包括其间踩过的一些坑和遇到的一些问题。一来是想通过本篇文章为其它应用服务转型提供借鉴经验，二来是总结对于订单系统的理解。鉴于文字功底不足，对于业务理解不充分的地方，欢迎留言交流。文章大纲如下：  迁移背景 前期准备 迁移方案 接口验证 指标梳理   可用性保障 MTTR 快速响应 MTBF 降低故障率   一致性保障 事后总结 目标回顾 执行计划">
 <meta property="og:type" content="article">
 <meta property="og:title" content="聊聊知乎订单系统迁移">
-<meta property="og:url" content="https://noogel.xyz/2021/06/24/1.html">
+<meta property="og:url" content="https://noge.top/2021/06/24/1.html">
 <meta property="og:site_name" content="知一杂谈">
 <meta property="og:description" content="本文主要介绍知乎订单系统后端语言栈的转型升级过程，包括其间踩过的一些坑和遇到的一些问题。一来是想通过本篇文章为其它应用服务转型提供借鉴经验，二来是总结对于订单系统的理解。鉴于文字功底不足，对于业务理解不充分的地方，欢迎留言交流。文章大纲如下：  迁移背景 前期准备 迁移方案 接口验证 指标梳理   可用性保障 MTTR 快速响应 MTBF 降低故障率   一致性保障 事后总结 目标回顾 执行计划">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2021-06-24-20-36-53.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2021-06-24-20-37-14.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2021-06-24-20-37-26.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2021-06-24-20-37-39.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2021-06-24-20-38-38.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2021-06-24-20-39-05.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2021-06-24-20-39-14.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2021-06-24-20-39-28.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2021-06-24-20-39-42.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2021-06-24-20-40-31.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2021-06-24-20-40-42.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2021-06-24-20-41-13.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2021-06-24-20-41-19.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2021-06-24-20-41-31.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2021-06-24-20-41-55.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2021-06-24-20-42-19.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2021-06-24-20-42-26.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2021-06-24-20-42-33.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2021-06-24-20-42-42.png">
+<meta property="og:image" content="https://noge.top/resource/img/2021-06-24-20-36-53.png">
+<meta property="og:image" content="https://noge.top/resource/img/2021-06-24-20-37-14.png">
+<meta property="og:image" content="https://noge.top/resource/img/2021-06-24-20-37-26.png">
+<meta property="og:image" content="https://noge.top/resource/img/2021-06-24-20-37-39.png">
+<meta property="og:image" content="https://noge.top/resource/img/2021-06-24-20-38-38.png">
+<meta property="og:image" content="https://noge.top/resource/img/2021-06-24-20-39-05.png">
+<meta property="og:image" content="https://noge.top/resource/img/2021-06-24-20-39-14.png">
+<meta property="og:image" content="https://noge.top/resource/img/2021-06-24-20-39-28.png">
+<meta property="og:image" content="https://noge.top/resource/img/2021-06-24-20-39-42.png">
+<meta property="og:image" content="https://noge.top/resource/img/2021-06-24-20-40-31.png">
+<meta property="og:image" content="https://noge.top/resource/img/2021-06-24-20-40-42.png">
+<meta property="og:image" content="https://noge.top/resource/img/2021-06-24-20-41-13.png">
+<meta property="og:image" content="https://noge.top/resource/img/2021-06-24-20-41-19.png">
+<meta property="og:image" content="https://noge.top/resource/img/2021-06-24-20-41-31.png">
+<meta property="og:image" content="https://noge.top/resource/img/2021-06-24-20-41-55.png">
+<meta property="og:image" content="https://noge.top/resource/img/2021-06-24-20-42-19.png">
+<meta property="og:image" content="https://noge.top/resource/img/2021-06-24-20-42-26.png">
+<meta property="og:image" content="https://noge.top/resource/img/2021-06-24-20-42-33.png">
+<meta property="og:image" content="https://noge.top/resource/img/2021-06-24-20-42-42.png">
 <meta property="article:published_time" content="2021-06-24T00:00:00.000Z">
 <meta property="article:modified_time" content="2025-07-23T07:30:58.918Z">
 <meta property="article:author" content="noogel">
 <meta property="article:tag" content="架构">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://noogel.xyz/resource/img/2021-06-24-20-36-53.png">
+<meta name="twitter:image" content="https://noge.top/resource/img/2021-06-24-20-36-53.png">
 
 
-<link rel="canonical" href="https://noogel.xyz/2021/06/24/1.html">
+<link rel="canonical" href="https://noge.top/2021/06/24/1.html">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://noogel.xyz/2021/06/24/1.html","path":"2021/06/24/1.html","title":"聊聊知乎订单系统迁移"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://noge.top/2021/06/24/1.html","path":"2021/06/24/1.html","title":"聊聊知乎订单系统迁移"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>聊聊知乎订单系统迁移 | 知一杂谈</title>
@@ -219,7 +219,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2021/06/24/1.html">
+    <link itemprop="mainEntityOfPage" href="https://noge.top/2021/06/24/1.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -579,7 +579,7 @@
 
 <div class="copyright">
   &copy; 2015 – 
-  <span itemprop="copyrightYear">2025</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

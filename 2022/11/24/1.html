@@ -20,33 +20,33 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"noogel.xyz","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"noge.top","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 <meta name="description" content="场景说明目标是需要拆分出内部服务 Y 为独立的系统，且暂时不改变系统 A 的被依赖关系，拆分前的情况如下图。 这里假定两个接口层处理模块只会调用只会调用内部服务 Y，并且其中存在着业务逻辑，也许你会疑惑接口层为什么会有业务逻辑，事实上你大多数情况下会遇到。更具体的说，接口层的业务接口 1 中包含业务逻辑，于是会产生对内部服务 Y 的两个及以上接口的调用。  处理思路那么你会遇到以下几种情况需要处理">
 <meta property="og:type" content="article">
 <meta property="og:title" content="服务拆分的几种处理思路">
-<meta property="og:url" content="https://noogel.xyz/2022/11/24/1.html">
+<meta property="og:url" content="https://noge.top/2022/11/24/1.html">
 <meta property="og:site_name" content="知一杂谈">
 <meta property="og:description" content="场景说明目标是需要拆分出内部服务 Y 为独立的系统，且暂时不改变系统 A 的被依赖关系，拆分前的情况如下图。 这里假定两个接口层处理模块只会调用只会调用内部服务 Y，并且其中存在着业务逻辑，也许你会疑惑接口层为什么会有业务逻辑，事实上你大多数情况下会遇到。更具体的说，接口层的业务接口 1 中包含业务逻辑，于是会产生对内部服务 Y 的两个及以上接口的调用。  处理思路那么你会遇到以下几种情况需要处理">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2022-11-24-01-56-42.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2022-11-24-01-56-59.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2022-11-24-01-57-09.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2022-11-24-01-57-20.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2022-11-24-01-57-28.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2022-11-24-01-57-38.png">
+<meta property="og:image" content="https://noge.top/resource/img/2022-11-24-01-56-42.png">
+<meta property="og:image" content="https://noge.top/resource/img/2022-11-24-01-56-59.png">
+<meta property="og:image" content="https://noge.top/resource/img/2022-11-24-01-57-09.png">
+<meta property="og:image" content="https://noge.top/resource/img/2022-11-24-01-57-20.png">
+<meta property="og:image" content="https://noge.top/resource/img/2022-11-24-01-57-28.png">
+<meta property="og:image" content="https://noge.top/resource/img/2022-11-24-01-57-38.png">
 <meta property="article:published_time" content="2022-11-24T00:00:00.000Z">
 <meta property="article:modified_time" content="2025-07-23T07:30:58.916Z">
 <meta property="article:author" content="noogel">
 <meta property="article:tag" content="架构">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://noogel.xyz/resource/img/2022-11-24-01-56-42.png">
+<meta name="twitter:image" content="https://noge.top/resource/img/2022-11-24-01-56-42.png">
 
 
-<link rel="canonical" href="https://noogel.xyz/2022/11/24/1.html">
+<link rel="canonical" href="https://noge.top/2022/11/24/1.html">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://noogel.xyz/2022/11/24/1.html","path":"2022/11/24/1.html","title":"服务拆分的几种处理思路"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://noge.top/2022/11/24/1.html","path":"2022/11/24/1.html","title":"服务拆分的几种处理思路"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>服务拆分的几种处理思路 | 知一杂谈</title>
@@ -206,7 +206,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2022/11/24/1.html">
+    <link itemprop="mainEntityOfPage" href="https://noge.top/2022/11/24/1.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -359,7 +359,7 @@
 
 <div class="copyright">
   &copy; 2015 – 
-  <span itemprop="copyrightYear">2025</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

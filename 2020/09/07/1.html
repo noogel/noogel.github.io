@@ -20,39 +20,39 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"noogel.xyz","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"noge.top","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 <meta name="description" content="关注树莓派很久了，只是没有很感兴趣的应用场景，就没有买来玩。几个月前偶然得到一个小度音箱，发现了新大陆，各种语音控制功能，便捷性不言而喻，还买了一些外部设备可以通过小度控制，发现有红外遥控器可以控制家里的大部分红外家电，奈何码库不是很全，有些设备还是不能控制的，而且不支持定制功能。恰好在知乎看到了一些 geek 视频，想着自己也做一个，可以支持红外数据的定制，做到自由遥控。于是乎说干就干，从一个">
 <meta property="og:type" content="article">
 <meta property="og:title" content="小米粥声控音箱总体计划">
-<meta property="og:url" content="https://noogel.xyz/2020/09/07/1.html">
+<meta property="og:url" content="https://noge.top/2020/09/07/1.html">
 <meta property="og:site_name" content="知一杂谈">
 <meta property="og:description" content="关注树莓派很久了，只是没有很感兴趣的应用场景，就没有买来玩。几个月前偶然得到一个小度音箱，发现了新大陆，各种语音控制功能，便捷性不言而喻，还买了一些外部设备可以通过小度控制，发现有红外遥控器可以控制家里的大部分红外家电，奈何码库不是很全，有些设备还是不能控制的，而且不支持定制功能。恰好在知乎看到了一些 geek 视频，想着自己也做一个，可以支持红外数据的定制，做到自由遥控。于是乎说干就干，从一个">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2020-09-07-12-51-24.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2020-09-07-12-51-36.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2020-09-07-12-51-46.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2020-10-06-00-56-24.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2020-10-06-00-56-04.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2020-09-07-12-51-54.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2020-09-07-12-52-05.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2020-09-07-13-30-40.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2020-09-07-12-53-03.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2020-09-07-12-53-11.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2020-09-07-13-31-45.png">
-<meta property="og:image" content="https://noogel.xyz/resource/img/2020-09-07-13-32-03.png">
+<meta property="og:image" content="https://noge.top/resource/img/2020-09-07-12-51-24.png">
+<meta property="og:image" content="https://noge.top/resource/img/2020-09-07-12-51-36.png">
+<meta property="og:image" content="https://noge.top/resource/img/2020-09-07-12-51-46.png">
+<meta property="og:image" content="https://noge.top/resource/img/2020-10-06-00-56-24.png">
+<meta property="og:image" content="https://noge.top/resource/img/2020-10-06-00-56-04.png">
+<meta property="og:image" content="https://noge.top/resource/img/2020-09-07-12-51-54.png">
+<meta property="og:image" content="https://noge.top/resource/img/2020-09-07-12-52-05.png">
+<meta property="og:image" content="https://noge.top/resource/img/2020-09-07-13-30-40.png">
+<meta property="og:image" content="https://noge.top/resource/img/2020-09-07-12-53-03.png">
+<meta property="og:image" content="https://noge.top/resource/img/2020-09-07-12-53-11.png">
+<meta property="og:image" content="https://noge.top/resource/img/2020-09-07-13-31-45.png">
+<meta property="og:image" content="https://noge.top/resource/img/2020-09-07-13-32-03.png">
 <meta property="article:published_time" content="2020-09-07T00:00:00.000Z">
 <meta property="article:modified_time" content="2025-07-23T07:30:58.914Z">
 <meta property="article:author" content="noogel">
 <meta property="article:tag" content="项目">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://noogel.xyz/resource/img/2020-09-07-12-51-24.png">
+<meta name="twitter:image" content="https://noge.top/resource/img/2020-09-07-12-51-24.png">
 
 
-<link rel="canonical" href="https://noogel.xyz/2020/09/07/1.html">
+<link rel="canonical" href="https://noge.top/2020/09/07/1.html">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://noogel.xyz/2020/09/07/1.html","path":"2020/09/07/1.html","title":"小米粥声控音箱总体计划"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://noge.top/2020/09/07/1.html","path":"2020/09/07/1.html","title":"小米粥声控音箱总体计划"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>小米粥声控音箱总体计划 | 知一杂谈</title>
@@ -212,7 +212,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://noogel.xyz/2020/09/07/1.html">
+    <link itemprop="mainEntityOfPage" href="https://noge.top/2020/09/07/1.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -460,7 +460,7 @@
 
 <div class="copyright">
   &copy; 2015 – 
-  <span itemprop="copyrightYear">2025</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
